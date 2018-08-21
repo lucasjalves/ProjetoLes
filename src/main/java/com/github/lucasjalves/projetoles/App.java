@@ -9,12 +9,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EnableJpaRepositories("com.github.lucasjalves.projetoles.repository")
 @EntityScan("com.github.lucasjalves.projetoles.entidade")
-@ComponentScan({"com.github.lucasjalves.projetoles.helper"})
+@ComponentScan({"com.github.lucasjalves.projetoles.helper", "com.github.lucasjalves.projetoles.controller"})
 public class App {
 
 	public static void main(String[] args) {
 		SpringApplication.run(App.class, args);
-
 	}
 
 }
