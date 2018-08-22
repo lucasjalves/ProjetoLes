@@ -9,7 +9,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EnableJpaRepositories("com.github.lucasjalves.projetoles.repository")
 @EntityScan("com.github.lucasjalves.projetoles.entidade")
-@ComponentScan({"com.github.lucasjalves.projetoles.helper", "com.github.lucasjalves.projetoles.controller"})
+@ComponentScan({"com.github.lucasjalves.projetoles.helper", "com.github.lucasjalves.projetoles.controller",
+	"com.github.lucasjalves.projetoles.command", "com.github.lucasjalves.projetoles.facade"})
 public class App {
 
 	public static void main(String[] args) {

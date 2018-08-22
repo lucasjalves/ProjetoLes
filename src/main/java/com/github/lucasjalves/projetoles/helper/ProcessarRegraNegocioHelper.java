@@ -18,7 +18,7 @@ public class ProcessarRegraNegocioHelper {
 	public List<Mensagem> processarRegraNegocio(Object object, String operacao)
 	{
 		List<Mensagem> mensagensRegraNegocio = new ArrayList<Mensagem>();
-		classesRegrasNegocio = new Reflections("core.rns.strategy.impl").getTypesAnnotatedWith(RegraNegocio.class);		
+		classesRegrasNegocio = new Reflections("com.github.lucasjalves.projetoles.rns.strategy.impl").getTypesAnnotatedWith(RegraNegocio.class);		
 		classesRegrasNegocio.forEach(classe -> {
 			RegraNegocio anotacaoRegraNegocio = classe.getAnnotation(RegraNegocio.class);
 			if(anotacaoRegraNegocio != null)
