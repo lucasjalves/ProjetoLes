@@ -25,17 +25,6 @@ public class FacadeImpl implements Facade {
 	@Autowired
 	private RepositoryHelper repositoryHelper;
 	
-	@PostConstruct
-	private void startupMap() {
-		
-	}
-	
-	private <T> T noCast(Object object)
-	{
-		return (T) object;
-	}
-	
-
 	@Override
 	public Resultado salvar(Entidade entidade) {
 		Resultado resultado = process(entidade, "SALVAR");
@@ -82,5 +71,11 @@ public class FacadeImpl implements Facade {
 		resultado.setMensagem(mensagens);
 		return resultado;
 	}
+	
+	private <T> T noCast(Object object)
+	{
+		return (T) object;
+	}
+	
 
 }

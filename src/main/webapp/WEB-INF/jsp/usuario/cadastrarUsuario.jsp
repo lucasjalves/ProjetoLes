@@ -18,9 +18,18 @@
 </style>
 
 <script>
-
+	var listaDepartamentos = '${jsonListaDepartamentos}';
+	
 	$(document).ready(function(){
+		$("#submit").on('click', function(){
+			validarSubmit();
+		});
+		
+		
 		$("#cpf").mask("000.000.000-00");
+		verificarListaDepartamentos();
+		
+		
 		$("input").each(function(){
 			$(this).on("focusout", function(){
 				validarCampoFocusOut($(this));
@@ -34,13 +43,16 @@
 	}
 	
 	function mostrarErro(campo, msgErro){
+		esconderErro(campo);
 		$(campo).addClass("invalido");
 		$(campo).parent().append("<small id='error' class='form-text msg-erro'>" + msgErro + "</small>");
 	}
 	
 	function esconderErro(campo){
 		$(campo).removeClass("invalido");
-		$(campo).parent().find("small").remove();
+		$(campo).parent().find("small").each(function(){
+			$(this).remove();
+		});
 	}
 	
 	function validarCampoFocusOut(campo){
@@ -61,19 +73,13 @@
 		if(!flgNulo){
 			debugger;
 			if(id === "email"){
-				if(!isEmailValido(campo.val())){
-					mostrarErro(campo, "Email inválido");
-				}
+				validarEmail(campo);
 			}
 			if(id === "senha"){
-				if(!isSenhaForte(campo.val())){
-					mostrarErro(campo, "A senha deve conter no mínimo 8 caracteres, pelo menos uma letra e numero e caracter especial");
-				}
+				validarSenhaForte(campo);
 			}
 			if(id === "cpf"){
-				if(!isCpfValido(campo.val())){
-					mostrarErro(campo, "CPF inválido");
-				}
+				validarCpf(campo);
 			}
 		}
 
@@ -123,6 +129,61 @@
 			return false;
 
 	}
+	
+	function verificarListaDepartamentos(){
+		var json = JSON.parse(listaDepartamentos);
+		if(json.length === 0){
+			$("#btnCadastraDepartamento").html("Cadastrar Novo");
+		}
+	}
+	
+	function validarEmail(campo){
+		if(!isEmailValido(campo.val())){
+			mostrarErro(campo, "Email inválido");
+		}		
+	}
+	
+	function validarSenhaForte(campo){
+		if(!isSenhaForte(campo.val())){
+			mostrarErro(campo, "A senha deve conter no mínimo 8 caracteres, pelo menos uma letra e numero e caracter especial");
+		}		
+	}
+	
+	function validarCpf(campo){
+		if(!isCpfValido(campo.val())){
+			mostrarErro(campo, "CPF inválido");
+		}
+	}
+	function validarSubmit(){
+		var flgNulo = false;
+
+		 
+		$(".obrigatorio").each(function(){
+			esconderErro($(this));
+			if($(this).val() != null){
+				if($(this).val().length === 0){
+					mostrarErro($(this), "Campo de preenchimento obrigatório");
+					flgNulo = true;
+				}else{
+					if($(this).val().trim().length === 0){
+						mostrarErro($(this), "Campo de preenchimento obrigatório");
+						flgNulo = true;
+					}
+				}					
+			}
+			else{
+				mostrarErro($(this), "Campo de preenchimento obrigatório");
+				flgNulo = true;				
+			}
+		});
+		if(!flgNulo){
+			validarEmail($("#email"));
+			validarSenhaForte($("#senha"));
+			validarCpf($("#cpf"));			
+		}
+	}
+	
+	
 </script>
 
 <body>
@@ -142,15 +203,37 @@
 			<div class="form-group">
 				<label>Departamento</label> 
 				<div class="input-group mb-3">
-					 <select class="custom-select" id="departamento">
+					 <select class="custom-select obrigatorio" id="departamento">
 					  </select>
 					  <div class="input-group-append">
-					    <button class="btn btn-outline-secondary" type="button">Button</button>
+					    <a class="btn btn-outline-secondary" id="btnCadastraDepartamento" data-toggle="modal" data-target="#modalDepartamento">Button</a>
 					  </div>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<p  class="btn btn-primary" id="submit">Submit</p>
 		</form>
 	</div>
+	
+
+  <div class="modal" id="modalDepartamento">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <div class="modal-header">
+          <h4 class="modal-title">Modal Heading</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+          Modal body..
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 </body>
 </html>
