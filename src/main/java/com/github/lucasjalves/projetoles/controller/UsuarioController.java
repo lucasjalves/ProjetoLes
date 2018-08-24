@@ -25,4 +25,5 @@ public class UsuarioController extends ControllerBase {
 		modelView.addObject("jsonListaDepartamentos", json);
 		return modelView;
 	}
+	
 }
