@@ -17,7 +17,7 @@ public class UsuarioController extends ControllerBase {
 	public ModelAndView paginaCadastroUsuario(ModelAndView modelView) {
 		String json = "{}";
 		try {
-			json = mapper.writeValueAsString(consultar.execute(new Departamento()).getEntidades());
+			json = mapper.writeValueAsString(facade.buscar(new Departamento()));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}

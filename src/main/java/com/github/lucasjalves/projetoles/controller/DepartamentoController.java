@@ -16,12 +16,14 @@ public class DepartamentoController extends ControllerBase{
 	@RequestMapping("/cadastrar")
 	@ResponseBody
 	public List<Mensagem> cadastrar(@RequestBody Departamento departamento){
-		return salvar.execute(departamento).getMensagem();
+		return facade.salvar(departamento).getMensagem();
 	}
 	
 	@RequestMapping("/consultar")
 	@ResponseBody
 	public List<Object> buscar(){
-		return consultar.execute(new Departamento()).getEntidades();
+		return facade.buscar(new Departamento()).getEntidades();
 	}
+	
+	
 }
