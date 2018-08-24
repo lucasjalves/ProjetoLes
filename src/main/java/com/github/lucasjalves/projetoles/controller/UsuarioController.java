@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.lucasjalves.projetoles.entidade.Departamento;
 
 @Controller
@@ -15,15 +16,23 @@ public class UsuarioController extends ControllerBase {
 
 	@RequestMapping("/cadastrar")
 	public ModelAndView paginaCadastroUsuario(ModelAndView modelView) {
+		String json = "{}";
+		try {
+			json = mapper.writeValueAsString(consultar.execute(new Departamento()).getEntidades());
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 		modelView.setViewName(PAGINA_CADASTRO_USUARIO);
-		consultar.execute(new Departamento());
+		modelView.addObject("jsonListaDepartamentos", json);
 		return modelView;
 	}
 	
+
 	@RequestMapping("/login")
 	public ModelAndView paginaLogin(ModelAndView modelView) {
 		modelView.setViewName(PAGINA_LOGIN_USUARIO);
 		consultar.execute(new Departamento());
 		return modelView;
 	}
+
 }

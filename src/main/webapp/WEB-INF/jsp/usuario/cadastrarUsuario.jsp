@@ -15,12 +15,25 @@
 .msg-erro{
 	color: red;
 }
+
+.hide{
+	display: none;
+}
 </style>
 
 <script>
-
+	var listaDepartamentos = '${jsonListaDepartamentos}';
+	
 	$(document).ready(function(){
+		$("#submit").on('click', function(){
+			validarSubmit();
+		});
+		
+		
 		$("#cpf").mask("000.000.000-00");
+		verificarListaDepartamentos();
+		
+		
 		$("input").each(function(){
 			$(this).on("focusout", function(){
 				validarCampoFocusOut($(this));
@@ -34,13 +47,16 @@
 	}
 	
 	function mostrarErro(campo, msgErro){
+		esconderErro(campo);
 		$(campo).addClass("invalido");
 		$(campo).parent().append("<small id='error' class='form-text msg-erro'>" + msgErro + "</small>");
 	}
 	
 	function esconderErro(campo){
 		$(campo).removeClass("invalido");
-		$(campo).parent().find("small").remove();
+		$(campo).parent().find("small").each(function(){
+			$(this).remove();
+		});
 	}
 	
 	function validarCampoFocusOut(campo){
@@ -61,19 +77,13 @@
 		if(!flgNulo){
 			debugger;
 			if(id === "email"){
-				if(!isEmailValido(campo.val())){
-					mostrarErro(campo, "Email inválido");
-				}
+				validarEmail(campo);
 			}
 			if(id === "senha"){
-				if(!isSenhaForte(campo.val())){
-					mostrarErro(campo, "A senha deve conter no mínimo 8 caracteres, pelo menos uma letra e numero e caracter especial");
-				}
+				validarSenhaForte(campo);
 			}
 			if(id === "cpf"){
-				if(!isCpfValido(campo.val())){
-					mostrarErro(campo, "CPF inválido");
-				}
+				validarCpf(campo);
 			}
 		}
 
@@ -123,6 +133,141 @@
 			return false;
 
 	}
+	
+	function verificarListaDepartamentos(){
+		var json = JSON.parse(listaDepartamentos);
+		if(json.length === 0){
+			$("#btnCadastraDepartamento").html("Cadastrar Novo");
+		}
+	}
+	
+	function validarEmail(campo){
+		if(!isEmailValido(campo.val())){
+			mostrarErro(campo, "Email inválido");
+		}		
+	}
+	
+	function validarSenhaForte(campo){
+		if(!isSenhaForte(campo.val())){
+			mostrarErro(campo, "A senha deve conter no mínimo 8 caracteres, pelo menos uma letra e numero e caracter especial");
+		}		
+	}
+	
+	function validarCpf(campo){
+		if(!isCpfValido(campo.val())){
+			mostrarErro(campo, "CPF inválido");
+		}
+	}
+	function validarSubmit(){
+		var flgNulo = false;
+	 
+		$(".obrigatorio").each(function(){
+			esconderErro($(this));
+			if($(this).val() != null){
+				if($(this).val().length === 0){
+					mostrarErro($(this), "Campo de preenchimento obrigatório");
+					flgNulo = true;
+				}else{
+					if($(this).val().trim().length === 0){
+						mostrarErro($(this), "Campo de preenchimento obrigatório");
+						flgNulo = true;
+					}
+				}					
+			}
+			else{
+				mostrarErro($(this), "Campo de preenchimento obrigatório");
+				flgNulo = true;				
+			}
+		});
+		if(!flgNulo){
+			validarEmail($("#email"));
+			validarSenhaForte($("#senha"));
+			validarCpf($("#cpf"));			
+		}
+	}
+	
+	function adicionarSetor(){
+		debugger;
+		var input = "<div class='input-group mb-3'> <input type='text' class='form-control' placeholder='Nome do setor' onfocusout='validarSetorModalCadastroFocusOut(this)'>" +
+		  "<div class='input-group-append'>" +
+		  "<button class='btn btn-success' type='button' onclick='adicionarSetor()'>+</button>" +
+		  "</div>" +
+		"</div>";	
+		$("#divModalSetor").append(input);
+		if($("#divModalSetor .input-group").length > 1){
+			var qtde = $("#divModalSetor .input-group").length -1;
+			console.log(qtde);
+			for(var i = 0; i < qtde ; i++){
+				$("#divModalSetor").find("button").eq(i)
+					.removeClass("btn-success")
+					.addClass("btn-danger")
+					.attr("onclick", "removerSetor(this)")
+					.html("-");
+				
+			}
+		}
+	}
+	
+	function removerSetor(campo){
+		$(campo).parent().parent().remove();
+	}
+	function showModalDepartamento(){
+		$("#divModalSetor").html("");
+		$("#errorDepartamento").addClass("msg-erro").hide();
+		adicionarSetor();
+	}
+	
+	
+	function cadastrarDepartamento(){
+		$("#modalDepartamento input:text").each(function(){
+			$(this).removeClass("invalido");
+			if($(this).val().length === 0){
+				$(this).addClass("invalido");
+				$("#errorDepartamento").show();
+			}else{
+				if($(this).val().trim().length === 0){
+					$(this).addClass("invalido");
+					$("#errorDepartamento").show();
+				}
+			}
+		});
+		if($("#divModalSetor .input-group").length > 1){
+			if($("#modalDepartamento input:text").last().hasClass("invalido")){
+				$("#modalDepartamento input:text").last().removeClass("invalido");
+			}
+		}
+	}
+	
+	function validarSetorModalCadastroFocusOut(campo){
+		var haErro = false;
+		$(campo).removeClass("invalido");
+		if($(campo).val().length === 0){
+			$(campo).addClass("invalido");
+			haErro = true;
+		}else{
+			if($(campo).val().trim().length === 0){
+				$(campo).addClass("invalido");
+				haErro = true;
+			}
+		}		
+		
+		$("#modalDepartamento input:text").each(function(){
+			if($(this).hasClass("invalido")){
+				$("#errorDepartamento").show();
+				haErro = true;
+			}
+		});
+		
+		if(!haErro){
+			$("#errorDepartamento").hide();
+		}
+		
+		if($("#divModalSetor .input-group").length > 1){
+			if($("#modalDepartamento input:text").last().hasClass("invalido")){
+				$("#modalDepartamento input:text").last().removeClass("invalido");
+			}
+		}
+	}
 </script>
 
 <body>
@@ -142,15 +287,52 @@
 			<div class="form-group">
 				<label>Departamento</label> 
 				<div class="input-group mb-3">
-					 <select class="custom-select" id="departamento">
+					 <select class="custom-select obrigatorio" id="departamento">
 					  </select>
 					  <div class="input-group-append">
-					    <button class="btn btn-outline-secondary" type="button">Button</button>
+					    <a class="btn btn-outline-secondary" id="btnCadastraDepartamento" data-toggle="modal" data-target="#modalDepartamento" onclick="showModalDepartamento()">Button</a>
 					  </div>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<p  class="btn btn-primary" id="submit">Submit</p>
 		</form>
 	</div>
+	
+
+  <div class="modal" id="modalDepartamento">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <div class="modal-header">
+          <h4 class="modal-title">Cadastro de departamento</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+ 			<div class="form-group" id="bodyModalDepartamento">
+				<label>Nome</label> 
+				<input type="text" class="form-control obrigatorioDepartamento" onfocusout="validarSetorModalCadastroFocusOut(this)" id="nomeDepartamento" placeholder="Digite o nome do departamento"> 
+			</div>         
+			<hr/>
+			<h3 style="text-align: center;">Setores</h3>
+			<div id="divModalSetor">
+				<div class="input-group mb-3">
+				  <input type="text" class="form-control" placeholder="Nome do setor">
+				  <div class="input-group-append">
+				    <button class="btn btn-success" type="button">+</button>
+				  </div>
+				</div>
+			</div>
+			<small id='errorDepartamento' class='form-text' style="display: none;">Preencha todos os campos</small>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" style="position: relative; right: 60%" data-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-success" onclick="cadastrarDepartamento()">Cadastrar</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 </body>
 </html>
