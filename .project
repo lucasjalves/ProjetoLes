@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
+<<<<<<< ours
 	<name>projetoles</name>
+=======
+	<name>ProjetoLes</name>
+>>>>>>> theirs
 	<comment></comment>
 	<projects>
 	</projects>
