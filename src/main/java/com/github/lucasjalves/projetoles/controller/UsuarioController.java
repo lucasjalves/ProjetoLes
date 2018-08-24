@@ -12,7 +12,6 @@ import com.github.lucasjalves.projetoles.entidade.Departamento;
 public class UsuarioController extends ControllerBase {
 
 	private final String PAGINA_CADASTRO_USUARIO = "usuario/cadastrarUsuario";
-	private final String PAGINA_LOGIN_USUARIO = "usuario/login";
 
 	@RequestMapping("/cadastrar")
 	public ModelAndView paginaCadastroUsuario(ModelAndView modelView) {
@@ -27,11 +26,4 @@ public class UsuarioController extends ControllerBase {
 		return modelView;
 	}
 	
-
-	@RequestMapping("/login")
-	public ModelAndView paginaLogin(ModelAndView modelView) {
-		modelView.setViewName(PAGINA_LOGIN_USUARIO);
-		return modelView;
-	}
-
 }
