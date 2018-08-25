@@ -29,7 +29,6 @@
 			validarSubmit();
 		});
 		
-		
 		$("#cpf").mask("000.000.000-00");
 		verificarListaDepartamentos();
 		
@@ -75,7 +74,7 @@
 			}
 		}
 		if(!flgNulo){
-			debugger;
+			
 			if(id === "email"){
 				validarEmail(campo);
 			}
@@ -187,10 +186,9 @@
 	}
 	
 	function adicionarSetor(){
-		debugger;
-		var input = "<div class='input-group mb-3'> <input type='text' class='form-control' placeholder='Nome do setor' onfocusout='validarSetorModalCadastroFocusOut(this)'>" +
+		var input = "<div class='input-group mb-3'> <input type='text' class='form-control' placeholder='Nome do setor' name='nome' onfocusout='validarSetorModalCadastroFocusOut(this)'>" +
 		  "<div class='input-group-append'>" +
-		  "<button class='btn btn-success' type='button' onclick='adicionarSetor()'>+</button>" +
+		  "<button class='btn btn-success' type='button' onclick='adicionarSetor()' >+</button>" +
 		  "</div>" +
 		"</div>";	
 		$("#divModalSetor").append(input);
@@ -236,6 +234,21 @@
 				$("#modalDepartamento input:text").last().removeClass("invalido");
 			}
 		}
+		
+		if($("#modalDepartamento .invalido").length === 0){
+			$("#errorDepartamento").hide();
+			jsonCadastro = gerarJsonCadastroDepartamento();
+			$.ajax({
+				method: "POST",
+				contentType: 'application/json',
+				url: "/departamento/cadastrar",
+				data: JSON.stringify(jsonCadastro),
+				success: function(response){
+					console.log(response);
+				}
+			});
+		}
+
 	}
 	
 	function validarSetorModalCadastroFocusOut(campo){
@@ -269,13 +282,35 @@
 		}
 	}
 	
-	function converterDadosFormJson(data) {
-		var unindexed_array = data;
-		var indexed_array = {};
-		$.map(unindexed_array, function(n, i) {
-			indexed_array[n['name']] = n['value'];
-		});
-		return indexed_array;
+	$.fn.serializeObject = function()
+	{
+	    var o = {};
+	    var a = this.serializeArray();
+	    $.each(a, function() {
+	        if (o[this.name] !== undefined) {
+	            if (!o[this.name].push) {
+	                o[this.name] = [o[this.name]];
+	            }
+	            o[this.name].push(this.value || '');
+	        } else {
+	            o[this.name] = this.value || '';
+	        }
+	    });
+	    return o;
+	};
+	
+	function gerarJsonCadastroDepartamento(){
+		jsonCadastro = {}
+		jsonCadastro.nome = $("#nomeDepartamento").val();
+		jsonCadastro.setores = [];
+		var jsonSetores = $("#modalDepartamento input:text[name=nome]").serializeObject();
+		for(var i = 0; i < jsonSetores.nome.length; i++){
+			var jsonSetor = {};
+			jsonSetor.nome = jsonSetores.nome[i];
+			jsonCadastro.setores.push(jsonSetor);
+		}
+		
+		return jsonCadastro;
 	}
 </script>
 
@@ -320,13 +355,14 @@
         <div class="modal-body">
  			<div class="form-group" id="bodyModalDepartamento">
 				<label>Nome</label> 
-				<input type="text" class="form-control obrigatorioDepartamento" onfocusout="validarSetorModalCadastroFocusOut(this)" id="nomeDepartamento" placeholder="Digite o nome do departamento"> 
+				<input type="text" class="form-control obrigatorioDepartamento" onfocusout="validarSetorModalCadastroFocusOut(this)" 
+				id="nomeDepartamento" placeholder="Digite o nome do departamento" name="departamento"> 
 			</div>         
 			<hr/>
 			<h3 style="text-align: center;">Setores</h3>
 			<div id="divModalSetor">
 				<div class="input-group mb-3">
-				  <input type="text" class="form-control" placeholder="Nome do setor">
+				  <input type="text" class="form-control" placeholder="Nome do setor" name="nome">
 				  <div class="input-group-append">
 				    <button class="btn btn-success" type="button">+</button>
 				  </div>

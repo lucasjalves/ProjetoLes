@@ -30,7 +30,9 @@ public class FacadeImpl implements Facade {
 		Resultado resultado = process(entidade, "SALVAR");
 		if(resultado.getMensagem().size() == 0) {
 			JpaRepository<?, Long> repository = repositoryHelper.getRepository(entidade);
-			resultado.setEntidades(repository.save(noCast(entidade)));
+			List<Entidade> lista = new ArrayList<>();
+			lista.add(repository.save(noCast(entidade)));
+			resultado.setEntidades(lista);
 		}
 		
 		return resultado;
@@ -41,7 +43,7 @@ public class FacadeImpl implements Facade {
 		Resultado resultado = process(entidade, "CONSULTAR");
 		if(resultado.getMensagem().size() == 0) {
 			JpaRepository<?, Long> repository = repositoryHelper.getRepository(entidade);
-			resultado.setEntidades((List<Object>) repository.findAll());
+			resultado.setEntidades((List<Entidade>) repository.findAll());
 		}
 		return resultado;
 	}
@@ -51,7 +53,10 @@ public class FacadeImpl implements Facade {
 		Resultado resultado = process(entidade, "ALTERAR");
 		if(resultado.getMensagem().size() == 0) {
 			JpaRepository<?, Long> repository = repositoryHelper.getRepository(entidade);
-			resultado.setEntidades(repository.save(noCast(entidade)));
+			List<Entidade> lista = new ArrayList<>();
+			lista.add(repository.save(noCast(entidade)));
+			resultado.setEntidades(lista);
+			
 		}
 		
 		return resultado;

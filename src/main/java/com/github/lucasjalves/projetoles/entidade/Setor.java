@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -14,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Setor extends Entidade {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
 	@JsonIgnore
@@ -25,6 +28,7 @@ public class Setor extends Entidade {
 	@OneToMany
 	private List<Projeto> projetos = new ArrayList<Projeto>();
 	
+	@JsonIgnore
 	@OneToMany
 	private List<Usuario> usuarios = new ArrayList<Usuario>();
 	

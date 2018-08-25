@@ -13,11 +13,12 @@ public class UsuarioController extends ControllerBase {
 
 	private final String PAGINA_CADASTRO_USUARIO = "usuario/cadastrarUsuario";
 
+	
 	@RequestMapping("/cadastrar")
-	public ModelAndView paginaCadastroUsuario(ModelAndView modelView) {
+	public ModelAndView paginaCadastroUsuario(ModelAndView modelView) throws JsonProcessingException {
 		String json = "{}";
 		try {
-			json = mapper.writeValueAsString(facade.buscar(new Departamento()));
+			json = mapper.writeValueAsString(facade.buscar(new Departamento()).getEntidades());
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
@@ -26,4 +27,9 @@ public class UsuarioController extends ControllerBase {
 		return modelView;
 	}
 	
+	@RequestMapping("/login")
+	public ModelAndView paginaLogin(ModelAndView modelView) {
+		modelView.setViewName("/usuario/login");
+		return modelView;
+	}
 }

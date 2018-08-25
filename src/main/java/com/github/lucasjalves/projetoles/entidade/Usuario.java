@@ -3,6 +3,8 @@ package com.github.lucasjalves.projetoles.entidade;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
@@ -12,6 +14,7 @@ public class Usuario extends Entidade implements Serializable{
 
 	private static final long serialVersionUID = -578268814259016013L;
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
 	private String cpf;
