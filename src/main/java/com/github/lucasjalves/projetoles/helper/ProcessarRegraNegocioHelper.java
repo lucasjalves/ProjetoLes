@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import com.github.lucasjalves.projetoles.annotation.RegraNegocio;
 import com.github.lucasjalves.projetoles.entidade.Entidade;
-import com.github.lucasjalves.projetoles.enums.StatusChamado;
 import com.github.lucasjalves.projetoles.rns.Mensagem;
 import com.github.lucasjalves.projetoles.rns.strategy.Strategy;
 

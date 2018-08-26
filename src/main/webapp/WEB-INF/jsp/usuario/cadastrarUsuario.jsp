@@ -23,8 +23,17 @@
 
 <script>
 	var listaDepartamentos = '${jsonListaDepartamentos}';
-	
+	var departamentoCadastro;
+	function carregarDepartamentosComboBox(){
+		$("#departamento").html("");
+		lista = JSON.parse(listaDepartamentos);
+		$.each(lista, function(index, departamento){
+			var option = "<option value='"+departamento.nome+"'>" + departamento.nome + "</option>";
+			$("#departamento").append(option);
+		});
+	}
 	$(document).ready(function(){
+		carregarDepartamentosComboBox();
 		$("#submit").on('click', function(){
 			validarSubmit();
 		});
@@ -59,6 +68,7 @@
 	}
 	
 	function validarCampoFocusOut(campo){
+		$("#errosBackend").html("");
 		var id = campo.attr("id");
 		esconderErro(campo);
 		var flgNulo = false;
@@ -137,6 +147,8 @@
 		var json = JSON.parse(listaDepartamentos);
 		if(json.length === 0){
 			$("#btnCadastraDepartamento").html("Cadastrar Novo");
+		}else{
+			$("#btnCadastraDepartamento").html("Editar");
 		}
 	}
 	
@@ -210,6 +222,7 @@
 		$(campo).parent().parent().remove();
 	}
 	function showModalDepartamento(){
+		$("#errosBackend").html("");
 		$("#divModalSetor").html("");
 		$("#errorDepartamento").addClass("msg-erro").hide();
 		adicionarSetor();
@@ -217,6 +230,7 @@
 	
 	
 	function cadastrarDepartamento(){
+		$("#errosBackend").html("");
 		$("#modalDepartamento input:text").each(function(){
 			$(this).removeClass("invalido");
 			if($(this).val().length === 0){
@@ -243,8 +257,22 @@
 				contentType: 'application/json',
 				url: "/departamento/cadastrar",
 				data: JSON.stringify(jsonCadastro),
-				success: function(response){
-					console.log(response);
+				success: function(resultado){
+					if(resultado.mensagem.length > 0){
+						$("#errosBackend").html("");
+						$.each(resultado.mensagem, function(index, erro){
+							var msg = "<small id='error' class='form-text msg-erro'>" + erro.mensagem + "</small>";
+							$("#errosBackend").append(msg);
+						});
+						$("#errosBackend").show();
+					}else{
+						listaDepartamentos = JSON.stringify(resultado.entidades);
+						carregarDepartamentosComboBox();
+						$("#departamento").val($("#nomeDepartamento").val()).change();
+						$("#modalDepartamento .close").click();
+						$("#btnSucessoCadastro").click();
+						
+					}
 				}
 			});
 		}
@@ -344,7 +372,7 @@
 	
 
   <div class="modal" id="modalDepartamento">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
       
         <div class="modal-header">
@@ -369,15 +397,39 @@
 				</div>
 			</div>
 			<small id='errorDepartamento' class='form-text' style="display: none;">Preencha todos os campos</small>
+			<div id="errosBackend" style="display:none;">
+			</div>
         </div>
         
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" style="position: relative; right: 60%" data-dismiss="modal">Fechar</button>
           <button type="button" class="btn btn-success" onclick="cadastrarDepartamento()">Cadastrar</button>
         </div>
-        
       </div>
     </div>
+    
+    <button type="button" id="btnSucessoCadastro" class="btn btn-primary" style="display:none;" data-toggle="modal" data-target="#sucessoCadastroDepartamento">
+
+	</button>
   </div>
+  
+  <div class="modal" id="sucessoCadastroDepartamento">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLongTitle">Cadastro de departamento</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        Departamento cadastrado com sucesso!
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 </body>
 </html>

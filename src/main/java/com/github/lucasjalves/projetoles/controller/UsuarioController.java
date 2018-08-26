@@ -1,5 +1,9 @@
 package com.github.lucasjalves.projetoles.controller;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,7 +22,9 @@ public class UsuarioController extends ControllerBase {
 	public ModelAndView paginaCadastroUsuario(ModelAndView modelView) throws JsonProcessingException {
 		String json = "{}";
 		try {
-			json = mapper.writeValueAsString(facade.buscar(new Departamento()).getEntidades());
+			List<Departamento> list = (List<Departamento>) facade.buscar(new Departamento()).getEntidades();
+			list = list.stream().sorted(Comparator.comparing(Departamento::getNome)).collect(Collectors.toList());
+			json = mapper.writeValueAsString(list);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}

@@ -27,9 +27,10 @@ public class DadosObrigatoriosDepartamento implements Strategy{
 							.collect(Collectors.toList());
 			if(setores.size() > 0) {
 				mensagens.add(new Mensagem("Todos os setores devem conter um nome"));
-			}
-			setores.forEach(s -> System.out.println(s.getNome()));
-			
+			}		
+		}
+		if(departamento.getSetores().size() == 0) {
+			mensagens.add(new Mensagem("Todo departamento deve conter no mínimo um setor"));
 		}
 		
 		return mensagens;
