@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.lucasjalves.projetoles.entidade.Departamento;
+import com.github.lucasjalves.projetoles.entidade.Usuario;
 
 @Controller
 @RequestMapping("/usuario")
@@ -31,6 +33,12 @@ public class UsuarioController extends ControllerBase {
 		modelView.setViewName(PAGINA_CADASTRO_USUARIO);
 		modelView.addObject("jsonListaDepartamentos", json);
 		return modelView;
+	}
+	
+	@RequestMapping("/cadastrar/efetivar")
+	public ModelAndView cadastrarUsuario(@ModelAttribute Usuario usuario) {
+		facade.salvar(usuario);
+		return null;
 	}
 	
 	@RequestMapping("/login")

@@ -28,7 +28,7 @@ public class Usuario extends Entidade implements Serializable{
 	private Cargo cargo;
 	
 	@OneToOne
-	private Setor setor;
+	private Departamento departamento = new Departamento();
 	
 	private String pontos;
 
@@ -80,12 +80,12 @@ public class Usuario extends Entidade implements Serializable{
 		this.cargo = cargo;
 	}
 
-	public Setor getSetor() {
-		return setor;
+	public Departamento getDepartamento() {
+		return departamento;
 	}
 
-	public void setSetor(Setor setor) {
-		this.setor = setor;
+	public void setDepartamento(Departamento departamento) {
+		this.departamento = departamento;
 	}
 
 	public String getPontos() {
@@ -95,8 +95,6 @@ public class Usuario extends Entidade implements Serializable{
 	public void setPontos(String pontos) {
 		this.pontos = pontos;
 	}
-	
-	
 	
 
 }

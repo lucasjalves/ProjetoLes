@@ -28,9 +28,6 @@ public class DadosObrigatoriosUsuario implements Strategy<Usuario> {
 		if(usuario.getRamal().trim().length() == 0) {
 			mensagens.add(new Mensagem("Digite o ramal"));
 		}
-		if(usuario.getSetor().getNome().trim().length() == 0) {
-			mensagens.add(new Mensagem("Selecione um setor"));
-		}
 		
 		return mensagens;
 	}

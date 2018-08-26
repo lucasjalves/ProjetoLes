@@ -34,6 +34,20 @@
 		var optionCadastrar = "<option>Cadastrar novo</option>";
 		$("#departamento").append(optionCadastrar);
 	}
+	
+	function carregarSetoresComboBox(){
+		lista = JSON.parse(listaDepartamentos);
+		$.each(lista, function(index, departamento){
+			if($("#departamento :checked").html() === departamento.nome){
+				$.each(departamento.setores, function(index, setor){
+					var option = "<option value='"+setor.nome+"' idSetor='"+setor.id+"'>" + setor.nome + "</option>";
+					$("#setores").append(option);
+				});
+				$("#setores").prop("disabled", false);
+			}
+		})
+		
+	}
 	$(document).ready(function(){
 		carregarDepartamentosComboBox();
 		$("#submit").on('click', function(){
@@ -42,10 +56,21 @@
 		
 		$("#departamento").on("change",function(){
 			if($("#departamento :checked").html() === "Cadastrar novo"){
+				$("#setores").html("");
+				$("#setores").prop("disabled", true);
 				showModalDepartamento();
 				$("#btnCadastraDepartamento").click();
+			}else{
+				$("#setores").html("");
+				carregarSetoresComboBox();
+				$("#idDepartamentoHidden").val($("#departamento :checked").attr("departamentoid"));
+				$("#setores").val($("#setores :checked").val()).change();
 			}
 		})
+		
+		$("#setores").on("change", function(){
+			$("#idSetorHidden").val($("#setores :checked").attr("idsetor"));
+		});
 		
 		$("#cpf").mask("000.000.000-00");
 		verificarListaDepartamentos();
@@ -92,8 +117,7 @@
 				}
 			}
 		}
-		if(!flgNulo){
-			
+		if(!flgNulo){	
 			if(id === "email"){
 				validarEmail(campo);
 			}
@@ -103,8 +127,30 @@
 			if(id === "cpf"){
 				validarCpf(campo);
 			}
+			if(id === "emailCopia"){
+				validarEmailsIguais(campo)
+			}
+			if(id === "senhaCopia"){
+				validarSenhasIguais(campo)
+			}
 		}
 
+	}
+	
+	function validarEmailsIguais(campo){
+		if($("#email").val() !== campo.val()){
+			mostrarErro(campo, "Os emails não conferem");
+		}else{
+			esconderErro(campo);
+		}		
+	}
+	
+	function validarSenhasIguais(campo){
+		if($("#senha").val() !== campo.val()){
+			mostrarErro(campo, "As senhas não conferem");
+		}else{
+			esconderErro(campo);
+		}			
 	}
 	
 	function isSenhaForte(senha){
@@ -158,31 +204,40 @@
 			$("#btnCadastraDepartamento").html("Cadastrar Novo");
 		}else{
 			$("#btnCadastraDepartamento").html("Editar");
+			carregarSetoresComboBox();
+			$("#setores").val($("#setores :checked").val()).change();
 		}
 	}
 	
 	function validarEmail(campo){
-		if(!isEmailValido(campo.val())){
+		var bool = isEmailValido(campo.val());
+		if(!bool){
 			mostrarErro(campo, "Email inválido");
 		}		
+		return bool;
 	}
 	
 	function validarSenhaForte(campo){
-		if(!isSenhaForte(campo.val())){
+		var bool = isSenhaForte(campo.val())
+		if(!bool){
 			mostrarErro(campo, "A senha deve conter no mínimo 8 caracteres, pelo menos uma letra e numero e caracter especial");
 		}		
+		return bool;
 	}
 	
 	function validarCpf(campo){
-		if(!isCpfValido(campo.val())){
+		var bool = isCpfValido(campo.val());
+		if(!bool){
 			mostrarErro(campo, "CPF inválido");
 		}
+		return bool;
 	}
 	function validarSubmit(){
 		var flgNulo = false;
 	 
 		$(".obrigatorio").each(function(){
 			esconderErro($(this));
+
 			if($(this).val() != null){
 				if($(this).val().length === 0){
 					mostrarErro($(this), "Campo de preenchimento obrigatório");
@@ -202,7 +257,9 @@
 		if(!flgNulo){
 			validarEmail($("#email"));
 			validarSenhaForte($("#senha"));
-			validarCpf($("#cpf"));			
+			validarCpf($("#cpf"));		
+			validarEmailsIguais($("#emailCopia"));
+			validarSenhasIguais($("#senhaCopia"));
 		}
 	}
 	
@@ -356,7 +413,6 @@
 						$("#departamento").val($("#nomeDepartamento").val()).change();
 						$("#modalDepartamento .close").click();
 						$("#btnSucessoAlteracao").click();
-						
 					}
 				}
 			});
@@ -442,28 +498,44 @@
 
 <body>
 	<div class="container">
-		<form>
+		<form action="/usuario/cadastrar/efetivar" method="POST">
 			<div class="form-group">
 				<label>CPF</label> 
-				<input type="text" class="form-control obrigatorio" id="cpf" placeholder="Digite o CPF"> 
+				<input type="text" class="form-control obrigatorio" name="cpf" id="cpf" placeholder="Digite o CPF"> 
 			</div>
 			<div class="form-group">
 				<label>Endereço de e-mail</label> 
-				<input type="email" class="form-control obrigatorio" id="email" placeholder="Digite o email"> 
+				<input type="email" class="form-control obrigatorio" name="email" id="email" placeholder="Digite o email"> 
+			</div>
+			<div class="form-group" id="divEmailCopia" >
+				<label>Digite novamente o email</label> 
+				<input type="email" class="form-control obrigatorio" id="emailCopia" placeholder="Digite o email"> 
 			</div>
 			<div class="form-group">
-				<label>Password</label> <input type="password" class="form-control obrigatorio" id="senha" placeholder="Digite a senha">
+				<label>Password</label> <input type="password" name="senha" class="form-control obrigatorio" id="senha" placeholder="Digite a senha">
 			</div>
+			<div class="form-group" id="divSenhaCopia">
+				<label>Digite novamente a senha</label> <input type="password" class="form-control obrigatorio" id="senhaCopia" placeholder="Digite a senha">
+			</div>		
 			<div class="form-group">
 				<label>Departamento</label> 
 				<div class="input-group mb-3">
-					 <select class="custom-select obrigatorio" id="departamento">
+					 <select class="custom-select obrigatorio" id="departamento" name="departamento.nome">
 					  </select>
 					  <div class="input-group-append">
 					    <a class="btn btn-outline-secondary" id="btnCadastraDepartamento" data-toggle="modal" data-target="#modalDepartamento" onclick="showModalDepartamento()">Button</a>
 					  </div>
 				</div>
 			</div>
+			<div class="form-group">
+				<label>Setores</label> 
+				<div class="input-group mb-3">
+					 <select class="custom-select obrigatorio" id="setores" disabled>
+					  </select>
+				</div>
+			</div>
+			<input type="hidden" id="idDepartamentoHidden" name="departamento.id" />
+			<input type="hidden" id="idSetorHidden" name="departamento.setores[0].id" />
 			<p  class="btn btn-primary" id="submit">Submit</p>
 		</form>
 	</div>
