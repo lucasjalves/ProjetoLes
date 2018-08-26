@@ -10,13 +10,12 @@ import com.github.lucasjalves.projetoles.rns.strategy.Strategy;
 import com.github.lucasjalves.projetoles.util.ValidadorUtils;
 
 
-@RegraNegocio(classe = Usuario.class, operacao = "SALVAR")
-public class DadosObrigatoriosUsuario implements Strategy {
+@RegraNegocio(classe = Usuario.class, operacao = {"SALVAR", "ALTERAR"})
+public class DadosObrigatoriosUsuario implements Strategy<Usuario> {
 
-	private List<Mensagem> mensagens = new ArrayList<Mensagem>();
+	private List<Mensagem> mensagens = new ArrayList<>();
 	@Override
-	public List<Mensagem> processar(Object object) {
-		Usuario usuario = (Usuario)object;
+	public List<Mensagem> processar(Usuario usuario) {
 		if(!ValidadorUtils.emailValido(usuario.getEmail())) {
 			mensagens.add(new Mensagem("Email inválido"));
 		}

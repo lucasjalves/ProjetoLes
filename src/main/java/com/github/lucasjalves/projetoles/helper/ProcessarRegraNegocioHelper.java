@@ -1,6 +1,8 @@
 package com.github.lucasjalves.projetoles.helper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -24,11 +26,12 @@ public class ProcessarRegraNegocioHelper {
 			RegraNegocio anotacaoRegraNegocio = classe.getAnnotation(RegraNegocio.class);
 			if(anotacaoRegraNegocio != null)
 			{
+				Set<String> operacoes = new HashSet<>(Arrays.asList(anotacaoRegraNegocio.operacao()));
 				if(anotacaoRegraNegocio.classe().getCanonicalName().equals(entidade.getClass().getCanonicalName()) &&
-						operacao.equals(anotacaoRegraNegocio.operacao()))
+						operacoes.contains(operacao))
 				{
 					try {
-						Strategy instanciaRegraNegocio = (Strategy) classe.newInstance();
+						Strategy instanciaRegraNegocio = (Strategy<?>) classe.newInstance();
 						mensagensRegraNegocio.addAll(instanciaRegraNegocio.processar(entidade));
 					} catch (InstantiationException | IllegalAccessException e) {
 						e.printStackTrace();

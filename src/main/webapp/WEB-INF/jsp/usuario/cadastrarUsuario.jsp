@@ -28,15 +28,24 @@
 		$("#departamento").html("");
 		lista = JSON.parse(listaDepartamentos);
 		$.each(lista, function(index, departamento){
-			var option = "<option value='"+departamento.nome+"'>" + departamento.nome + "</option>";
+			var option = "<option value='"+departamento.nome+"' departamentoid='"+departamento.id+"'>" + departamento.nome + "</option>";
 			$("#departamento").append(option);
 		});
+		var optionCadastrar = "<option>Cadastrar novo</option>";
+		$("#departamento").append(optionCadastrar);
 	}
 	$(document).ready(function(){
 		carregarDepartamentosComboBox();
 		$("#submit").on('click', function(){
 			validarSubmit();
 		});
+		
+		$("#departamento").on("change",function(){
+			if($("#departamento :checked").html() === "Cadastrar novo"){
+				showModalDepartamento();
+				$("#btnCadastraDepartamento").click();
+			}
+		})
 		
 		$("#cpf").mask("000.000.000-00");
 		verificarListaDepartamentos();
@@ -222,10 +231,36 @@
 		$(campo).parent().parent().remove();
 	}
 	function showModalDepartamento(){
+		$("#btnCadastrar").attr("onclick", "cadastrarDepartamento()");
+		$("#nomeDepartamento").val("");
+		$("#btnCadastrar").html("Cadastrar");
 		$("#errosBackend").html("");
 		$("#divModalSetor").html("");
 		$("#errorDepartamento").addClass("msg-erro").hide();
-		adicionarSetor();
+		if($("#departamento").val() !== null){
+			if($("#departamento :checked").html() !== "Cadastrar novo"){
+				$("#nomeDepartamento").val($("#departamento").val());
+				$.each(JSON.parse(listaDepartamentos), function(index, departamento){
+					if(departamento.nome === $("#departamento").val()){
+						$("#btnCadastrar").attr("onclick", "alterarDepartamento()");
+						$("#btnCadastrar").html("Alterar");
+						$.each(departamento.setores, function(index, setor){					
+							adicionarSetor();
+							var qtde = $("#divModalSetor input:text").length;
+							$("#divModalSetor input:text").eq(qtde - 1).val(setor.nome);
+							$("#divModalSetor input:text").eq(qtde - 1).attr("setorId", setor.id);
+						});
+					}
+				});				
+			}
+			else{
+				adicionarSetor();
+			}
+		}else{
+			adicionarSetor();
+		}
+		
+		
 	}
 	
 	
@@ -271,12 +306,61 @@
 						$("#departamento").val($("#nomeDepartamento").val()).change();
 						$("#modalDepartamento .close").click();
 						$("#btnSucessoCadastro").click();
+						$("#btnCadastraDepartamento").html("Editar");
+					}
+				}
+			});
+		}
+	}
+	
+	function alterarDepartamento(){
+		$("#errosBackend").html("");
+		$("#modalDepartamento input:text").each(function(){
+			$(this).removeClass("invalido");
+			if($(this).val().length === 0){
+				$(this).addClass("invalido");
+				$("#errorDepartamento").show();
+			}else{
+				if($(this).val().trim().length === 0){
+					$(this).addClass("invalido");
+					$("#errorDepartamento").show();
+				}
+			}
+		});
+		if($("#divModalSetor .input-group").length > 1){
+			if($("#modalDepartamento input:text").last().hasClass("invalido")){
+				$("#modalDepartamento input:text").last().removeClass("invalido");
+			}
+		}	
+		
+		
+		if($("#modalDepartamento .invalido").length === 0){
+			$("#errorDepartamento").hide();
+			jsonCadastro = gerarJsonAlteracaoDepartamento();
+			$.ajax({
+				method: "POST",
+				contentType: 'application/json',
+				url: "/departamento/alterar",
+				data: JSON.stringify(jsonCadastro),
+				success: function(resultado){
+					if(resultado.mensagem.length > 0){
+						$("#errosBackend").html("");
+						$.each(resultado.mensagem, function(index, erro){
+							var msg = "<small id='error' class='form-text msg-erro'>" + erro.mensagem + "</small>";
+							$("#errosBackend").append(msg);
+						});
+						$("#errosBackend").show();
+					}else{
+						listaDepartamentos = JSON.stringify(resultado.entidades);
+						carregarDepartamentosComboBox();
+						$("#departamento").val($("#nomeDepartamento").val()).change();
+						$("#modalDepartamento .close").click();
+						$("#btnSucessoAlteracao").click();
 						
 					}
 				}
 			});
 		}
-
 	}
 	
 	function validarSetorModalCadastroFocusOut(campo){
@@ -331,14 +415,28 @@
 		jsonCadastro = {}
 		jsonCadastro.nome = $("#nomeDepartamento").val();
 		jsonCadastro.setores = [];
-		var jsonSetores = $("#modalDepartamento input:text[name=nome]").serializeObject();
-		for(var i = 0; i < jsonSetores.nome.length; i++){
+		for(var i = 0; i < $("#modalDepartamento input:text[name=nome]").length; i++){
 			var jsonSetor = {};
-			jsonSetor.nome = jsonSetores.nome[i];
+			jsonSetor.nome = $("#modalDepartamento input:text[name=nome]").eq(i).val();
 			jsonCadastro.setores.push(jsonSetor);
 		}
-		
 		return jsonCadastro;
+	}
+	
+	function gerarJsonAlteracaoDepartamento(){
+		jsonCadastro = {}
+		jsonCadastro.nome = $("#nomeDepartamento").val();
+		jsonCadastro.id = $("#departamento :checked").attr("departamentoid");
+		jsonCadastro.setores = [];
+		for(var i = 0; i < $("#modalDepartamento input:text[name=nome]").length; i++){
+			var jsonSetor = {};
+			jsonSetor.nome = $("#modalDepartamento input:text[name=nome]").eq(i).val();
+			if($("#divModalSetor input:text").eq(i).length > 0){
+				jsonSetor.id = $("#divModalSetor input:text").eq(i).attr("setorid");
+			}
+			jsonCadastro.setores.push(jsonSetor);
+		}
+		return jsonCadastro;		
 	}
 </script>
 
@@ -403,33 +501,51 @@
         
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" style="position: relative; right: 60%" data-dismiss="modal">Fechar</button>
-          <button type="button" class="btn btn-success" onclick="cadastrarDepartamento()">Cadastrar</button>
+          <button type="button" class="btn btn-success" id="btnCadastrar" onclick="cadastrarDepartamento()">Cadastrar</button>
         </div>
       </div>
     </div>
     
-    <button type="button" id="btnSucessoCadastro" class="btn btn-primary" style="display:none;" data-toggle="modal" data-target="#sucessoCadastroDepartamento">
-
-	</button>
+    <button type="button" id="btnSucessoCadastro" class="btn btn-primary" style="display:none;" data-toggle="modal" data-target="#sucessoCadastroDepartamento"></button>
+    <button type="button" id="btnSucessoAlteracao" class="btn btn-primary" style="display:none;" data-toggle="modal" data-target="#sucessoAlteracaoDepartamento"></button>
   </div>
-  
-  <div class="modal" id="sucessoCadastroDepartamento">
-	  <div class="modal-dialog modal-dialog-centered" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLongTitle">Cadastro de departamento</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body">
-	        Departamento cadastrado com sucesso!
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
-	      </div>
-	    </div>
-	  </div>
+
+	<div class="modal" id="sucessoCadastroDepartamento">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Cadastro de
+						departamento</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">Departamento cadastrado com sucesso!</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal" id="sucessoAlteracaoDepartamento">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Alteração
+						de departamento</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">Departamento alterado com sucesso!</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

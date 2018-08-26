@@ -10,14 +10,13 @@ import com.github.lucasjalves.projetoles.entidade.Setor;
 import com.github.lucasjalves.projetoles.rns.Mensagem;
 import com.github.lucasjalves.projetoles.rns.strategy.Strategy;
 
-@RegraNegocio(classe = Departamento.class, operacao = "SALVAR")
-public class DadosObrigatoriosDepartamento implements Strategy{
+@RegraNegocio(classe = Departamento.class, operacao = {"SALVAR", "ALTERAR"})
+public class DadosObrigatoriosDepartamento implements Strategy<Departamento>{
 
-	private List<Mensagem> mensagens = new ArrayList<Mensagem>();
+	private List<Mensagem> mensagens = new ArrayList<>();
 	
 	@Override
-	public List<Mensagem> processar(Object object) {
-		Departamento departamento = (Departamento)object;
+	public List<Mensagem> processar(Departamento departamento) {
 		if(departamento.getNome().trim().length() == 0) {
 			mensagens.add(new Mensagem("Nome do departamento é obrigatório"));
 		}

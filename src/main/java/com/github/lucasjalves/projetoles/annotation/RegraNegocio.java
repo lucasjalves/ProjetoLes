@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
 public @interface RegraNegocio {
 
 	java.lang.Class<?> classe();
-	String operacao();
+	String[] operacao();
 }

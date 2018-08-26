@@ -21,6 +21,47 @@ public class DepartamentoController extends ControllerBase{
 	@PostMapping("/departamento/cadastrar")
 	@ResponseBody
 	public Resultado cadastrar(@RequestBody Departamento departamento){
+		Resultado resultado = processarResultado(departamento);
+		List<Departamento> list = (List<Departamento>) resultado.getEntidades();
+		if(resultado.getMensagem().size() == 0) {
+			resultado = facade.salvar(departamento);		
+		}
+		if(resultado.getMensagem().size() == 0) {
+			list.add(departamento);
+			resultado.setEntidades(list);
+		}
+		
+		list = (List<Departamento>) resultado.getEntidades();
+		list = list.stream()
+				.sorted(Comparator.comparing(Departamento::getNome))
+				.collect(Collectors.toList());
+		resultado.setEntidades(list);
+			
+		return resultado;
+	}
+	
+	@PostMapping("/departamento/alterar")
+	@ResponseBody
+	public Resultado alterar(@RequestBody Departamento departamento) {
+		Resultado resultado = processarResultado(departamento);
+		List<Departamento> list = (List<Departamento>) resultado.getEntidades();
+		if(resultado.getMensagem().size() == 0) {
+			resultado = facade.alterar(departamento);
+		}
+		if(resultado.getMensagem().size() == 0) {
+			list = (List<Departamento>) facade.buscar(new Departamento()).getEntidades();
+		}
+		resultado.setEntidades(list);
+		return resultado;
+	}
+
+	@GetMapping("/departamento/consultar")
+	@ResponseBody
+	public List<Departamento> buscar(){
+		return (List<Departamento>) facade.buscar(new Departamento()).getEntidades();
+	}
+	
+	private Resultado processarResultado(Departamento departamento) {
 		Resultado resultado = facade.buscar(new Departamento());
 		List<Departamento> list = (List<Departamento>) resultado.getEntidades();
 		int listSize = departamento.getSetores().size();
@@ -36,26 +77,7 @@ public class DepartamentoController extends ControllerBase{
 			resultado.getMensagem().add(new Mensagem("Departamento já cadastrado"));
 			return resultado;
 		}
-		
-		resultado = facade.salvar(departamento);
-		if(resultado.getMensagem().size() == 0) {
-			list.add(departamento);
-			resultado.setEntidades(list);
-		}
-		
-		list = (List<Departamento>) resultado.getEntidades();
-		list = list.stream().sorted(Comparator.comparing(Departamento::getNome)).collect(Collectors.toList());
-		resultado.setEntidades(list);
-			
-		return resultado;
+		return resultado;		
 	}
-	
-
-	@GetMapping("/departamento/consultar")
-	@ResponseBody
-	public List<Departamento> buscar(){
-		return (List<Departamento>) facade.buscar(new Departamento()).getEntidades();
-	}
-	
 	
 }
