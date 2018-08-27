@@ -33,6 +33,7 @@
 		});
 		var optionCadastrar = "<option>Cadastrar novo</option>";
 		$("#departamento").append(optionCadastrar);
+		$("#idDepartamentoHidden").val($("#departamento :checked").attr("departamentoid"));
 	}
 	
 	function carregarSetoresComboBox(){
@@ -73,6 +74,7 @@
 		});
 		
 		$("#cpf").mask("000.000.000-00");
+		$("#ramal").mask("000000");
 		verificarListaDepartamentos();
 		
 		
@@ -132,6 +134,9 @@
 			}
 			if(id === "senhaCopia"){
 				validarSenhasIguais(campo)
+			}
+			if(id === "ramal"){
+				validarRamal(campo);
 			}
 		}
 
@@ -217,6 +222,14 @@
 		return bool;
 	}
 	
+	function validarRamal(campo){
+		if(campo.val().length < 6){
+			mostrarErro(campo, "O ramal deve conter 6 caracteres");
+			return false;
+		}
+		return true;
+	}
+	
 	function validarSenhaForte(campo){
 		var bool = isSenhaForte(campo.val())
 		if(!bool){
@@ -234,7 +247,7 @@
 	}
 	function validarSubmit(){
 		var flgNulo = false;
-	 
+	 	
 		$(".obrigatorio").each(function(){
 			esconderErro($(this));
 
@@ -261,6 +274,10 @@
 			validarEmailsIguais($("#emailCopia"));
 			validarSenhasIguais($("#senhaCopia"));
 		}
+		if($(".invalido").length === 0){
+			$("form").submit();
+		}
+		
 	}
 	
 	function adicionarSetor(){
@@ -504,6 +521,10 @@
 				<input type="text" class="form-control obrigatorio" name="cpf" id="cpf" placeholder="Digite o CPF"> 
 			</div>
 			<div class="form-group">
+				<label>Ramal</label> 
+				<input type="text" class="form-control obrigatorio" name="ramal" id="ramal" placeholder="Digite o ramal"> 
+			</div>
+			<div class="form-group">
 				<label>Endereço de e-mail</label> 
 				<input type="email" class="form-control obrigatorio" name="email" id="email" placeholder="Digite o email"> 
 			</div>
@@ -536,7 +557,7 @@
 			</div>
 			<input type="hidden" id="idDepartamentoHidden" name="departamento.id" />
 			<input type="hidden" id="idSetorHidden" name="departamento.setores[0].id" />
-			<p  class="btn btn-primary" id="submit">Submit</p>
+			<p class="btn btn-primary" id="submit" onclick>Submit</p>
 		</form>
 	</div>
 	

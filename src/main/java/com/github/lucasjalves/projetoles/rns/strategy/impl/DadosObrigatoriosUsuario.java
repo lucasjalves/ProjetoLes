@@ -25,8 +25,8 @@ public class DadosObrigatoriosUsuario implements Strategy<Usuario> {
 		if(!ValidadorUtils.senhaForte(usuario.getSenha())) {
 			mensagens.add(new Mensagem("A senha deve conter no mínimo 8 caracteres, pelo menos uma letra, um digito e um caracter especial"));
 		}
-		if(usuario.getRamal().trim().length() == 0) {
-			mensagens.add(new Mensagem("Digite o ramal"));
+		if(usuario.getRamal().trim().length() < 6) {
+			mensagens.add(new Mensagem("Ramal deve conter 6 caracteres"));
 		}
 		
 		return mensagens;

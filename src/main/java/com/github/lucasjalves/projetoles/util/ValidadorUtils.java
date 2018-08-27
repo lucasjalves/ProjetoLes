@@ -19,7 +19,8 @@ public final class ValidadorUtils {
 	}
 
 	public static boolean cpfValido(String cpf) {
-		cpf = cpf.replaceAll(".", "").replaceAll("-", "");
+		cpf = cpf.replaceAll("\\D", "");
+		System.out.println(cpf);
         if (cpf.equals("00000000000") ||
             cpf.equals("11111111111") ||
             cpf.equals("22222222222") || cpf.equals("33333333333") ||
@@ -72,10 +73,10 @@ public final class ValidadorUtils {
 	
 	public static boolean senhaForte(String senha) {
 
-		if(senha.length() < 8) {
+		if(senha.length() <= 8) {
 			return false;
 		}
-		return senha.matches("^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z])");
+		return senha.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
 	}
 	
 }

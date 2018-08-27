@@ -6,19 +6,22 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.lucasjalves.projetoles.entidade.Departamento;
 import com.github.lucasjalves.projetoles.entidade.Usuario;
+import com.github.lucasjalves.projetoles.rns.Resultado;
 
 @Controller
 @RequestMapping("/usuario")
 public class UsuarioController extends ControllerBase {
 
-	private final String PAGINA_CADASTRO_USUARIO = "usuario/cadastrarUsuario";
-
+	private static final String PAGINA_CADASTRO_USUARIO = "usuario/cadastrarUsuario";
+	private static final String PAGINA_LOGIN_USUARIO = "usuario/login";
 	
 	@RequestMapping("/cadastrar")
 	public ModelAndView paginaCadastroUsuario(ModelAndView modelView) throws JsonProcessingException {
@@ -35,10 +38,11 @@ public class UsuarioController extends ControllerBase {
 		return modelView;
 	}
 	
-	@RequestMapping("/cadastrar/efetivar")
-	public ModelAndView cadastrarUsuario(@ModelAttribute Usuario usuario) {
-		facade.salvar(usuario);
-		return null;
+	@PostMapping("/cadastrar/efetivar")
+	public ModelAndView cadastrarUsuario(@ModelAttribute Usuario usuario, ModelAndView modelView) {
+		Resultado resultado = facade.salvar(usuario);
+		modelView.setViewName(PAGINA_LOGIN_USUARIO);
+		return modelView;
 	}
 	
 	@RequestMapping("/login")

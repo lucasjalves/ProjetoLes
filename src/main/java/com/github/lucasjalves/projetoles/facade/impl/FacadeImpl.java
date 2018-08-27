@@ -72,6 +72,7 @@ public class FacadeImpl implements Facade {
 		mensagens = regraNegocioHelper.processarRegraNegocio(entidade, operacao);
 		resultado = new Resultado();
 		resultado.setMensagem(mensagens);
+		resultado.getMensagem().forEach(m -> System.out.println(m.getMensagem()));
 		return resultado;
 	}
 	
