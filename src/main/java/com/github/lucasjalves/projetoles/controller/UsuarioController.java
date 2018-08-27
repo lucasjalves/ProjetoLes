@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,6 +23,8 @@ public class UsuarioController extends ControllerBase {
 
 	private static final String PAGINA_CADASTRO_USUARIO = "usuario/cadastrarUsuario";
 	private static final String PAGINA_LOGIN_USUARIO = "usuario/login";
+	private static final String PAGINA_DASHBOARD = "usuario/dashboard";
+	private static final String PAGINA_TABELA_USUARIOS = "usuario/todosUsuariosTabela";
 	
 	@RequestMapping("/cadastrar")
 	public ModelAndView paginaCadastroUsuario(ModelAndView modelView) throws JsonProcessingException {
@@ -39,15 +42,39 @@ public class UsuarioController extends ControllerBase {
 	}
 	
 	@PostMapping("/cadastrar/efetivar")
-	public ModelAndView cadastrarUsuario(@ModelAttribute Usuario usuario, ModelAndView modelView) {
+	public String cadastrarUsuario(@ModelAttribute Usuario usuario, ModelAndView modelView) {
 		Resultado resultado = facade.salvar(usuario);
-		modelView.setViewName(PAGINA_LOGIN_USUARIO);
-		return modelView;
+		modelView.setViewName(PAGINA_TABELA_USUARIOS);
+		return "forward:/usuario/consultarTodos";
 	}
 	
 	@RequestMapping("/login")
 	public ModelAndView paginaLogin(ModelAndView modelView) {
-		modelView.setViewName("/usuario/login");
+		modelView.setViewName(PAGINA_LOGIN_USUARIO);
 		return modelView;
 	}
+	
+	@RequestMapping("/dashboard")
+	public ModelAndView paginaDashboard(ModelAndView modelView) {
+		modelView.setViewName(PAGINA_DASHBOARD);
+		return modelView;
+	}
+	
+	@RequestMapping("/consultarTodos")
+	public ModelAndView paginaTodosUsuarios(ModelAndView modelView) {
+		String json ="{}";
+		List<Usuario> list = (List<Usuario>) facade.buscar(new Usuario()).getEntidades();
+		list = list.stream().sorted(Comparator.comparing(Usuario::getUsername)).collect(Collectors.toList());
+		try {
+			json = mapper.writeValueAsString(list);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		modelView.addObject("jsonListaUsuarios", json);
+		modelView.setViewName(PAGINA_TABELA_USUARIOS);		
+		return modelView;
+	}
+	
+	
+	
 }

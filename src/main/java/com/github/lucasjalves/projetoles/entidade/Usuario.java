@@ -3,10 +3,15 @@ package com.github.lucasjalves.projetoles.entidade;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+
+import com.github.lucasjalves.projetoles.enums.StatusCadastro;
+import com.github.lucasjalves.projetoles.enums.TipoUsuario;
 
 @Entity
 public class Usuario extends Entidade implements Serializable{
@@ -20,8 +25,23 @@ public class Usuario extends Entidade implements Serializable{
 	private String cpf;
 	private String senha;
 	private String email;
+	private String username;
+	private String nome;
 	
+	@Enumerated(EnumType.STRING)
+	private TipoUsuario tipoUsuario;
 	
+	@Enumerated(EnumType.STRING)
+	private StatusCadastro statusCadastro;
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	private String ramal;
 	
 	@OneToOne
@@ -95,6 +115,30 @@ public class Usuario extends Entidade implements Serializable{
 	public void setPontos(String pontos) {
 		this.pontos = pontos;
 	}
-	
 
+	public TipoUsuario getTipoUsuario() {
+		return tipoUsuario;
+	}
+
+	public void setTipoUsuario(TipoUsuario tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
+	}
+
+	public StatusCadastro getStatusCadastro() {
+		return statusCadastro;
+	}
+
+	public void setStatusCadastro(StatusCadastro statusCadastro) {
+		this.statusCadastro = statusCadastro;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	
+	
 }

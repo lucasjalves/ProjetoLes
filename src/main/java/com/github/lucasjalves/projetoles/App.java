@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import com.github.lucasjalves.projetoles.enums.StatusCadastro;
+import com.github.lucasjalves.projetoles.enums.TipoUsuario;
 import com.github.lucasjalves.projetoles.util.ValidadorUtils;
 
 @SpringBootApplication

@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 	<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<!DOCTYPE html>
 <html>
-<head>
-<jsp:include page="../header.jsp"></jsp:include>
-<title>Cadastro de usuário</title>
-</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" 
+integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" 
+integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/esm/popper.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 <style>
 .invalido {
 	border-color: #dc3545;
@@ -54,7 +56,8 @@
 		$("#submit").on('click', function(){
 			validarSubmit();
 		});
-		
+		$("#statusCadastro").val("ATIVO");
+		$("#statusCadastro").attr("value", "ATIVO");
 		$("#departamento").on("change",function(){
 			if($("#departamento :checked").html() === "Cadastrar novo"){
 				$("#setores").html("");
@@ -516,39 +519,57 @@
 <body>
 	<div class="container">
 		<form action="/usuario/cadastrar/efetivar" method="POST">
-			<div class="form-group">
-				<label>CPF</label> 
-				<input type="text" class="form-control obrigatorio" name="cpf" id="cpf" placeholder="Digite o CPF"> 
+		<div class="form-row">
+			<div class="form-group col-md-4">
+				<label>Nome </label> 
+				<input type="text" class="form-control obrigatorio" name="nome" id="nome" placeholder="Digite o nome completo"> 
 			</div>
-			<div class="form-group">
-				<label>Ramal</label> 
+			<div class="form-group col-md-3">
+				<label>CPF </label> 
+				<input type="text" class="form-control obrigatorio" name="cpf" id="cpf" placeholder="Digite o CPF"> 
+				<input type="hidden" name="statusCadastro" id="statusCadastro"/>
+			</div>
+		
+			<div class="form-group col-md-3">
+				<label>Ramal </label> 
 				<input type="text" class="form-control obrigatorio" name="ramal" id="ramal" placeholder="Digite o ramal"> 
 			</div>
-			<div class="form-group">
+		</div>
+		<div class="form-row">
+			<div class="form-group col-md-3">
 				<label>Endereço de e-mail</label> 
 				<input type="email" class="form-control obrigatorio" name="email" id="email" placeholder="Digite o email"> 
 			</div>
-			<div class="form-group" id="divEmailCopia" >
+			<div class="form-group col-md-3" id="divEmailCopia" >
 				<label>Digite novamente o email</label> 
 				<input type="email" class="form-control obrigatorio" id="emailCopia" placeholder="Digite o email"> 
 			</div>
-			<div class="form-group">
-				<label>Password</label> <input type="password" name="senha" class="form-control obrigatorio" id="senha" placeholder="Digite a senha">
+			<div class="form-group col-md-4">
+				<label>Username: </label> 
+				<input type="text" class="form-control obrigatorio" name="username" id="username" placeholder="Digite o username"> 
 			</div>
-			<div class="form-group" id="divSenhaCopia">
+		</div>
+		<div class="form-row">
+			<div class="form-group col-md-5">
+				<label>Senha</label> <input type="password" name="senha" class="form-control obrigatorio" id="senha" placeholder="Digite a senha">
+			</div>
+			<div class="form-group col-md-5" id="divSenhaCopia">
 				<label>Digite novamente a senha</label> <input type="password" class="form-control obrigatorio" id="senhaCopia" placeholder="Digite a senha">
-			</div>		
-			<div class="form-group">
+			</div>	
+		</div>	
+		<div class="form-row">
+			<div class="form-group col-md-5">
 				<label>Departamento</label> 
 				<div class="input-group mb-3">
 					 <select class="custom-select obrigatorio" id="departamento" name="departamento.nome">
 					  </select>
 					  <div class="input-group-append">
-					    <a class="btn btn-outline-secondary" id="btnCadastraDepartamento" data-toggle="modal" data-target="#modalDepartamento" onclick="showModalDepartamento()">Button</a>
+					    <a class="btn btn-outline-secondary" id="btnCadastraDepartamento" data-toggle="modal" data-target="#modalDepartamento" onclick="showModalDepartamento()" data-backdrop="false">Button</a>
 					  </div>
 				</div>
 			</div>
-			<div class="form-group">
+		
+			<div class="form-group col-md-5">
 				<label>Setores</label> 
 				<div class="input-group mb-3">
 					 <select class="custom-select obrigatorio" id="setores" disabled>
@@ -557,7 +578,21 @@
 			</div>
 			<input type="hidden" id="idDepartamentoHidden" name="departamento.id" />
 			<input type="hidden" id="idSetorHidden" name="departamento.setores[0].id" />
-			<p class="btn btn-primary" id="submit" onclick>Submit</p>
+			
+		</div>
+		<div class="form-row">
+			<div class="form-group col-md-5">
+				<label>Tipo de usuário</label> 
+				<div class="input-group mb-3">
+					 <select class="custom-select obrigatorio" id="tipoUsuario" name="tipoUsuario">
+					 	<option value="ADMINISTRADOR">Administrador</option>
+					 	<option value="ATENDENTE">Atendente</option>
+					 	<option value="CLIENTE">Cliente</option>
+					  </select>				
+				</div>
+			</div>
+		</div>
+			<p class="btn btn-primary" id="submit" onclick="validarSubmit()">Cadastrar</p>
 		</form>
 	</div>
 	
@@ -599,8 +634,8 @@
       </div>
     </div>
     
-    <button type="button" id="btnSucessoCadastro" class="btn btn-primary" style="display:none;" data-toggle="modal" data-target="#sucessoCadastroDepartamento"></button>
-    <button type="button" id="btnSucessoAlteracao" class="btn btn-primary" style="display:none;" data-toggle="modal" data-target="#sucessoAlteracaoDepartamento"></button>
+    <button type="button" id="btnSucessoCadastro" class="btn btn-primary" style="display:none;" data-toggle="modal" data-target="#sucessoCadastroDepartamento" data-backdrop="false"></button>
+    <button type="button" id="btnSucessoAlteracao" class="btn btn-primary" style="display:none;" data-toggle="modal" data-target="#sucessoAlteracaoDepartamento" data-backdrop="false"></button>
   </div>
 
 	<div class="modal" id="sucessoCadastroDepartamento">
@@ -635,7 +670,7 @@
 				</div>
 				<div class="modal-body">Departamento alterado com sucesso!</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+					<button type="button" class="btn btn-success" data-dismiss="modal" >Ok</button>
 				</div>
 			</div>
 		</div>
