@@ -23,16 +23,22 @@
 						"<td>" + usuario.ramal + "</td>" +
 						"<td>" + usuario.tipoUsuario + "</td>" +
 						"<td>" + usuario.departamento.nome + "</td>" +
-						"<td>" + usuario.departamento.setores[0].nome + "</td>" +
+						"<td>" + usuario.setor.nome + "</td>" +
 						"<td>" + usuario.statusCadastro + "</td>" +
-						"<td><p data-placement='top' data-toggle='tooltip' title='Edit'><button class='btn btn-primary btn-xs'><span class='glyphicon glyphicon-pencil'></span></button></p></td>" +
-						"<td><p data-placement='top' data-toggle='tooltip' title='Edit'><button class='btn btn-danger btn-xs'><span class='glyphicon glyphicon-trash'></span></button></p></td>" +
+						"<td><button class='btn btn-primary btn-xs' onclick='editarUsuario("+usuario.id+")'>Editar</button></td>" +
+						"<td><button class='btn btn-danger btn-xs'>Excluir</button></td>" +
 						"</tr>";
 						
 			$("#corpoTableUsuarios").append(table);
 		});
 		
 	});
+	
+	function editarUsuario(idUsuario){
+		$("#idUsuario").val(idUsuario);
+		$("#idUsuario").attr("value", idUsuario);
+		$("#paginaDetalhe").submit();
+	}
 </script>
 <body>
 <div class="container">
@@ -55,6 +61,9 @@
   </tbody>
 </table>
 
+<form method="POST" id="paginaDetalhe" action="/usuario/paginaDetalhe">
+<input type="hidden" id="idUsuario" name="id" />
+</form>
 </div>
 </body>
 </html>

@@ -56,8 +56,13 @@ integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEUL
 		$("#submit").on('click', function(){
 			validarSubmit();
 		});
+		
 		$("#statusCadastro").val("ATIVO");
 		$("#statusCadastro").attr("value", "ATIVO");
+		
+		$("#pontos").val("0");
+		$("#pontos").attr("value", "0");
+		
 		$("#departamento").on("change",function(){
 			if($("#departamento :checked").html() === "Cadastrar novo"){
 				$("#setores").html("");
@@ -576,8 +581,9 @@ integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEUL
 					  </select>
 				</div>
 			</div>
+			<input type="hidden" id="pontos" name="pontos" />
 			<input type="hidden" id="idDepartamentoHidden" name="departamento.id" />
-			<input type="hidden" id="idSetorHidden" name="departamento.setores[0].id" />
+			<input type="hidden" id="idSetorHidden" name="setor.id" />
 			
 		</div>
 		<div class="form-row">

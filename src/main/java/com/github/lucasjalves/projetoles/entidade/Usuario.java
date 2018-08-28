@@ -18,21 +18,33 @@ public class Usuario extends Entidade implements Serializable{
 
 
 	private static final long serialVersionUID = -578268814259016013L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	
 	private String cpf;
 	private String senha;
 	private String email;
 	private String username;
 	private String nome;
+	private String ramal;
+	private String pontos;
 	
 	@Enumerated(EnumType.STRING)
 	private TipoUsuario tipoUsuario;
 	
 	@Enumerated(EnumType.STRING)
 	private StatusCadastro statusCadastro;
+	
+	@OneToOne
+	private Setor setor = new Setor();
+	
+	@OneToOne
+	private Cargo cargo;
+	
+	@OneToOne
+	private Departamento departamento = new Departamento();
+
 	
 	public String getUsername() {
 		return username;
@@ -41,16 +53,6 @@ public class Usuario extends Entidade implements Serializable{
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
-	private String ramal;
-	
-	@OneToOne
-	private Cargo cargo;
-	
-	@OneToOne
-	private Departamento departamento = new Departamento();
-	
-	private String pontos;
 
 	public long getId() {
 		return id;
@@ -138,6 +140,14 @@ public class Usuario extends Entidade implements Serializable{
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Setor getSetor() {
+		return setor;
+	}
+
+	public void setSetor(Setor setor) {
+		this.setor = setor;
 	}
 	
 	

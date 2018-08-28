@@ -25,6 +25,7 @@ public class UsuarioController extends ControllerBase {
 	private static final String PAGINA_LOGIN_USUARIO = "usuario/login";
 	private static final String PAGINA_DASHBOARD = "usuario/dashboard";
 	private static final String PAGINA_TABELA_USUARIOS = "usuario/todosUsuariosTabela";
+	private static final String PAGINA_DETALHE_USUARIO = "usuario/detalheUsuario";
 	
 	@RequestMapping("/cadastrar")
 	public ModelAndView paginaCadastroUsuario(ModelAndView modelView) throws JsonProcessingException {
@@ -43,6 +44,7 @@ public class UsuarioController extends ControllerBase {
 	
 	@PostMapping("/cadastrar/efetivar")
 	public String cadastrarUsuario(@ModelAttribute Usuario usuario, ModelAndView modelView) {
+		System.out.println(usuario.getSetor().getId());
 		Resultado resultado = facade.salvar(usuario);
 		modelView.setViewName(PAGINA_TABELA_USUARIOS);
 		return "forward:/usuario/consultarTodos";
@@ -75,6 +77,22 @@ public class UsuarioController extends ControllerBase {
 		return modelView;
 	}
 	
+	@RequestMapping("/paginaDetalhe")
+	public ModelAndView paginaDetalheUsuario(@ModelAttribute Usuario usuario, ModelAndView modelView) {
+		String json = "{}";
+		List<Usuario> list = (List<Usuario>) facade.buscar(new Usuario()).getEntidades();
+		Usuario usuari = list.stream().filter(user -> usuario.getId() == usuario.getId()).collect(Collectors.toList()).get(0);
+		try {
+			json = mapper.writeValueAsString(usuari);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		modelView.addObject("jsonUsuario", json);
+		modelView.addObject("usuario", usuari);
+		modelView.setViewName(PAGINA_DETALHE_USUARIO);
+		return modelView;
+		
+	}
 	
 	
 }
