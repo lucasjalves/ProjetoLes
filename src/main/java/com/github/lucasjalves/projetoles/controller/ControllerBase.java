@@ -17,6 +17,4 @@ public class ControllerBase {
 	@Autowired
 	protected HttpSession httpSession;
 	
-	@Autowired
-	protected Facade facade;
 }
