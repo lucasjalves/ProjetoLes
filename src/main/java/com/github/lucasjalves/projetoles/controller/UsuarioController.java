@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,6 +24,7 @@ public class UsuarioController extends ControllerBase {
 	private static final String PAGINA_DASHBOARD = "usuario/dashboard";
 	private static final String PAGINA_TABELA_USUARIOS = "usuario/todosUsuariosTabela";
 	private static final String PAGINA_DETALHE_USUARIO = "usuario/detalheUsuario";
+	private static final String SESSAO_USUARIO = "sessaoUsuario";
 	
 	@Autowired
 	private DepartamentoService departamentoService;
@@ -63,13 +67,39 @@ public class UsuarioController extends ControllerBase {
 	
 	@RequestMapping("/paginaDetalhe")
 	public ModelAndView paginaDetalheUsuario(@ModelAttribute Usuario usuario, ModelAndView modelView) throws JsonProcessingException {
+		httpSession.setAttribute(SESSAO_USUARIO, service.buscarTodos().get(0));
 		Usuario usuarioFiltrado = service.buscarUnicoUsuarioPorId(usuario);
+		Usuario usuarioSessao = (Usuario) httpSession.getAttribute(SESSAO_USUARIO);
 		modelView.addObject("jsonUsuario", mapper.writeValueAsString(usuario));
 		modelView.addObject("usuario", usuarioFiltrado);
+		modelView.addObject("mesmoUsuario", (usuarioSessao.getId() == usuarioFiltrado.getId()));
 		modelView.setViewName(PAGINA_DETALHE_USUARIO);
 		return modelView;
 		
 	}
 	
+	@ResponseBody
+	@RequestMapping(value= "/cpfCadastrado", method = RequestMethod.POST)
+	public boolean cpfCadastrado(@RequestBody Usuario usuario) {
+		return service.cpfJaCadastrado(usuario);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value= "/ramalCadastrado", method = RequestMethod.POST)
+	public boolean ramalCadastrado(@RequestBody Usuario usuario) {
+		return service.ramalJaCadastrado(usuario);
+	}
+		
+	@ResponseBody
+	@RequestMapping(value= "/emailCadastrado", method = RequestMethod.POST)
+	public boolean emailCadastrado(@RequestBody Usuario usuario) {
+		return service.emailJaCadastrado(usuario);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value= "/usernameCadastrado", method = RequestMethod.POST)
+	public boolean usernameCadastrado(@RequestBody Usuario usuario) {
+		return service.usernameJaCadastrado(usuario);
+	}
 	
 }

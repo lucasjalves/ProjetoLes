@@ -129,13 +129,17 @@ integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEUL
 		}
 		if(!flgNulo){	
 			if(id === "email"){
-				validarEmail(campo);
+				if(validarEmail(campo)){
+					verificarEmailJaCadastrado(campo);	
+				}
 			}
 			if(id === "senha"){
 				validarSenhaForte(campo);
 			}
 			if(id === "cpf"){
-				validarCpf(campo);
+				if(validarCpf(campo)){
+					verificarCpfJaCadastrado(campo);
+				}
 			}
 			if(id === "emailCopia"){
 				validarEmailsIguais(campo)
@@ -144,12 +148,85 @@ integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEUL
 				validarSenhasIguais(campo)
 			}
 			if(id === "ramal"){
-				validarRamal(campo);
+				if(validarRamal(campo)){
+					verificarRamalJaCadastrado(campo);
+				}
+			}
+			if(id === "username"){
+				verificarUsernameJaCadastrado(campo);
 			}
 		}
-
 	}
+	function verificarUsernameJaCadastrado(campo){
+		var json = {};
+		json.username = campo.val();
+		$.ajax({
+			method: "POST",
+			contentType: 'application/json',
+			url: "/usuario/usernameCadastrado",
+			data: JSON.stringify(json),
+			success: function(response){
+				if(response){
+					mostrarErro(campo, "Username já cadastrado");
+				}else{
+					esconderErro(campo);
+				}
+			}			
+		});		
+	}
+	function verificarEmailJaCadastrado(campo){
+		var json = {};
+		json.email = campo.val();
+		$.ajax({
+			method: "POST",
+			contentType: 'application/json',
+			url: "/usuario/emailCadastrado",
+			data: JSON.stringify(json),
+			success: function(response){
+				if(response){
+					mostrarErro(campo, "Email já cadastrado");
+				}else{
+					esconderErro(campo);
+				}
+			}			
+		});
+	}		
 	
+	function verificarRamalJaCadastrado(campo){
+		var json = {};
+		json.ramal = campo.val();
+		$.ajax({
+			method: "POST",
+			contentType: 'application/json',
+			url: "/usuario/ramalCadastrado",
+			data: JSON.stringify(json),
+			success: function(response){
+				if(response){
+					mostrarErro(campo, "Ramal já cadastrado");
+				}else{
+					esconderErro(campo);
+				}
+			}			
+		});
+	}
+
+	function verificarCpfJaCadastrado(campo){
+		var json = {};
+		json.cpf = campo.val();
+		$.ajax({
+			method: "POST",
+			contentType: 'application/json',
+			url: "/usuario/cpfCadastrado",
+			data: JSON.stringify(json),
+			success: function(response){
+				if(response){
+					mostrarErro(campo, "CPF já cadastrado");
+				}else{
+					esconderErro(campo);
+				}
+			}			
+		});
+	}
 	function validarEmailsIguais(campo){
 		if($("#email").val() !== campo.val()){
 			mostrarErro(campo, "Os emails não conferem");
@@ -276,11 +353,19 @@ integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEUL
 			}
 		});
 		if(!flgNulo){
-			validarEmail($("#email"));
-			validarSenhaForte($("#senha"));
-			validarCpf($("#cpf"));		
 			validarEmailsIguais($("#emailCopia"));
 			validarSenhasIguais($("#senhaCopia"));
+			if(validarEmail($("#email"))){
+				verificarEmailJaCadastrado($("#email"));
+			}
+			validarSenhaForte($("#senha"));
+			if(validarCpf($("#cpf"))){
+				verificarCpfJaCadastrado($("#cpf"));
+			}		
+			if(validarRamal($("#ramal"))){
+				verificarRamalJaCadastrado($("#ramal"));
+			}
+			verificarUsernameJaCadastrado($("#username"));
 		}
 		if($(".invalido").length === 0){
 			$("form").submit();

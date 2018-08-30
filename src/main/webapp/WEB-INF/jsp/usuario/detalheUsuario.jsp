@@ -14,6 +14,14 @@
 <script>
 	var jsonUsuario = '${jsonUsuario}';
 	var jsonParsed = JSON.parse(jsonUsuario);
+	var mesmoUsuario = ${mesmoUsuario};
+	
+	$(document).ready(function(){
+		if(mesmoUsuario){
+			var listItem = "<li class='list-group-item'>CPF: ${usuario.cpf}</li>"
+			$("#listaCardUsuario").append(listItem);			
+		}
+	});
 </script>
 <body>
 	<div class="container">
@@ -25,7 +33,7 @@
 			    <p class="card-text">${usuario.tipoUsuario}</p>
 			    <p class="card-text">${usuario.username}</p>
 			  </div>
-			  <ul class="list-group list-group-flush">
+			  <ul class="list-group list-group-flush" id="listaCardUsuario">
 			    <li class="list-group-item">${usuario.departamento.nome}</li>
 			    <li class="list-group-item">${usuario.setor.nome}</li>
 			    <li class="list-group-item">${usuario.email}</li>

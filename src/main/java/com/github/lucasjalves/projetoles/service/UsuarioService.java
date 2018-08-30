@@ -14,4 +14,8 @@ public interface UsuarioService {
 	Resultado alterar(Usuario usuario);
 	Resultado excluir(Usuario usuario);
 	Usuario buscarUnicoUsuarioPorId(Usuario usuario);
+	boolean cpfJaCadastrado(Usuario usuario);
+	boolean ramalJaCadastrado(Usuario usuario);
+	boolean emailJaCadastrado(Usuario usuario);
+	boolean usernameJaCadastrado(Usuario usuario);
 }
