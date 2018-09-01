@@ -4,8 +4,12 @@ import java.util.InputMismatchException;
 import java.util.regex.Pattern;
 
 public final class ValidadorUtils {
-	public static final Pattern VALID_EMAIL_ADDRESS = 
+	private static final Pattern EMAIL_VALIDO = 
 		    Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+	
+	private static final Pattern SENHA_FORTE = 
+			Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", Pattern.CASE_INSENSITIVE);
+	
 	private ValidadorUtils() {
 		
 	}
@@ -14,13 +18,12 @@ public final class ValidadorUtils {
 		if(email.trim().length() == 0) {
 			return false;
 		}else {
-			return VALID_EMAIL_ADDRESS.matcher(email).matches();
+			return EMAIL_VALIDO.matcher(email).matches();
 		}
 	}
 
 	public static boolean cpfValido(String cpf) {
 		cpf = cpf.replaceAll("\\D", "");
-		System.out.println(cpf);
         if (cpf.equals("00000000000") ||
             cpf.equals("11111111111") ||
             cpf.equals("22222222222") || cpf.equals("33333333333") ||
@@ -76,7 +79,7 @@ public final class ValidadorUtils {
 		if(senha.length() <= 8) {
 			return false;
 		}
-		return senha.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
+		return SENHA_FORTE.matcher(senha).matches();
 	}
 	
 }
