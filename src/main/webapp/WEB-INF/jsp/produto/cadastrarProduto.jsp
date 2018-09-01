@@ -14,7 +14,7 @@
 <body>
 
 	<div class="container">
-		<form action="/usuario/cadastrar/efetivar">
+		<form action="/produto/cadastrar/efetivar">
 			<div class="form-row">
 				<div class="form-group col-md-4">
 					<label>Nome </label> 
@@ -24,12 +24,6 @@
 					<label>Quantidade </label> 
 					<input type="text" class="form-control obrigatorio" name="qtde" id="qtde" placeholder="Digite a quantidade"> 
 				</div>
-			</div>
-			<div class="form-row">
-				<div class="form-group col-md-8">
-					<label>Código de barras </label> 
-					<input type="text" class="form-control obrigatorio" name="nome" id="nome" placeholder="Digite o código de barras"> 
-				</div>		
 			</div>
 			<div class="form-row">
 				<div class="form-group col-md-2">

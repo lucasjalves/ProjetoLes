@@ -1,9 +1,13 @@
 package com.github.lucasjalves.projetoles.entidade;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.github.lucasjalves.projetoles.enums.StatusCadastro;
 
 @Entity
 public class Produto {
@@ -14,10 +18,12 @@ public class Produto {
 	
 	private String nome;
 	private String qtde;
-	private String codBarra;
 	private String dtCadastro;
 	private String descricao;
 	private String preco;
+	
+	@Enumerated(EnumType.STRING)
+	private StatusCadastro statusCadastro;
 	
 	public long getId() {
 		return id;
@@ -37,12 +43,6 @@ public class Produto {
 	public void setQtde(String qtde) {
 		this.qtde = qtde;
 	}
-	public String getCodBarra() {
-		return codBarra;
-	}
-	public void setCodBarra(String codBarra) {
-		this.codBarra = codBarra;
-	}
 	public String getDtCadastro() {
 		return dtCadastro;
 	}
@@ -60,6 +60,12 @@ public class Produto {
 	}
 	public void setPreco(String preco) {
 		this.preco = preco;
+	}
+	public StatusCadastro getStatusCadastro() {
+		return statusCadastro;
+	}
+	public void setStatusCadastro(StatusCadastro statusCadastro) {
+		this.statusCadastro = statusCadastro;
 	}
 	
 	
