@@ -1,5 +1,10 @@
 package com.github.lucasjalves.projetoles.controller;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,13 +16,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import com.github.lucasjalves.projetoles.entidade.Usuario;
+import com.github.lucasjalves.projetoles.rns.Mensagem;
 import com.github.lucasjalves.projetoles.service.DepartamentoService;
 import com.github.lucasjalves.projetoles.service.UsuarioService;
 
 @Controller
 @RequestMapping("/usuario")
-public class UsuarioController extends ControllerBase {
+public class UsuarioController{
 
 	private static final String PAGINA_CADASTRO_USUARIO = "usuario/cadastrarUsuario";
 	private static final String PAGINA_LOGIN_USUARIO = "usuario/login";
@@ -31,6 +40,12 @@ public class UsuarioController extends ControllerBase {
 	
 	@Autowired
 	private UsuarioService service;
+	
+	@Autowired
+	private ObjectMapper mapper;
+	
+	@Autowired
+	private HttpSession httpSession;
 	
 	@RequestMapping("/cadastrar")
 	public ModelAndView paginaCadastroUsuario(ModelAndView modelView) throws JsonProcessingException {
@@ -69,10 +84,12 @@ public class UsuarioController extends ControllerBase {
 	public ModelAndView paginaDetalheUsuario(@ModelAttribute Usuario usuario, ModelAndView modelView) throws JsonProcessingException {
 		httpSession.setAttribute(SESSAO_USUARIO, service.buscarTodos().get(0));
 		Usuario usuarioFiltrado = service.buscarUnicoUsuarioPorId(usuario);
+		usuarioFiltrado.setSenha("");
 		Usuario usuarioSessao = (Usuario) httpSession.getAttribute(SESSAO_USUARIO);
-		modelView.addObject("jsonUsuario", mapper.writeValueAsString(usuario));
+		modelView.addObject("jsonUsuario", mapper.writeValueAsString(usuarioFiltrado));
 		modelView.addObject("usuario", usuarioFiltrado);
 		modelView.addObject("mesmoUsuario", (usuarioSessao.getId() == usuarioFiltrado.getId()));
+		modelView.addObject("departamentos", mapper.writeValueAsString(departamentoService.buscarTodos()));
 		modelView.setViewName(PAGINA_DETALHE_USUARIO);
 		return modelView;
 		
@@ -101,5 +118,19 @@ public class UsuarioController extends ControllerBase {
 	public boolean usernameCadastrado(@RequestBody Usuario usuario) {
 		return service.usernameJaCadastrado(usuario);
 	}
-	
+
+	@ResponseBody
+	@RequestMapping(value="/alterarSenha", method = {RequestMethod.POST})
+	public List<Mensagem> alterarSenha(@RequestBody String json) {
+		ObjectNode node = null;
+		try {
+			node = mapper.readValue(json, ObjectNode.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return service.alterarSenha(node.get("senhaNova").asText(), 
+				node.get("senhaAntiga").asText(), 
+				(Usuario)httpSession.getAttribute(SESSAO_USUARIO));
+		
+	}
 }

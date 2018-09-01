@@ -58,7 +58,7 @@ public class FacadeImpl implements Facade {
 
 	@Override
 	public Resultado excluir(Entidade entidade) {
-		Resultado resultado = process(entidade, "ALTERAR");
+		Resultado resultado = process(entidade, "EXCLUIR");
 		if(resultado.getMensagem().size() == 0) {
 			List<Entidade> lista = new ArrayList<>();
 			lista.add(dao.excluir(entidade));

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.github.lucasjalves.projetoles.entidade.Usuario;
+import com.github.lucasjalves.projetoles.rns.Mensagem;
 import com.github.lucasjalves.projetoles.rns.Resultado;
 
 @Service
@@ -18,4 +19,5 @@ public interface UsuarioService {
 	boolean ramalJaCadastrado(Usuario usuario);
 	boolean emailJaCadastrado(Usuario usuario);
 	boolean usernameJaCadastrado(Usuario usuario);
+	List<Mensagem> alterarSenha(String senhaNova, String senhaAntiga, Usuario usuario);
 }

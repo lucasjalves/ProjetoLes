@@ -1,5 +1,6 @@
 package com.github.lucasjalves.projetoles.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -95,6 +96,21 @@ public class UsuarioServiceImpl implements UsuarioService{
 			return true;
 		}
 		return false;			
+	}
+
+	@Override
+	public List<Mensagem> alterarSenha(String senhaNova, String senhaAntiga, Usuario usuario) {
+		List<Mensagem> mensagens = new ArrayList<>();
+		List<Usuario> lista = (List<Usuario>) facade.buscar(new Usuario()).getEntidades();
+		Usuario usuarioBanco = lista.stream().filter(user -> usuario.getId() == user.getId()).collect(Collectors.toList()).get(0);
+		if(!usuarioBanco.getSenha().equals(senhaAntiga)) {
+			mensagens.add(new Mensagem("Senha atual está incorreta"));
+		}
+		else {
+			usuarioBanco.setSenha(senhaNova);
+			mensagens = facade.alterar(usuarioBanco).getMensagem();
+		}
+		return mensagens;
 	}
 
 }
