@@ -18,22 +18,18 @@
   <thead class="thead-light">
     <tr>
       <th scope="col">Nome</th>
-      <th scope="col">Quantidade</th>
-      <th scope="col">Preço</th>
       <th scope="col">Descrição</th>
-      <th scope="col">Status</th>
-      <th scope="col">Detalhar</th>
-      <th scope="col">Desativar</th>
+ 	  <th scope="col">Status</th>  
+ 	  <th scope="col">Editar</th>   
+ 	  <th scope="col">Desativar</th>      
     </tr>
   </thead>
   <tbody id="corpoTableUsuarios">
 	<tr>
 		<td>Nome Teste</td>
-		<td>1000</td>
-		<td>10,00R$</td>
-		<td>Descrição teste</td>
-		<td>ATIVO</td>
-		<td><button class='btn btn-primary btn-xs'  data-toggle="modal" data-target="#modalProduto" data-backdrop="false">Alterar</button></td>
+		<td>Descrição</td>
+		<td>ATIVO</td>		
+		<td><button class='btn btn-primary btn-xs'  data-toggle="modal" data-target="#modalServico" data-backdrop="false">Alterar</button></td>
 		<td><button class='btn btn-danger btn-xs' data-toggle="modal" data-target="#modalExclucao" data-backdrop="false">Desativar</button></td>
 	</tr>
   </tbody>
@@ -41,12 +37,12 @@
 
   
   </div>
-  <div class="modal" id="modalProduto">
+  <div class="modal" id="modalServico">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
       
         <div class="modal-header">
-          <h4 class="modal-title">Alteração de produto</h4>
+          <h4 class="modal-title">Cadastro de departamento</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
@@ -56,22 +52,10 @@
 				<input type="text" class="form-control" placeholder="Nome do produto" name="nome" value="Nome teste"> 				
 			</div>
  			<div class="form-group" >
-				<label>Quantidade</label> 
-				<input type="text" class="form-control" placeholder="Quantidade do produto" name="qtde" value="1000"> 
-			</div> 
- 			<div class="form-group" >
-				<label>Data cadastro</label> 
-				<input type="text" class="form-control"  disabled value="01/09/2018"> 
-			</div>
- 			<div class="form-group" >
 				<label>Descrição</label> 
-				<input type="text" class="form-control" placeholder="Descrição do produto" name="descricao" value="Descrição"> 
-			</div> 	
- 			<div class="form-group" >
-				<label>Preço</label> 
-				<input type="text" class="form-control" placeholder="Preço do produto" name="preco" value="10,00"> 
-			</div> 	
-			  <div class="form-group">
+				<input type="text" class="form-control" placeholder="Descrição do serviço" name="qtde" value="Descrição"> 
+			</div> 
+			 <div class="form-group">
 			    <label for="exampleFormControlSelect1">Status</label>
 			    <select class="form-control" id="exampleFormControlSelect1">
 			      <option>ATIVO</option>

@@ -58,7 +58,6 @@ public class UsuarioController{
 	@PostMapping("/cadastrar/efetivar")
 	public String cadastrarUsuario(@ModelAttribute Usuario usuario, ModelAndView modelView) {
 		service.salvar(usuario);
-		modelView.setViewName(PAGINA_TABELA_USUARIOS);
 		return "forward:/usuario/consultarTodos";
 	}
 	
