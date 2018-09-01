@@ -11,13 +11,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
+import com.github.lucasjalves.projetoles.enums.PrioridadeChamado;
 import com.github.lucasjalves.projetoles.enums.StatusChamado;
 
 @Entity
 public class Chamado extends Entidade implements Serializable {
 
 	private static final long serialVersionUID = 5009011064214472741L;
+	
+	@OneToOne
+	private Usuario responsavel;
+	
+	@OneToOne
+	private Usuario solicitante;
+	
+	@OneToMany
+	private List<Usuario> acompanhantes = new ArrayList<>();
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,6 +45,9 @@ public class Chamado extends Entidade implements Serializable {
 	
 	@OneToMany
 	private List<Servico> servicos = new ArrayList<>();
+	
+	@Enumerated(EnumType.STRING)
+	private PrioridadeChamado prioridadeChamado;
 	
 	public long getId() {
 		return id;
@@ -81,6 +95,38 @@ public class Chamado extends Entidade implements Serializable {
 
 	public void setServicos(List<Servico> servicos) {
 		this.servicos = servicos;
+	}
+
+	public Usuario getResponsavel() {
+		return responsavel;
+	}
+
+	public void setResponsavel(Usuario responsavel) {
+		this.responsavel = responsavel;
+	}
+
+	public Usuario getSolicitante() {
+		return solicitante;
+	}
+
+	public void setSolicitante(Usuario solicitante) {
+		this.solicitante = solicitante;
+	}
+
+	public List<Usuario> getAcompanhantes() {
+		return acompanhantes;
+	}
+
+	public void setAcompanhantes(List<Usuario> acompanhantes) {
+		this.acompanhantes = acompanhantes;
+	}
+
+	public PrioridadeChamado getPrioridadeChamado() {
+		return prioridadeChamado;
+	}
+
+	public void setPrioridadeChamado(PrioridadeChamado prioridadeChamado) {
+		this.prioridadeChamado = prioridadeChamado;
 	}
 	
 	
