@@ -12,30 +12,23 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 </head>
 <body>
+
 	<div class="container">
-		<form action="/produto/cadastrar/efetivar">
+		<form action="/servico/cadastrar/efetivar">
 			<div class="form-row">
 				<div class="form-group col-md-4">
 					<label>Nome </label> 
 					<input type="text" class="form-control obrigatorio" name="nome" id="nome" placeholder="Digite o nome completo"> 
 				</div>
-				<div class="form-group col-md-4">
-					<label>Quantidade </label> 
-					<input type="text" class="form-control obrigatorio" name="qtde" id="qtde" placeholder="Digite a quantidade"> 
-				</div>
 			</div>
 			<div class="form-row">
-				<div class="form-group col-md-2">
-					<label>Preço</label> 
-					<input type="email" class="form-control obrigatorio" name="preco" id="preco" placeholder="Digite o preco"> 
-				</div>
 				<div class="form-group col-md-6">
 					<label>Descrição</label> 
 					<input type="text" name="descricao" class="form-control obrigatorio" id="descricao" placeholder="Digite a descrição"> 
-				</div>
+				</div>			
 			</div>
 			<p class="btn btn-primary" id="submit">Cadastrar</p>
 		 </form>
-		</div>
-</body>
+		</div>	
+	</body>
 </html>

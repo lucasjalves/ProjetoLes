@@ -31,7 +31,10 @@ public class Chamado extends Entidade implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	private StatusChamado status;
-
+	
+	@OneToMany
+	private List<Servico> servicos = new ArrayList<>();
+	
 	public long getId() {
 		return id;
 	}
@@ -62,6 +65,22 @@ public class Chamado extends Entidade implements Serializable {
 
 	public void setStatus(StatusChamado status) {
 		this.status = status;
+	}
+
+	public List<Produto> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
+	}
+
+	public List<Servico> getServicos() {
+		return servicos;
+	}
+
+	public void setServicos(List<Servico> servicos) {
+		this.servicos = servicos;
 	}
 	
 	

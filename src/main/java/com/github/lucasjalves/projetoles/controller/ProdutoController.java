@@ -11,6 +11,8 @@ public class ProdutoController {
 	private static final String PAGINA_CADASTRO_PRODUTO = "/produto/cadastrarProduto";
 	private static final String PAGINA_CONSULTA_PRODUTO = "/produto/todosProdutosTabela";
 	
+
+	
 	@RequestMapping("/paginaCadastro")
 	public ModelAndView paginaCadastroProduto(ModelAndView modelView) {
 		modelView.setViewName(PAGINA_CADASTRO_PRODUTO);
