@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -132,5 +133,15 @@ public class UsuarioController{
 				node.get("senhaAntiga").asText(), 
 				(Usuario)httpSession.getAttribute(SESSAO_USUARIO));
 		
+	}
+	
+	@RequestMapping("/login")
+	public ModelAndView paginaLogin(ModelAndView modelView, Usuario user,@RequestParam("usuario") String usuario ,@RequestParam("senha") String senha ) {
+		
+		service.buscarTodos();
+		System.out.println(usuario);
+		System.out.println(senha);		
+		modelView.setViewName("/usuario/login");
+		return modelView;
 	}
 }
