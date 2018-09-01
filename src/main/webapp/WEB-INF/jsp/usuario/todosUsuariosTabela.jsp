@@ -42,24 +42,41 @@
 </script>
 <body>
 <div class="container">
-<table class="table table-hover">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">Nome</th>
-      <th scope="col">E-mail</th>
-      <th scope="col">Ramal</th>
-      <th scope="col">Tipo Usuário</th>
-      <th scope="col">Departamento</th>
-      <th scope="col">Setor</th>
-      <th scope="col">Status</th>
-      <th scope="col">Editar</th>
-      <th scope="col">Deletar</th>
-    </tr>
-  </thead>
-  <tbody id="corpoTableUsuarios">
+		<div class="form-row">
+			<div class="form-group col-md-4">
+				<label>Nome </label> 
+				<input type="text" class="form-control obrigatorio" name="nome" id="nome" placeholder="Digite"> 
+			</div>
+			  <div class="form-group col-md-5">
+			    <label for="exampleFormControlSelect1">Filtro</label>
+			    <select class="form-control" id="exampleFormControlSelect1">
+			      <option>Nome</option>
+			      <option>CPF</option>
+			      <option>E-mail</option>
+			      <option>Username</option>			      
+			    </select>
+			  </div>
+		
 
-  </tbody>
-</table>
+		</div>
+	<table class="table table-hover">
+	  <thead class="thead-light">
+	    <tr>
+	      <th scope="col">Nome</th>
+	      <th scope="col">E-mail</th>
+	      <th scope="col">Ramal</th>
+	      <th scope="col">Tipo Usuário</th>
+	      <th scope="col">Departamento</th>
+	      <th scope="col">Setor</th>
+	      <th scope="col">Status</th>
+	      <th scope="col">Editar</th>
+	      <th scope="col">Deletar</th>
+	    </tr>
+	  </thead>
+	  <tbody id="corpoTableUsuarios">
+	
+	  </tbody>
+	</table>
 
 <form method="POST" id="paginaDetalhe" action="/usuario/paginaDetalhe">
 <input type="hidden" id="idUsuario" name="id" />

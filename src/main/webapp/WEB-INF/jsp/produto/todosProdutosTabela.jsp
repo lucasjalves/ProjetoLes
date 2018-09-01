@@ -14,6 +14,22 @@
 <body>
 <html>
 <div class="container">
+		<div class="form-row">
+			<div class="form-group col-md-4">
+				<label>Nome </label> 
+				<input type="text" class="form-control obrigatorio" name="nome" id="nome" placeholder="Digite o nome completo"> 
+			</div>
+			<div class="form-group col-md-3">
+				<label>CPF </label> 
+				<input type="text" class="form-control obrigatorio" name="cpf" id="cpf" placeholder="Digite o CPF"> 
+				<input type="hidden" name="statusCadastro" id="statusCadastro"/>
+			</div>
+		
+			<div class="form-group col-md-3">
+				<label>Ramal </label> 
+				<input type="text" class="form-control obrigatorio" name="ramal" id="ramal" placeholder="Digite o ramal"> 
+			</div>
+		</div>
 <table class="table table-hover">
   <thead class="thead-light">
     <tr>
