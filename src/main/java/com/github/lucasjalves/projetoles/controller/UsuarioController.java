@@ -135,13 +135,13 @@ public class UsuarioController{
 		
 	}
 	
-	@RequestMapping("/login")
-	public ModelAndView paginaLogin(ModelAndView modelView, Usuario user,@RequestParam("usuario") String usuario ,@RequestParam("senha") String senha ) {
+	@RequestMapping("/login/confirmar")
+	public ModelAndView loginConfirmar(ModelAndView modelView, Usuario user,@RequestParam("usuario") String usuario ,@RequestParam("senha") String senha ) {
 		
 		service.buscarTodos();
 		System.out.println(usuario);
 		System.out.println(senha);		
-		modelView.setViewName("/usuario/login");
+		modelView.setViewName("/usuario/dashboard");
 		return modelView;
 	}
 }
