@@ -42,23 +42,7 @@
 </script>
 <body>
 <div class="container">
-		<div class="form-row">
-			<div class="form-group col-md-4">
-				<label>Nome </label> 
-				<input type="text" class="form-control obrigatorio" name="nome" id="nome" placeholder="Digite"> 
-			</div>
-			  <div class="form-group col-md-5">
-			    <label for="exampleFormControlSelect1">Filtro</label>
-			    <select class="form-control" id="exampleFormControlSelect1">
-			      <option>Nome</option>
-			      <option>CPF</option>
-			      <option>E-mail</option>
-			      <option>Username</option>			      
-			    </select>
-			  </div>
-		
-
-		</div>
+l 
 	<table class="table table-hover">
 	  <thead class="thead-light">
 	    <tr>

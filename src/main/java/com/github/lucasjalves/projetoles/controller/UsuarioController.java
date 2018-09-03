@@ -143,4 +143,10 @@ public class UsuarioController{
 		modelView.setViewName("/usuario/dashboard");
 		return modelView;
 	}
+	
+	@RequestMapping("/usuario/DashboardSolicitante")
+	public ModelAndView solicitanteDash(ModelAndView modelView) {	
+		modelView.setViewName("/usuario/DashboardSolicitante");
+		return modelView;
+	}
 }
