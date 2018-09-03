@@ -35,6 +35,7 @@ public class UsuarioController{
 	private static final String PAGINA_TABELA_USUARIOS = "usuario/todosUsuariosTabela";
 	private static final String PAGINA_DETALHE_USUARIO = "usuario/detalheUsuario";
 	private static final String SESSAO_USUARIO = "sessaoUsuario";
+	private static final String DASBOARD_SOLICITANTE ="usuario/dashboardSolicitante";
 	
 	@Autowired
 	private DepartamentoService departamentoService;
@@ -144,9 +145,9 @@ public class UsuarioController{
 		return modelView;
 	}
 	
-	@RequestMapping("/usuario/DashboardSolicitante")
-	public ModelAndView solicitanteDash(ModelAndView modelView) {	
-		modelView.setViewName("/usuario/DashboardSolicitante");
+	@RequestMapping("/dashboardSolicitante")
+	public ModelAndView dashSolicitante(ModelAndView modelView) {
+		modelView.setViewName(DASBOARD_SOLICITANTE);
 		return modelView;
 	}
 }
