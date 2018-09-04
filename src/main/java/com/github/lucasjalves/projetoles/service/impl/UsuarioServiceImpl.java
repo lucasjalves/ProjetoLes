@@ -14,7 +14,7 @@ import com.github.lucasjalves.projetoles.rns.Resultado;
 import com.github.lucasjalves.projetoles.service.UsuarioService;
 
 @Service
-public class UsuarioServiceImpl implements UsuarioService{
+final class UsuarioServiceImpl implements UsuarioService{
 
 	@Autowired
 	private Facade facade;

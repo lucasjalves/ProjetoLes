@@ -9,7 +9,7 @@ import com.github.lucasjalves.projetoles.entidade.Servico;
 
 @Controller
 @RequestMapping("/servico")
-public class ServicoController {
+final class ServicoController {
 
 	private static final String PAGINA_CADASTOR_SERVICO = "servico/cadastrarServico";
 	private static final String PAGINA_CONSULTA_SERVICO = "servico/todosServicosTabela";

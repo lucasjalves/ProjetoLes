@@ -1,7 +1,6 @@
 package com.github.lucasjalves.projetoles.rns;
 
-public class Mensagem {
-
+final public class Mensagem {
 
 	private String mensagem;
 	

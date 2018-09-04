@@ -12,7 +12,7 @@ import com.github.lucasjalves.projetoles.annotation.Repositorio;
 import com.github.lucasjalves.projetoles.entidade.Entidade;
 
 @Component
-public class RepositoryHelper {
+final public class RepositoryHelper {
 
 	@Autowired
 	private ApplicationContext context;

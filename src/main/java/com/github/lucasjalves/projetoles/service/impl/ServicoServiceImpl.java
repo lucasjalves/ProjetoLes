@@ -11,7 +11,7 @@ import com.github.lucasjalves.projetoles.rns.Resultado;
 import com.github.lucasjalves.projetoles.service.ServicoService;
 
 @Service
-public class ServicoServiceImpl implements ServicoService{
+final class ServicoServiceImpl implements ServicoService{
 
 	@Autowired
 	private Facade facade;

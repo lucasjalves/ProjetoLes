@@ -11,7 +11,7 @@ import com.github.lucasjalves.projetoles.service.ProdutoService;
 
 @Controller
 @RequestMapping("/produto")
-public class ProdutoController {
+final class ProdutoController {
 
 	private static final String PAGINA_CADASTRO_PRODUTO = "/produto/cadastrarProduto";
 	private static final String PAGINA_CONSULTA_PRODUTO = "/produto/todosProdutosTabela";

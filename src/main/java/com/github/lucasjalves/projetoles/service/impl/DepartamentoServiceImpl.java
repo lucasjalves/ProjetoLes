@@ -15,12 +15,11 @@ import com.github.lucasjalves.projetoles.rns.Resultado;
 import com.github.lucasjalves.projetoles.service.DepartamentoService;
 
 @Service
-public class DepartamentoServiceImpl implements DepartamentoService{
+final class DepartamentoServiceImpl implements DepartamentoService{
 
 	@Autowired
 	private Facade facade;
 	
-
 	@Override
 	public Resultado salvar(Departamento departamento) {
 		Resultado resultado = processarResultado(departamento, "SALVAR");

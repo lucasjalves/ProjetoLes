@@ -150,5 +150,41 @@ public class Usuario extends Entidade implements Serializable{
 		this.setor = setor;
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if(o == null) 
+			return false;
+		if(!(o instanceof Usuario)) {
+			return false;
+		}else {
+			Usuario u = (Usuario)o;
+			if(u.getId() == this.id && u.getSenha().equals(this.senha) && u.getEmail().equals(this.email)
+					&& u.getNome().equals(this.nome) && u.getUsername().equals(this.username) && u.getRamal().equals(this.ramal))
+				return true;
+			else
+				return false;
+		}
+	}
 	
+	@Override
+	public int hashCode() {
+		int result = Long.hashCode(id);
+		result = 31 * result + this.cpf.hashCode();
+		result = 31 * result + this.senha.hashCode();
+		result = 31 * result + this.email.hashCode();
+		result = 31 * result + this.nome.hashCode();
+		result = 31 * result + this.username.hashCode();
+		result = 31 * result + this.ramal.hashCode();
+		return result;
+	}
+	
+	@Override
+	public String toString() {
+		return "{CPF: " + this.cpf + 
+				"\nUsername: " + this.username + 
+				"\nNome: " + this.nome + 
+				"\nEmail: " + this.email +
+				"\nRamal: " + this.ramal + 
+				"\nID: " + this.id + "}";
+	}
 }

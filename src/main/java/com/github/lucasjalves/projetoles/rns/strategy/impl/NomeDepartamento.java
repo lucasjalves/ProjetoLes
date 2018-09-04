@@ -9,7 +9,7 @@ import com.github.lucasjalves.projetoles.rns.Mensagem;
 import com.github.lucasjalves.projetoles.rns.strategy.Strategy;
 
 @RegraNegocio(classe = Departamento.class, operacao={"SALVAR", "ALTERAR"})
-public class NomeDepartamento implements Strategy<Departamento> {
+final public class NomeDepartamento implements Strategy<Departamento> {
 
 	List<Mensagem> mensagens = new ArrayList<>();
 	@Override

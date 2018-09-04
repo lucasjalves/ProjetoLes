@@ -10,8 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-
-
 @Entity
 public class Departamento extends Entidade{
 
@@ -21,7 +19,7 @@ public class Departamento extends Entidade{
 	private String nome;
 	
 	@OneToMany(cascade = CascadeType.ALL)
-	private List<Setor> setores = new ArrayList<Setor>();
+	private List<Setor> setores = new ArrayList<>();
 	
 	public long getId() {
 		return id;
@@ -42,5 +40,26 @@ public class Departamento extends Entidade{
 		this.setores = setores;
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if(o == null) 
+			return false;
+		if(!(o instanceof Departamento))
+			return false;
+		
+		Departamento departamento = (Departamento)o;
+		if(departamento.getNome().equals(this.nome)) {
+			return true;
+		}else {
+			return false;
+		}
+			
+	}
+	
+	@Override
+	public int hashCode() {
+		int result = nome.hashCode();
+		return result;
+	}
 	
 }

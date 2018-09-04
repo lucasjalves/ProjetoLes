@@ -11,7 +11,7 @@ import com.github.lucasjalves.projetoles.util.ValidadorUtils;
 
 
 @RegraNegocio(classe = Usuario.class, operacao = {"SALVAR", "ALTERAR"})
-public class DadosObrigatoriosUsuario implements Strategy<Usuario> {
+final public class DadosObrigatoriosUsuario implements Strategy<Usuario> {
 
 	private List<Mensagem> mensagens = new ArrayList<>();
 	@Override
