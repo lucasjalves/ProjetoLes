@@ -35,6 +35,9 @@ final class UsuarioController{
 	private static final String PAGINA_TABELA_USUARIOS = "usuario/todosUsuariosTabela";
 	private static final String PAGINA_DETALHE_USUARIO = "usuario/detalheUsuario";
 	private static final String SESSAO_USUARIO = "sessaoUsuario";
+	private static final String DASBOARD_SOLICITANTE ="usuario/dashboardSolicitante";
+	private static final String CADASTRO_CHAMADO ="usuario/cadastroChamado";
+	private static final String REGISTRO_SLA ="usuario/fluxoSla";
 	
 	@Autowired
 	private DepartamentoService departamentoService;
@@ -142,6 +145,24 @@ final class UsuarioController{
 		System.out.println(usuario);
 		System.out.println(senha);		
 		modelView.setViewName("/usuario/dashboard");
+		return modelView;
+	}
+	
+	@RequestMapping("/dashboardSolicitante")
+	public ModelAndView dashSolicitante(ModelAndView modelView) {
+		modelView.setViewName(DASBOARD_SOLICITANTE);
+		return modelView;
+	}
+	
+	@RequestMapping("/cadastroChamado")
+	public ModelAndView abrirChamado(ModelAndView modelView) {
+		modelView.setViewName(CADASTRO_CHAMADO);
+		return modelView;
+	}
+	
+	@RequestMapping("/fluxoSla")
+	public ModelAndView registraOcorrencias(ModelAndView modelView) {
+		modelView.setViewName(REGISTRO_SLA);
 		return modelView;
 	}
 }
