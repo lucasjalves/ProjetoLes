@@ -14,7 +14,7 @@ import com.github.lucasjalves.projetoles.rns.Resultado;
 import com.github.lucasjalves.projetoles.service.DepartamentoService;
 
 @Controller
-public class DepartamentoController{
+final class DepartamentoController{
 
 	@Autowired
 	private DepartamentoService service;

@@ -8,7 +8,7 @@ import com.github.lucasjalves.projetoles.entidade.Chamado;
 
 @Controller
 @RequestMapping("/chamado")
-public class ChamadoController {
+final class ChamadoController {
 
 	
 	@RequestMapping("/pagina")

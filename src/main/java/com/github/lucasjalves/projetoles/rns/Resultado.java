@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.github.lucasjalves.projetoles.entidade.Entidade;
 
-public class Resultado {
+final public class Resultado {
 	private List<Mensagem> mensagem =  new ArrayList<>();
 	private List<? extends Entidade> entidades = new ArrayList<>();
 	

@@ -10,7 +10,7 @@ import com.github.lucasjalves.projetoles.entidade.Entidade;
 import com.github.lucasjalves.projetoles.helper.RepositoryHelper;
 
 @Component
-public class DAOImpl implements DAO {
+final public class DAOImpl implements DAO {
 
 	@Autowired
 	private RepositoryHelper repositoryHelper;

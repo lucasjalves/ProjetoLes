@@ -15,9 +15,9 @@ import com.github.lucasjalves.projetoles.rns.Mensagem;
 import com.github.lucasjalves.projetoles.rns.strategy.Strategy;
 
 @Component
-public class ProcessarRegraNegocioHelper {
+final public class ProcessarRegraNegocioHelper {
 
-	Set<Class<?>> classesRegrasNegocio;
+	private Set<Class<?>> classesRegrasNegocio;
 	public List<Mensagem> processarRegraNegocio(Entidade entidade, String operacao)
 	{
 		List<Mensagem> mensagensRegraNegocio = new ArrayList<Mensagem>();

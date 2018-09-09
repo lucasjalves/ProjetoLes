@@ -27,7 +27,7 @@ import com.github.lucasjalves.projetoles.service.UsuarioService;
 
 @Controller
 @RequestMapping("/usuario")
-public class UsuarioController{
+final class UsuarioController{
 
 	private static final String PAGINA_CADASTRO_USUARIO = "usuario/cadastrarUsuario";
 	private static final String PAGINA_LOGIN_USUARIO = "usuario/login";
@@ -89,9 +89,10 @@ public class UsuarioController{
 		Usuario usuarioFiltrado = service.buscarUnicoUsuarioPorId(usuario);
 		usuarioFiltrado.setSenha("");
 		Usuario usuarioSessao = (Usuario) httpSession.getAttribute(SESSAO_USUARIO);
+		System.out.println(usuarioSessao);
 		modelView.addObject("jsonUsuario", mapper.writeValueAsString(usuarioFiltrado));
 		modelView.addObject("usuario", usuarioFiltrado);
-		modelView.addObject("mesmoUsuario", (usuarioSessao.getId() == usuarioFiltrado.getId()));
+		modelView.addObject("mesmoUsuario", usuarioFiltrado.equals(usuarioSessao));
 		modelView.addObject("departamentos", mapper.writeValueAsString(departamentoService.buscarTodos()));
 		modelView.setViewName(PAGINA_DETALHE_USUARIO);
 		return modelView;

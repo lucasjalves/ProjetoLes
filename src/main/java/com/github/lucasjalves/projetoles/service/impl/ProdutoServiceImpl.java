@@ -11,7 +11,7 @@ import com.github.lucasjalves.projetoles.rns.Resultado;
 import com.github.lucasjalves.projetoles.service.ProdutoService;
 
 @Service
-public class ProdutoServiceImpl implements ProdutoService{
+final class ProdutoServiceImpl implements ProdutoService{
 
 	@Autowired
 	private Facade facade;

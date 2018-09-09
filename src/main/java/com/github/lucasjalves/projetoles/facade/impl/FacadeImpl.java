@@ -17,7 +17,7 @@ import com.github.lucasjalves.projetoles.rns.Mensagem;
 import com.github.lucasjalves.projetoles.rns.Resultado;
 
 @Component
-public class FacadeImpl implements Facade {
+final public class FacadeImpl implements Facade {
 
 	@Autowired
 	private ProcessarRegraNegocioHelper regraNegocioHelper;
