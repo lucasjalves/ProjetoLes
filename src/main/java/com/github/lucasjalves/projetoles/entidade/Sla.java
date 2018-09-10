@@ -1,17 +1,10 @@
 package com.github.lucasjalves.projetoles.entidade;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import com.github.lucasjalves.projetoles.enums.PrioridadeChamado;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Sla extends Entidade {
@@ -22,15 +15,9 @@ public class Sla extends Entidade {
 	
 	private String nome;
 	
-	@Enumerated(EnumType.STRING)
-	private PrioridadeChamado prioridade;
+	@OneToOne
+	private HorasNegocio horasNegocio;
 	
-	@OneToMany
-	private List<Dias> resolucao = new ArrayList<>();
-	
-	@OneToMany
-	private List<Dias> atendimento = new ArrayList<>();
-
 	public long getId() {
 		return id;
 	}
@@ -47,29 +34,15 @@ public class Sla extends Entidade {
 		this.nome = nome;
 	}
 
-	public PrioridadeChamado getPrioridade() {
-		return prioridade;
+	public HorasNegocio getHorasNegocio() {
+		return horasNegocio;
 	}
 
-	public void setPrioridade(PrioridadeChamado prioridade) {
-		this.prioridade = prioridade;
+	public void setHorasNegocio(HorasNegocio horasNegocio) {
+		this.horasNegocio = horasNegocio;
 	}
 
-	public List<Dias> getResolucao() {
-		return resolucao;
-	}
 
-	public void setResolucao(List<Dias> resolucao) {
-		this.resolucao = resolucao;
-	}
-
-	public List<Dias> getAtendimento() {
-		return atendimento;
-	}
-
-	public void setAtendimento(List<Dias> atendimento) {
-		this.atendimento = atendimento;
-	}
 	
 	
 }
