@@ -24,42 +24,50 @@
   crossorigin="anonymous"></script>
 <script>
 	$(document).ready(function() {
-		$("#divEletronico").css("display", "none");
-		$("#divProduto").css("display", "none");
-		$("#divFerramenta").css("display", "none");
-		$("#divPerecivel").css("display", "none");
+		$("#divDepTi").css("display", "none");
+		$("#divTelefonia").css("display", "none");
+		$("#obrasCivis").css("display", "none");
+		$("#divRedeEnergia").css("display", "none");
 	    });
 	
-	$("#tipoItem").change(function(){
-		alert("oioioioi");
-		if($("#tipoItem").val =="Produto"){
-			$("#divEletronico").css("display", "none");
-			$("#divProduto").css("display", "true");
-			$("#divFerramenta").css("display", "none");
-			$("#divPerecivel").css("display", "none");
+	function mudaVisibilidade(){
+		var valorSelect = document.getElementById("tipoItem").value;
+		if(valorSelect =="Obras Civis"){
+			$("#divDepTi").css("display", "none");
+			$("#divTelefonia").css("display", "none");
+			$("#obrasCivis").css("display", "");
+			$("#divRedeEnergia").css("display", "none");
 		}
 		
-		else if(tipoItem.value =="Ferramenta"){
-			$("#divEletronico").css("display", "none");
-			$("#divProduto").css("display", "none");
-			$("#divFerramenta").css("display", "true");
-			$("#divPerecivel").css("display", "none");
+		else if(valorSelect =="Departamento Ti"){
+			$("#divDepTi").css("display", "");
+			$("#divTelefonia").css("display", "none");
+			$("#obrasCivis").css("display", "none");
+			$("#divRedeEnergia").css("display", "none");
 		}
 		
-		else if(tipoItem.value =="Eletronico"){
-			$("#divEletronico").css("display", "true");
-			$("#divProduto").css("display", "none");
-			$("#divFerramenta").css("display", "none");
-			$("#divPerecivel").css("display", "none");
+		else if(valorSelect =="Energia Eletrica"){
+			$("#divDepTi").css("display", "none");
+			$("#divTelefonia").css("display", "none");
+			$("#obrasCivis").css("display", "none");
+			$("#divRedeEnergia").css("display", "");
 		}
 		
-		else if(tipoItem.value =="Pereciveis"){
-			$("#divEletronico").css("display", "none");
-			$("#divProduto").css("display", "none");
-			$("#divFerramenta").css("display", "none");
-			$("#divPerecivel").css("display", "true");
+		else if(valorSelect=="Planos Telefonia"){
+			$("#divDepTi").css("display", "none");
+			$("#divTelefonia").css("display", "");
+			$("#obrasCivis").css("display", "none");
+			$("#divRedeEnergia").css("display", "none");
 		}
-	});
+	}
+
+</script>
+
+<script>
+	function cadastraProduto(){
+		
+		
+	}
 
 </script>
 </head>
@@ -75,30 +83,37 @@
 			<div class="form-row ">			
 				<div class="form-group">
 					<label for="sel1">Tipo:</label> 
-					<select class="form-control" id="tipoItem">
+					<select class="form-control" id="tipoItem" onClick="mudaVisibilidade(this)">
 						<option>Escolha</option>
-						<option>Ferramenta</option>
-						<option>Eletronico</option>
-						<option>Pereciveis</option>
-						<option>Produto</option>
+						<option>Obras Civis</option>
+						<option>Departamento Ti</option>
+						<option>Energia Eletrica</option>
+						<option>Planos Telefonia</option>
 					</select>
 				</div>
 			</div>
-			<div id="divProduto">
+			<div id="divTelefonia">
 						<div class="form-group col-md-4 alinhaTudo">
-							<label>Nome do Produto </label> <input type="text"
-								class="form-control obrigatorio" name="produtoNome" id="produtoNome"
+							<label>Nome da Peça </label> <input type="text"
+								class="form-control obrigatorio" name="NomePeca" id="NomePeca"
 								placeholder="Digite o nome completo">
 						</div>
-						<div class="form-group col-md-2 alinhaTudo">
-							<label>Data de Validade </label> <input type="date"
-								class="form-control obrigatorio" name="dtValidadeProduto" id="qtde">
+						<div class="form-group col-md-4 alinhaTudo">
+							<label>Marca da Peça </label> <input type="text"
+								class="form-control obrigatorio" name="marcaPeca" id="marcaPeca"
+								placeholder="Digite o nome completo">
 						</div>
+						<div class="form-group col-md-4 alinhaTudo">
+							<label>Modelo da Peça </label> <input type="text"
+								class="form-control obrigatorio" name="modeloPeca" id="modeloPeca"
+								placeholder="Digite o nome completo">
+						</div>
+			
 			</div>
-				<div id="divEletronico">
+				<div id="divDepTi">
 						<div class="form-group col-md-4 alinhaTudo">
 							<label>Nome do Componente </label> <input type="text"
-								class="form-control obrigatorio" name="eletronicoNome" id="eletronicoNome"
+								class="form-control obrigatorio" name="eletricoNome" id="eletricoNome"
 								placeholder="Digite o nome completo">
 						</div>
 						<div class="form-group col-md-4 alinhaTudo">
@@ -109,39 +124,38 @@
 						
 						<div class="form-group col-md-4 alinhaTudo">
 							<label>Marca </label> <input type="text"
-								class="form-control obrigatorio" name="marca" id="marca"
+								class="form-control obrigatorio" name="marca" id="marcaEletronico"
 								placeholder="Digite a marca">
 						</div>
 				</div>
-				<div id="divPerecivel">
+				<div id="obrasCivis">
 						<div class="form-group col-md-4 alinhaTudo">
-							<label>Nome do Perecivel </label> <input type="text"
-								class="form-control obrigatorio" name="produtoNome" id="produtoNome"
+							<label>Nome da Ferrameta </label> <input type="text"
+								class="form-control obrigatorio" name="ferramenteNome" id="ferramenteNome"
 								placeholder="Digite o nome completo">
 						</div>
 						<div class="form-group col-md-2 alinhaTudo">
-							<label>Data de Validade </label> <input type="date"
-								class="form-control obrigatorio" name="dtValidadePerecivel" id="dtValidadePerecivel">
-						</div>
-						<div class="form-group col-md-2 alinhaTudo">
-							<label>Marca Perecivel </label> <input type="date"
-								class="form-control obrigatorio" name="marcaPerecivel" id="marcaPerecivel">
+							<label>Peso(KG) </label> <input type="date"
+								class="form-control obrigatorio" name="pesoFerramenta" id="pesoFerramenta">
 						</div>
 			</div>
-			<div id="divFerramenta">
+			<div id="divRedeEnergia">
 						<div class="form-group col-md-4 alinhaTudo">
-							<label>Nome do Perecivel </label> <input type="text"
-								class="form-control obrigatorio" name="produtoNome" id="produtoNome"
+							<label>Nome do Item </label> <input type="text"
+								class="form-control obrigatorio" name="ItemEnergiaNome" id="ferramentaEnergiaNome"
 								placeholder="Digite o nome completo">
 						</div>
-						<div class="form-group col-md-2 alinhaTudo">
-							<label>Data de Validade </label> <input type="date"
-								class="form-control obrigatorio" name="dtValidadePerecivel" id="dtValidadePerecivel">
+						<div class="form-group col-md-4 alinhaTudo">
+							<label>Marca do Item </label> <input type="text"
+								class="form-control obrigatorio" name="ItemEnergiaMarca" id="ferramenteNome"
+								placeholder="Digite o nome completo">
 						</div>
-						<div class="form-group col-md-2 alinhaTudo">
-							<label>Marca Perecivel </label> <input type="date"
-								class="form-control obrigatorio" name="marcaPerecivel" id="marcaPerecivel">
+						<div class="form-group col-md-4 alinhaTudo">
+							<label>Modelo do Item </label> <input type="text"
+								class="form-control obrigatorio" name="ItemEnergiaModelo" id="ItemEnergiaModelo"
+								placeholder="Digite o nome completo">
 						</div>
+						
 			</div>
 			<br><br>
 			<div class="form-row alinhaTudo">
@@ -168,7 +182,7 @@
 								class="form-control obrigatorio" name="qtde" id="qtde">
 				</div>					
 			</div><br><br><br><br>
-			<p class="btn btn-primary" id="submit">Cadastrar</p>
+			<p class="btn btn-primary" onClick="cadastraProduto()" "id="submit">Cadastrar</p>
 		</form>
 	</div>
 </body>

@@ -2,11 +2,15 @@ package com.github.lucasjalves.projetoles.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.github.lucasjalves.projetoles.entidade.Departamento;
 import com.github.lucasjalves.projetoles.entidade.Produto;
+import com.github.lucasjalves.projetoles.rns.Resultado;
 import com.github.lucasjalves.projetoles.service.ProdutoService;
 
 @Controller
@@ -23,6 +27,12 @@ final class ProdutoController {
 	public ModelAndView paginaCadastroProduto(ModelAndView modelView) {
 		modelView.setViewName(PAGINA_CADASTRO_PRODUTO);
 		return modelView;
+	}
+	
+	@PostMapping("/produto/cadastrar")
+	@ResponseBody
+	public Resultado cadastrar(@RequestBody Produto produto){
+		return service.salvar(produto);
 	}
 	
 	@RequestMapping("/paginaConsulta")

@@ -16,11 +16,24 @@ public class Produto {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	private String nome;
+	private String nomePecaTi;
+	private String nomeEletrico;
+	private String nomeTelefonia;
+	private String nomeFerramenta;
 	private String qtde;
 	private String dtCadastro;
+	private String dtCompra;
+	private String dtValidade;
 	private String descricao;
 	private String preco;
+	private String fornecedor;
+	private String modeloEletronico;
+	private String modeloTelefonia;
+	private String marcaEletronico;
+	private String marcaPecaTelefonia;
+	private String peso;
+	   
+	
 	
 	@Enumerated(EnumType.STRING)
 	private StatusCadastro statusCadastro;
@@ -30,15 +43,6 @@ public class Produto {
 	}
 	public void setId(long id) {
 		this.id = id;
-	}
-	public String getNome() {
-		return nome;
-	}
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-	public String getQtde() {
-		return qtde;
 	}
 	public void setQtde(String qtde) {
 		this.qtde = qtde;
@@ -67,6 +71,7 @@ public class Produto {
 	public void setStatusCadastro(StatusCadastro statusCadastro) {
 		this.statusCadastro = statusCadastro;
 	}
+	
 	
 	
 }
