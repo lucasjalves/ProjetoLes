@@ -12,15 +12,11 @@ integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEUL
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <style>
-.navbar
-        {
-            border:3px solid #000000 !important;;
-        }
 </style>
 
-<nav class="navbar navbar-expand-lg fixed-top navbar navbar-dark" style="background: #8DC26F !important;">
-  <a href="usuario/dashboard" class="navbar-brand" style="background: #8DC26F !important;" href="#">Suport Plus</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg fixed-top navbar navbar-dark" style="background: #3d70b2 !important;">
+  <a class="navbar-brand" style="background: #3d70b2 !important;" href="#">Les 2019</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
     <span class="navbar-toggler-icon"></span>
   </button>
 
@@ -30,10 +26,10 @@ integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEUL
         <a class="nav-link" href="/usuario/dashboardSolicitante">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown data-toggle="dropdown">
           Login
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <div class="dropdown-menu" >
           <a href="/usuario/login" class="dropdown-item" href="#">Login</a>
           <li class="nav-item active">
         <a class="nav-link" href="/usuario/cadastroChamado"><strong>CRIAR</strong><span class="sr-only">(current)</span></a>
