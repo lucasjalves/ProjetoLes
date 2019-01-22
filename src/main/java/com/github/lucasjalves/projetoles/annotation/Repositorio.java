@@ -8,8 +8,6 @@ import java.lang.annotation.Target;
 
 @Retention(RUNTIME)
 @Target(TYPE)
-public @interface RegraNegocio {
-
+public @interface Repositorio {
 	java.lang.Class<?> classe();
-	String[] operacao();
 }
