@@ -13,4 +13,6 @@ public class ClienteController {
 		modelView.setViewName("cliente/cadastro");
 		return modelView;
 	}
+	
+	
 }
