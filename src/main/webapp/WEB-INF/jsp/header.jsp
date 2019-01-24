@@ -32,7 +32,7 @@ integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEUL
         <div class="dropdown-menu" >
           <a href="/usuario/login" class="dropdown-item" href="#">Login</a>
           <li class="nav-item active">
-        <a class="nav-link" href="/usuario/cadastroChamado"><strong>CRIAR</strong><span class="sr-only">(current)</span></a>
+  
       </li>
       </li>
     </ul>

@@ -8,22 +8,12 @@ import javax.persistence.Id;
 @Entity
 public class Cliente extends Entidade {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-	
 	private String cpfCnpj;
 	private String nome;
 	private String dtNascimento;
 	private String username;
 	private String senha;
 	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
 	public String getCpfCnpj() {
 		return cpfCnpj;
 	}

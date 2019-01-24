@@ -13,4 +13,5 @@ public interface DAO {
 	List<Entidade> buscar(Entidade entidade);
 	Entidade alterar(Entidade entidade);
 	Entidade excluir(Entidade entidade);
+
 }

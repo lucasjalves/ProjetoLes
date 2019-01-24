@@ -39,7 +39,7 @@
 					</div>													
 					<div class="form-group">
 						<label>Data nascimento</label> 
-						<input type="date" class="form-control" name="dtNascimento" placeholder="DD/MM/YYYY" required>
+						<input type="text" class="form-control" name="dtNascimento" placeholder="DD/MM/YYYY" required>
 					</div>
 					<div class="form-group">
 						<label>Username</label> 
@@ -47,7 +47,7 @@
 					</div>	
 					<div class="form-group">
 						<label>Senha</label> 
-						<input type="text" class="form-control" name="senha" placeholder="Senha" required>
+						<input type="password" class="form-control" name="senha" placeholder="Senha" required>
 					</div>											
 				</form>
 				<button class="btn btn-primary" id="btnCadastrar">Cadastrar</button>

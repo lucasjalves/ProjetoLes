@@ -32,7 +32,7 @@ final public class DAOImpl implements DAO {
 
 	@Override
 	public Entidade excluir(Entidade entidade) {
-		repositoryHelper.getRepository(entidade).delete(noCast(entidade));
+		repositoryHelper.getRepository(entidade).deleteById(entidade.getId());
 		return entidade;
 	}
 
@@ -41,5 +41,7 @@ final public class DAOImpl implements DAO {
 	{
 		return (T) object;
 	}
+
+
 	
 }
