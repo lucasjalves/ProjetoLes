@@ -6,6 +6,20 @@
 <head>
 <jsp:include page="../header.jsp"></jsp:include>
 <meta charset="ISO-8859-1">
+<script>
+	$(document).ready(function(){
+		$("#btnCadastrar").on("click", function(){
+			$.post("http://localhost:8888/cliente/cadastrar", $("#form").serialize())
+				.done(function(data){
+					console.log(data);
+				})
+				.fail(function(data){
+					console.log(data);
+				});
+		});	
+	});
+
+</script>
 <title>Cadastro de Cliente</title>
 </head>
 <body>
@@ -14,29 +28,29 @@
 			<h5 class="card-header">Cadastrar</h5>
 			<div class="card-body">
 				<h5 class="card-title">Cadastre um novo cliente</h5>
-				<form method="POST" action="cliente/cadastrar">
+				<form id="form">
 					<div class="form-group">
 						<label>Nome Completo</label> 
-						<input type="text" class="form-control" placeholder="Nome" required>
+						<input type="text" class="form-control" name="nome" placeholder="Nome" required>
 					</div>
 					<div class="form-group">
 						<label>CPF/CNPJ</label> 
-						<input type="text" class="form-control" placeholder="CPF/CNPJ" required>
+						<input type="text" class="form-control" name="cpfCnpj" placeholder="CPF/CNPJ" required>
 					</div>													
 					<div class="form-group">
 						<label>Data nascimento</label> 
-						<input type="date" class="form-control" placeholder="DD/MM/YYYY" required>
+						<input type="date" class="form-control" name="dtNascimento" placeholder="DD/MM/YYYY" required>
 					</div>
 					<div class="form-group">
 						<label>Username</label> 
-						<input type="text" class="form-control" placeholder="Username" required>
+						<input type="text" class="form-control" name="username" placeholder="Username" required>
 					</div>	
 					<div class="form-group">
 						<label>Senha</label> 
-						<input type="text" class="form-control" placeholder="Senha" required>
+						<input type="text" class="form-control" name="senha" placeholder="Senha" required>
 					</div>											
-					<input type="submit" class="btn btn-primary" value="Cadastrar"/>
 				</form>
+				<button class="btn btn-primary" id="btnCadastrar">Cadastrar</button>
 
 			</div>
 		</div>
