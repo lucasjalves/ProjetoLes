@@ -14,4 +14,5 @@ public interface ClienteService {
 	public Resultado cadastrar(Cliente cliente);
 	public List<Cliente> consultar(Entidade entidade);
 	public Resultado deletar(Cliente cliente);
+	public Resultado consultarPorId(Cliente cliente);
 }

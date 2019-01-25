@@ -32,13 +32,25 @@
 		});
 	}
 	
+	function alterar(id){
+		if(id === undefined){
+			return;
+		}
+		
+		$("#form")
+			.attr("action", "alteracao")
+			.attr("method", "POST");
+		$("#idCliente").val(id);
+		$("#form").submit();
+	}
+	
 	function renderizarTabela(json){
 		$("tbody").html("");
 		$.each(json, function(index, cliente){
 			var string = "<tr><th scope='row'>" + cliente.cpfCnpj + "</th>"
 				+ "<td>" + cliente.nome + "</td>" 
 				+ "<td>" + cliente.username + "</td>"
-				+ "<td><button type='button' class='btn btn-danger' onclick='deletar("+cliente.id+")'>Deletar</button></td>"
+				+ "<td><button type='button' class='btn btn-danger' onclick='deletar("+cliente.id+")'>Deletar</button><button type='button' class='btn btn-info' onclick='alterar("+cliente.id+")'>Deletar</button></td>"
 				+ "</tr>";
 				
 				$("tbody").append(string);

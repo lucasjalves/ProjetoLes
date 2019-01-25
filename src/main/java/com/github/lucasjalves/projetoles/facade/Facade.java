@@ -11,4 +11,5 @@ public interface Facade {
 	Resultado buscar(Entidade entidade);
 	Resultado alterar(Entidade entidade);
 	Resultado excluir(Entidade entidade);
+	Resultado buscarPorId(Entidade entidade);
 }

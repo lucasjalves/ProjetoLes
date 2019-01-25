@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,7 +26,7 @@ public class ClienteController {
 	@Autowired
 	ObjectMapper mapper;
 	
-	@RequestMapping(path="/cadastro")
+	@RequestMapping("/cadastro")
 	public ModelAndView paginaCadastroCliente(ModelAndView modelView) {
 		modelView.setViewName("cliente/cadastro");
 		return modelView;
@@ -50,6 +51,18 @@ public class ClienteController {
 	public List<Cliente> deletarCliente(@ModelAttribute Cliente cliente) {
 		service.deletar(cliente);
 		return service.consultar(new Cliente());
+	}
+	
+	@RequestMapping("/alteracao")
+	public ModelAndView paginaAlterarCliente(@RequestParam String id) {
+		ModelAndView modelView = new ModelAndView();
+		modelView.setViewName("cliente/alterar");
+		Cliente cliente = new Cliente();
+		cliente.setId(Long.parseLong(id));
+		Cliente clienteSelecionado = (Cliente) service.consultarPorId(cliente).getEntidades().get(0);
+		modelView.addObject("cliente", clienteSelecionado);
+		
+		return modelView;
 	}
 	
 }

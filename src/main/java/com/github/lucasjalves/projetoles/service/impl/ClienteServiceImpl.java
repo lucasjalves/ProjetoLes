@@ -30,6 +30,11 @@ public class ClienteServiceImpl implements ClienteService {
 	public Resultado deletar(Cliente cliente) {
 		return facade.excluir(cliente);
 	}
+
+	@Override
+	public Resultado consultarPorId(Cliente cliente) {
+		return facade.buscarPorId(cliente);
+	}
 	
 	
 }

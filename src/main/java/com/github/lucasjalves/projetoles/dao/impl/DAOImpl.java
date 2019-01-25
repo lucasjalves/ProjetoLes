@@ -1,6 +1,7 @@
 package com.github.lucasjalves.projetoles.dao.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -40,6 +41,12 @@ final public class DAOImpl implements DAO {
 	private <T> T noCast(Object object)
 	{
 		return (T) object;
+	}
+
+	@Override
+	public Entidade buscarPorId(Entidade entidade) {
+		Optional<? extends Entidade> lista = (Optional<? extends Entidade>) repositoryHelper.getRepository(entidade).findById(entidade.getId());
+		return lista.get();
 	}
 
 

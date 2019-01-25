@@ -66,12 +66,26 @@ final public class FacadeImpl implements Facade {
 		}		
 		return resultado;
 	}
+
+	@Override
+	public Resultado buscarPorId(Entidade entidade) {
+		Resultado resultado = process(entidade, "CONSULTAR");
+		if(resultado.getMensagem().size() == 0) {
+			Entidade e = dao.buscarPorId(entidade);
+			ArrayList<Entidade> lista = new ArrayList<>();
+			lista.add(e);
+			resultado.setEntidades(lista);
+		}
+		return resultado;
+	}
 	
 	private Resultado process(Entidade entidade, String operacao){
 		Resultado resultado = new Resultado();
 		resultado.setMensagem(regraNegocioHelper.processarRegraNegocio(entidade, operacao));
 		return resultado;
 	}
+
+
 	
 
 }
