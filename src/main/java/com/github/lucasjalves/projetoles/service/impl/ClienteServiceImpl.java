@@ -1,7 +1,5 @@
 package com.github.lucasjalves.projetoles.service.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +20,8 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 
 	@Override
-	public List<Cliente> consultar(Entidade entidade) {
-		return (List<Cliente>) facade.buscar(entidade).getEntidades();
+	public Resultado consultar(Entidade entidade) {
+		return facade.buscar(entidade);
 	}
 
 	@Override
@@ -35,6 +33,12 @@ public class ClienteServiceImpl implements ClienteService {
 	public Resultado consultarPorId(Cliente cliente) {
 		return facade.buscarPorId(cliente);
 	}
+
+	@Override
+	public Resultado alterar(Cliente cliente) {
+		return facade.alterar(cliente);
+	}
+	
 	
 	
 }

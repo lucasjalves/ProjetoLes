@@ -41,14 +41,14 @@ public class ClienteController {
 	@RequestMapping("/consulta")
 	public ModelAndView paginaConsultaCliente(ModelAndView modelView) throws JsonProcessingException {
 		modelView.setViewName("cliente/consulta");
-		List<Cliente> listaTodosClientes = service.consultar(new Cliente());
+		List<Cliente> listaTodosClientes = (List<Cliente>) service.consultar(new Cliente()).getEntidades();
 		modelView.addObject("listaClientes", mapper.writeValueAsString(listaTodosClientes));
 		return modelView;
 	}
 	
 	@RequestMapping("/deletar")
 	@ResponseBody
-	public List<Cliente> deletarCliente(@ModelAttribute Cliente cliente) {
+	public Resultado deletarCliente(@ModelAttribute Cliente cliente) {
 		service.deletar(cliente);
 		return service.consultar(new Cliente());
 	}
@@ -64,5 +64,11 @@ public class ClienteController {
 		
 		return modelView;
 	}
+	
+	@RequestMapping("/alterar")
+	@ResponseBody
+	public Resultado alterarCliente(@ModelAttribute Cliente cliente) {
+		return service.alterar(cliente);
+	}	
 	
 }

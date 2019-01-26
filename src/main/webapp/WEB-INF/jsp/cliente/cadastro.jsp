@@ -11,10 +11,10 @@
 		$("#btnCadastrar").on("click", function(){
 			$.post("http://localhost:8888/cliente/cadastrar", $("#form").serialize())
 				.done(function(data){
-					console.log(data);
+					abrirModalSucessoOuFalha(data, "Cliente cadastrado com sucesso!", "Falha ao cadastrar o cliente", 1);
 				})
 				.fail(function(data){
-					console.log(data);
+					abrirModalSucessoOuFalha(data, "Cliente cadastrado com sucesso!", "Falha ao cadastrar o cliente", 1);
 				});
 		});	
 	});
@@ -55,6 +55,7 @@
 			</div>
 		</div>
 	</div>
+	<jsp:include page="../componentes/modal.jsp"></jsp:include>
 	<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

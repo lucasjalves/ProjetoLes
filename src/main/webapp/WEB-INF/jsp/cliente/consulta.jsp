@@ -25,10 +25,11 @@
 		$("#idCliente").val(id);
 		$.post("http://localhost:8888/cliente/deletar", $("#form").serialize())
 		.done(function(data){
-			renderizarTabela(data);
+			renderizarTabela(data.entidades);
+			abrirModalSucessoOuFalha(data, "Cliente excluido com sucesso!", "Falha ao excluir o cliente", 1);
 		})
 		.fail(function(data){
-			
+			abrirModalSucessoOuFalha(data, "Cliente excluido com sucesso!", "Falha ao excluir o cliente", 1);
 		});
 	}
 	
@@ -50,7 +51,7 @@
 			var string = "<tr><th scope='row'>" + cliente.cpfCnpj + "</th>"
 				+ "<td>" + cliente.nome + "</td>" 
 				+ "<td>" + cliente.username + "</td>"
-				+ "<td><button type='button' class='btn btn-danger' onclick='deletar("+cliente.id+")'>Deletar</button><button type='button' class='btn btn-info' onclick='alterar("+cliente.id+")'>Deletar</button></td>"
+				+ "<td><button type='button' class='btn btn-danger' onclick='deletar("+cliente.id+")'>Deletar</button><button type='button' class='btn btn-info' onclick='alterar("+cliente.id+")'>Alterar</button></td>"
 				+ "</tr>";
 				
 				$("tbody").append(string);
@@ -78,6 +79,7 @@
 		  </tbody>
 		</table>
 	</div>
+	<jsp:include page="../componentes/modal.jsp"></jsp:include>
 	<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

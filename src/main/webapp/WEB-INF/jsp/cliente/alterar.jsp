@@ -9,7 +9,7 @@
 <script>
 	$(document).ready(function(){
 		$("#btnCadastrar").on("click", function(){
-			$.post("", $("#form").serialize())
+			$.post("http://localhost:8888/cliente/alterar", $("#form").serialize())
 				.done(function(data){
 					console.log(data);
 				})
@@ -29,6 +29,7 @@
 			<div class="card-body">
 				<h5 class="card-title">Alterar dados</h5>
 				<form id="form">
+				<input type="hidden" name="id" value="${cliente.id}" />
 					<div class="form-group">
 						<label>Nome Completo</label> 
 						<input type="text" class="form-control" name="nome" placeholder="Nome" value="${cliente.nome}"required>
