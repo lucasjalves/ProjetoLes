@@ -12,6 +12,11 @@ integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEUL
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <style>
+.spacer {
+	padding-top: 80px;
+	padding-bottom: 80px;
+}
+
 </style>
 
 <nav class="navbar navbar-expand-lg fixed-top navbar navbar-dark" style="background: #3d70b2 !important;">
@@ -26,15 +31,38 @@ integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEUL
         <a class="nav-link" href="/usuario/dashboardSolicitante">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown data-toggle="dropdown">
-          Login
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Produto
         </a>
-        <div class="dropdown-menu" >
-          <a href="/usuario/login" class="dropdown-item" href="#">Login</a>
-          <li class="nav-item active">
-  
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="http://localhost:8888/produto/cadastro">Cadastrar</a>
+          <a class="dropdown-item" href="http://localhost:8888/produto/consulta">Consultar</a>
+          <div class="dropdown-divider" style="display:none;"></div>
+          <a class="dropdown-item" style="display:none;" href="#">Something else here</a>
+        </div>
       </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Cliente
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="http://localhost:8888/cliente/cadastro">Cadastrar</a>
+          <a class="dropdown-item" href="http://localhost:8888/cliente/consulta">Consultar</a>
+          <div class="dropdown-divider" style="display:none;"></div>
+          <a class="dropdown-item" style="display:none;" href="#">Something else here</a>
+        </div>
       </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Cupom
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="http://localhost:8888/cupom/cadastro">Cadastrar</a>
+          <a class="dropdown-item" href="http://localhost:8888/cupom/consulta">Consultar</a>
+          <div class="dropdown-divider" style="display:none;"></div>
+          <a class="dropdown-item" style="display:none;" href="#">Something else here</a>
+        </div>
+      </li>      
     </ul>
   </div>
 </nav>

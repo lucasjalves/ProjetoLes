@@ -13,7 +13,21 @@ public class Cliente extends Entidade {
 	private String dtNascimento;
 	private String username;
 	private String senha;
+	private String genero;
+	private boolean ativo;
 	
+	public String getGenero() {
+		return genero;
+	}
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+	public boolean isAtivo() {
+		return ativo;
+	}
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
 	public String getCpfCnpj() {
 		return cpfCnpj;
 	}

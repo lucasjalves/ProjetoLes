@@ -66,6 +66,20 @@
 	<input type="hidden" name='id' id="idCliente" />
 </form>
 	<div class="container" style="margin-top: 100px;">
+		<form class="form-inline">
+			<div class="form-group mb-3 col-md-4 col-md-offset-4">
+				<label class="sr-only">Filtro</label> 
+				<select class="custom-select" style="width: 100%">
+				  <option selected>CPF/CNPJ</option>
+				  <option value="1">Nome</option>
+				  <option value="2">Email</option>
+				</select>
+			</div>
+			<div class="form-group mx-sm-4 mb-3 col-md-4 col-md-offset-4">
+				<input type="text" class="form-control"  style="width: 100%" placeholder="Digite">
+			</div>
+			<a href="#" class="btn btn-primary mb-3">Buscar</a>
+		</form>
 		<table class="table table-hover">
 		  <thead>
 		    <tr>

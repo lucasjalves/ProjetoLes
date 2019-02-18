@@ -3,7 +3,7 @@
 	data-target="#myModal">Open modal</button>
 
 <div class="modal" id="myModal">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 
 			<div class="modal-header">
