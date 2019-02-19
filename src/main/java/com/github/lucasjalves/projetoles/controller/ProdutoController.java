@@ -25,5 +25,11 @@ public class ProdutoController {
 		modelView.setViewName("produto/alterar");
 		return modelView;
 	}
+	
+	@RequestMapping("/detalhe")
+	public ModelAndView paginaDetalheProduto(ModelAndView modelView) {
+		modelView.setViewName("produto/detalhe");
+		return modelView;
+	}	
 		
 }
