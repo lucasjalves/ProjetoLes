@@ -57,7 +57,10 @@ integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEUL
           <div class="dropdown-divider" style="display:none;"></div>
           <a class="dropdown-item" style="display:none;" href="#">Something else here</a>
         </div>
-      </li>      
-    </ul>
+      </li>
+		<li class="nav-item"><a class="nav-link"
+			href="http://localhost:8888/carrinho">Carrinho <span class="sr-only">(current)</span></a>
+		</li>
+		</ul>
   </div>
 </nav>

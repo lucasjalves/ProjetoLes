@@ -3,6 +3,26 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script>
+function aplicarCupom(){
+	if($("#codigoCupom").val().length === 0){
+		$("#descontoCupom").text("Cupom AABB11 expirado").show().attr("style","color: red; border: none;");
+		return;
+	}
+	$("#descontoCupom").text("Cupom AABB11 -- 5,00%").show().attr("style","color: green; border: none;");
+	$("#desconto").text("R$ 75,75").attr("style", "color: green;");
+	$("#total").text("R$ 1.439,25");
+	$("#btnRemoverCupom").show();
+}
+
+function removerCupom(){
+	$("#descontoCupom").hide();
+	$("#desconto").text("R$ 0,00").attr("style", "");
+	$("#total").text("R$ 1.515,00");
+	$("#btnRemoverCupom").hide();	
+	
+}
+</script>
 <jsp:include page="../header.jsp"></jsp:include>
 <meta charset="ISO-8859-1">
 <title>Carrinho</title>
@@ -53,7 +73,7 @@
 
 		</table>
 		<div class="card-deck">
-			<div class="card" style="width: 18rem;">
+			<div class="card" style="width: 18rem;height: 250px;">
 				<div class="card-header"><strong>Endereços</strong></div>
 				<div class="card-body">
 					<div class="form-group row">
@@ -64,36 +84,88 @@
 							</select>
 						</div>
 					</div>
-					<button class="btn btn-success">Cadastrar novo</button>
+					<button class="btn btn-success" data-toggle="modal" data-target="#cadastro">Cadastrar novo</button>
 				</div>
 			</div>
 			<div class="card" style="width: 18rem;">
 				<div class="card-header">
-					<strong>Endereços</strong>
+					<strong>Cupom</strong>
 				</div>
 				<div class="card-body">
 					<ul class="list-group list-group-flush">
 
 						<li class="list-group-item"><strong>Cupom</strong><label
-							class="right"><input type="text" class="form-control" /></label></li>
-
+							class="right"><input type="text" id="codigoCupom" class="form-control" /></label></li>
+						<li class="list-group-item right" style="display: none; color: green; border: none;" id="descontoCupom"></li>
+						<li class="list-group-item" style="border: none;"> 
+							<button class="btn btn-success" style="margin-left: 15px;" onclick="aplicarCupom();">Aplicar</button>
+							<button class="btn btn-danger" id="btnRemoverCupom" style="display:none;" onclick="removerCupom();">Remover</button>
+						</li>
 					</ul>
+					
 				</div>
 			</div>
-			<div class="card right" style="width: 18rem;">
+			<div class="card right" style="width: 18rem; height: 250px;">
 				<ul class="list-group list-group-flush">
-					<li class="list-group-item"><strong>Total</strong><label
-						class="right">R$ 1.500,00</label></li>
-					<li class="list-group-item"><strong>Frete</strong><label
-						class="right">R$ 15,00</label></li>
-					<li class="list-group-item"><strong>Desconto</strong><label
-						class="right">R$ 0,00</label></li>
-					<li class="list-group-item"><strong>Total</strong><label
-						class="right">R$ 1.515,00</label></li>
+					<li class="list-group-item"><strong>Total</strong><label class="right">R$ 1.500,00</label></li>
+					<li class="list-group-item"><strong>Frete</strong><label class="right">R$ 15,00</label></li>
+					<li class="list-group-item"><strong>Desconto</strong><label class="right" id="desconto">R$ 0,00</label></li>
+					<li class="list-group-item"><strong>Total da compra</strong><label class="right" id="total">R$ 1.515,00</label></li>
 				</ul>
 			</div>
 
 		</div>
+			 <button class="btn btn-warning right" style="margin-left: 15px; margin-top: 30px;" >Finalizar compra</button>
+	</div>
+
+	<div class="modal fade" id="cadastro">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Novo endereço</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+				<form id="form">
+					<div class="form-group">
+						<label>CEP</label> 
+						<input type="text" class="form-control" name="nome" placeholder="Rua" required>
+					</div>
+					<div class="form-group">
+						<label>Rua</label> 
+						<input type="text" class="form-control" name="cpfCnpj" placeholder="Rua" required>
+					</div>		
+					<div class="form-group">
+						<label>Complemento</label> 
+						<input type="text" class="form-control" name="senha" placeholder="Estado" required>
+					</div>														
+					<div class="form-group">
+						<label>Bairro</label> 
+						<input type="text" class="form-control" name="dtNascimento" placeholder="Bairro" required>
+					</div>
+					<div class="form-group">
+						<label>Cidade</label> 
+						<input type="text" class="form-control" name="username" placeholder="Cidade" required>
+					</div>	
+					<div class="form-group">
+						<label>Estado</label> 
+						<input type="text" class="form-control" name="senha" placeholder="Estado" required>
+					</div>
+					
+					<div class="form-group">
+						<label>País</label> 
+						<input type="text" class="form-control" name="senha" placeholder="País" required>
+					</div>																
+				</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
 	</div>
 	<jsp:include page="../componentes/modal.jsp"></jsp:include>
 	<jsp:include page="../footer.jsp"></jsp:include>

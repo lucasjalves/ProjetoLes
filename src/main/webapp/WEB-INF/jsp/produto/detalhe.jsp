@@ -110,11 +110,11 @@ $(document).ready(function(){
 				</div>
 
 				<div class="section" style="padding-bottom: 20px;">
-					<button class="btn btn-success">
+					<a href="http://localhost:8888/carrinho" class="btn btn-success">
 						<span style="margin-right: 20px"
 							class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
 						Adicionar ao carrinho
-					</button>
+					</a>
 				</div>
 			</div>
 		</div>
@@ -139,6 +139,7 @@ $(document).ready(function(){
 				</div>
 			</div>
 	</div>
+</div>
 	<jsp:include page="../componentes/modal.jsp"></jsp:include>
 	<jsp:include page="../footer.jsp"></jsp:include>
 </body>
