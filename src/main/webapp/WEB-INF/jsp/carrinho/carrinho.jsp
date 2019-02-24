@@ -77,7 +77,7 @@ function removerCupom(){
 				<div class="card-header"><strong>Endereços</strong></div>
 				<div class="card-body">
 					<div class="form-group row">
-						<div class="col-sm-10">
+						<div class="col-sm-5">
 							<select class="form-control" id="exampleFormControlSelect1">
 								<option>Casa 1</option>
 								<option>Casa 2</option>
@@ -115,7 +115,7 @@ function removerCupom(){
 			</div>
 
 		</div>
-			 <button class="btn btn-warning right" style="margin-left: 15px; margin-top: 30px;" >Finalizar compra</button>
+			 <a class="btn btn-warning right" href="http://localhost:8888/pedido/confirmacao" style="margin-left: 15px; margin-top: 30px;" >Finalizar compra</a>
 	</div>
 
 	<div class="modal fade" id="cadastro">
