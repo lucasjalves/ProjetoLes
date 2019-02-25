@@ -5,28 +5,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/produto")
 public class ProdutoController {
+	@RequestMapping("")
+	public ModelAndView home(ModelAndView modelView) {
+		modelView.setViewName("home");
+		return modelView;
+	}
 
-	@RequestMapping("/cadastro")
+	@RequestMapping("/produto/cadastro")
 	public ModelAndView paginaCadastroProduto(ModelAndView modelView) {
 		modelView.setViewName("produto/cadastro");
 		return modelView;
 	}
 	
-	@RequestMapping("/consulta")
+	@RequestMapping("/produto/consulta")
 	public ModelAndView paginaConsultaProduto(ModelAndView modelView) {
 		modelView.setViewName("produto/consulta");
 		return modelView;
 	}
 	
-	@RequestMapping("/alteracao")
+	@RequestMapping("/produto/alteracao")
 	public ModelAndView paginaAlteracaoProduto(ModelAndView modelView) {
 		modelView.setViewName("produto/alterar");
 		return modelView;
 	}
 	
-	@RequestMapping("/detalhe")
+	@RequestMapping("/produto/detalhe")
 	public ModelAndView paginaDetalheProduto(ModelAndView modelView) {
 		modelView.setViewName("produto/detalhe");
 		return modelView;

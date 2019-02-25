@@ -42,6 +42,17 @@
 						<input type="text" class="form-control" name="dtNascimento" placeholder="DD/MM/YYYY" required>
 					</div>
 					<div class="form-group">
+						<label>E-mail</label> 
+						<input type="text" class="form-control" placeholder="E-mail" required>
+					</div>		
+					  <div class="form-group">
+					    <label>Gênero</label>
+					    <select class="form-control">
+					      <option selected>M</option>
+					      <option>F</option>
+					    </select>
+					  </div>								
+					<div class="form-group">
 						<label>Username</label> 
 						<input type="text" class="form-control" name="username" placeholder="Username" required>
 					</div>	

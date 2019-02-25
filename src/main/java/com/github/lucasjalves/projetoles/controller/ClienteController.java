@@ -17,7 +17,6 @@ import com.github.lucasjalves.projetoles.rns.Resultado;
 import com.github.lucasjalves.projetoles.service.ClienteService;
 
 @Controller
-@RequestMapping("/cliente")
 public class ClienteController {
 
 	@Autowired
@@ -26,19 +25,19 @@ public class ClienteController {
 	@Autowired
 	ObjectMapper mapper;
 	
-	@RequestMapping("/cadastro")
+	@RequestMapping("/cliente/cadastro")
 	public ModelAndView paginaCadastroCliente(ModelAndView modelView) {
 		modelView.setViewName("cliente/cadastro");
 		return modelView;
 	}
 	
-	@RequestMapping("/cadastrar")
+	@RequestMapping("/cliente/cadastrar")
 	@ResponseBody
 	public Resultado cadastrarCliente(@ModelAttribute Cliente cliente) {
 		return service.cadastrar(cliente);
 	}
 	
-	@RequestMapping("/consulta")
+	@RequestMapping("/cliente/consulta")
 	public ModelAndView paginaConsultaCliente(ModelAndView modelView) throws JsonProcessingException {
 		modelView.setViewName("cliente/consulta");
 		List<Cliente> listaTodosClientes = (List<Cliente>) service.consultar(new Cliente()).getEntidades();
@@ -46,14 +45,14 @@ public class ClienteController {
 		return modelView;
 	}
 	
-	@RequestMapping("/deletar")
+	@RequestMapping("/cliente/deletar")
 	@ResponseBody
 	public Resultado deletarCliente(@ModelAttribute Cliente cliente) {
 		service.deletar(cliente);
 		return service.consultar(new Cliente());
 	}
 	
-	@RequestMapping("/alteracao")
+	@RequestMapping("/cliente/alteracao")
 	public ModelAndView paginaAlterarCliente(@RequestParam String id) {
 		ModelAndView modelView = new ModelAndView();
 		modelView.setViewName("cliente/alterar");
@@ -65,10 +64,28 @@ public class ClienteController {
 		return modelView;
 	}
 	
-	@RequestMapping("/alterar")
+	@RequestMapping("/cliente/alterar")
 	@ResponseBody
 	public Resultado alterarCliente(@ModelAttribute Cliente cliente) {
 		return service.alterar(cliente);
 	}	
+	
+	@RequestMapping("/cliente/dados")
+	public ModelAndView dados(ModelAndView modelView) {
+		modelView.setViewName("painel/iframes/dados");
+		return modelView;
+	}
+	
+	@RequestMapping("/cliente/detalhe")
+	public ModelAndView detalhe(ModelAndView modelView) {
+		modelView.setViewName("painel/admin/detalheUsuario");
+		return modelView;
+	}
+	
+	@RequestMapping("/painel")
+	public ModelAndView painel(ModelAndView modelView) {
+		modelView.setViewName("painel/painel");
+		return modelView;
+	}
 	
 }

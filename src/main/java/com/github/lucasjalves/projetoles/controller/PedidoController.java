@@ -10,7 +10,7 @@ public class PedidoController {
 
 	private static final String PAGINA = "pedido/confirmacao";
 	private static final String EFETIVACAO = "pedido/efetivacao";
-	
+	private static final String CONSULTA = "painel/iframes/pedidos";
 	@RequestMapping("/confirmacao")
 	public ModelAndView confirmacao(ModelAndView modelView) {
 		modelView.setViewName(PAGINA);
@@ -22,4 +22,12 @@ public class PedidoController {
 		modelView.setViewName(EFETIVACAO);
 		return modelView;
 	}
+	
+	@RequestMapping("/consulta")
+	public ModelAndView consulta(ModelAndView modelView) {
+		modelView.setViewName(CONSULTA);
+		return modelView;
+	}
+	
+	
 }

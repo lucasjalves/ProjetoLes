@@ -36,7 +36,7 @@
 					</div>
 					<div class="form-group">
 						<label>CPF/CNPJ</label> 
-						<input type="text" class="form-control" name="cpfCnpj" placeholder="CPF/CNPJ" value="${cliente.cpfCnpj}" required>
+						<input type="text" class="form-control" name="cpfCnpj" placeholder="CPF/CNPJ" value="${cliente.cpfCnpj}" disabled>
 					</div>													
 					<div class="form-group">
 						<label>Data nascimento</label> 
@@ -52,7 +52,6 @@
 					</div>											
 				</form>
 				<button class="btn btn-primary" id="btnCadastrar">Alterar</button>
-
 			</div>
 		</div>
 	</div>
