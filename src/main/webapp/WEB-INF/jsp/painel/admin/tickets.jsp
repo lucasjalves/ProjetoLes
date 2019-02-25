@@ -54,7 +54,7 @@ opacity: 0.1;
 			<tbody>
 				<tr>
 					<th scope="row">1</th>
-					<td><a href="#" onclick="top.window.location.href='http://localhost:8888/pedido/efetivacao';" class="btn btn-link">1</a></td>
+					<td><a href="http://localhost:8888/pedido/efetivacao" target="_blank" class="btn btn-link">1</a></td>
 					<td><a href="http://localhost:8888/cliente/detalhe" class="btn btn-link">111.222.333-44</a></td>
 					<td>24/02/2019</td>
 					<td><label style="color: #FFB300;">EM ANÁLISE</label></td>
@@ -65,7 +65,7 @@ opacity: 0.1;
 				</tr>
 				<tr>
 					<th scope="row">2</th>
-					<td><a href="#" onclick="top.window.location.href='http://localhost:8888/pedido/efetivacao';" class="btn btn-link">2</a></td>
+					<td><a href="http://localhost:8888/pedido/efetivacao" target="_blank" class="btn btn-link">2</a></td>
 					<td><a href="http://localhost:8888/cliente/detalhe" class="btn btn-link">111.222.333-44</a></td>
 					<td>24/02/2019</td>
 					<td><label style="color: #FFB300;">EM ANÁLISE</label></td>
@@ -96,7 +96,7 @@ opacity: 0.1;
 	        </button>
 	      </div>
 	      <div class="modal-body">
-			<table class="table" style="margin-top: 50px; margin-bottom: 30px;">
+			<table class="table" style="margin-top: 15px;">
 				<thead>
 					<tr>
 						<th scope="col">Produtos</th>

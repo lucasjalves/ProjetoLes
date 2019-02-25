@@ -34,6 +34,7 @@ opacity: 0.1;
 		<thead>
 			<tr>
 				<th scope="col">Nº Pedido</th>
+				<th scope="col">Comprador</th>
 				<th scope="col">Data</th>
 				<th scope="col">Total R$</th>
 				<th scope="col">Status</th>
@@ -42,30 +43,50 @@ opacity: 0.1;
 		</thead>
 		<tbody>
 			<tr>
-				<th scope="row">1</th>
+				<th scope="row"><button class="btn btn-link" onclick="$('#abrirModal').click();">1</button></th>
+				<td><a href="http://localhost:8888/cliente/detalhe" class="btn btn-link">111.222.333-44</a></td>
 				<td>20/02/2019</td>
 				<td>1.000,00</td>
 				<td style="color: #FFB300;">NÃO PAGO</td>
-				<td><button href="" class="btn btn-link" onclick="top.window.location.href='http://localhost:8888/pedido/confirmacao';">Comprar</button></td>
+				<td></td>
 			</tr>
 			<tr>
-				<th scope="row">2</th>
+				<th scope="row"><a class="btn btn-link" href="http://localhost:8888/pedido/efetivacao" target="_blank">2</a></th>
+				<td><a href="http://localhost:8888/cliente/detalhe" class="btn btn-link">222.222.333-44</a></td>
 				<td>21/02/2019</td>
 				<td>1.500,00</td>
 				<td style="color: green;">ENTREGUE</td>
-				<td>
-					<button class="btn btn-link" onclick="devolverOuTrocar()">Trocar/devolver</button>
-					<a class="btn btn-link" href="http://localhost:8888/pedido/efetivacao" target="_blank">Detalhes</a>
-				
-				</td>
+				<td></td>
 			</tr>
 			<tr>
-				<th scope="row">3</th>
+				<th scope="row"><button  class="btn btn-link" onclick="$('#abrirModal').click();">3</button></th>
+				<td><a href="http://localhost:8888/cliente/detalhe" class="btn btn-link">444.222.111-33</a></td>
 				<td>22/02/2019</td>
 				<td>500,00</td>
 				<td style="color: red;">CANCELADO</td>
-				<td><a class="btn btn-link" href="http://localhost:8888/pedido/efetivacao" target="_blank">Detalhes</a></td>
+				<td></td>
 			</tr>
+			<tr>
+				<th scope="row"><a class="btn btn-link" href="http://localhost:8888/pedido/efetivacao" target="_blank">4</a></th>
+				<td><a href="http://localhost:8888/cliente/detalhe" class="btn btn-link">444.222.111-33</a></td>
+				<td>23/02/2019</td>
+				<td>1.500,00</td>
+				<td style="color: green;">APROVADO</td>
+				<td>
+					<button class="btn btn-danger">Cancelar</button>			
+					<button class="btn btn-success">Enviar</button>			
+				</td>
+			</tr>	
+			<tr>
+				<th scope="row"><a class="btn btn-link" href="http://localhost:8888/pedido/efetivacao" target="_blank">5</a></th>
+				<td><a href="http://localhost:8888/cliente/detalhe" class="btn btn-link">444.222.111-33</a></td>
+				<td>23/02/2019</td>
+				<td>1.500,00</td>
+				<td style="color: green;">EM TRANSPORTE</td>
+				<td>		
+					<button class="btn btn-success">Entregue</button>			
+				</td>
+			</tr>					
 		</tbody>
 	</table>
 
@@ -88,19 +109,7 @@ opacity: 0.1;
 					</button>
 				</div>
 				<div class="modal-body">
-					<h6>Você deseja</h6>
-					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio"
-							name="inlineRadioOptions" id="inlineRadio1" value="option1">
-						<label class="form-check-label" for="inlineRadio1">Devolver</label>
-					</div>
-					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio"
-							name="inlineRadioOptions" id="inlineRadio2" value="option2"
-							checked> <label class="form-check-label"
-							for="inlineRadio2">Trocar</label>
-					</div>
-					<table class="table" style="margin-top: 50px; margin-bottom: 30px;">
+					<table class="table" style="margin-top: 15px;">
 						<thead>
 							<tr>
 								<th scope="col">Produtos</th>
@@ -110,7 +119,7 @@ opacity: 0.1;
 						<tbody>
 							<tr>
 								<td><strong>Playstation 4</strong></td>
-								<td><input type="number" class="form-control" value="1" /></td>
+								<td><strong>1</strong></td>
 							</tr>
 						</tbody>
 					</table>
