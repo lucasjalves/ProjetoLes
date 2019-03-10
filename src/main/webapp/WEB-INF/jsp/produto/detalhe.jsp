@@ -74,12 +74,32 @@ $(document).ready(function(){
             $(".section > div > input").val("1");
         }
     })                        
-}) 
+});
+
+function adicionarItemCarrinho(){
+	$("#qtde").val($("#quantidade").val());
+		$.post("http://localhost:8888/carrinho/adicionar", $("#form").serialize())
+		.done(function(data){
+			var sucesso = abrirModalSucessoOuFalha(data, "Produto cadastrado com sucesso!", "Falha ao cadastrar o cliente", 1, true, false);
+			if(sucesso){
+				window.location.replace("http://localhost:8888/carrinho");
+			}
+		})
+		.fail(function(data){
+			abrirModalSucessoOuFalha(data, "Produto cadastrado com sucesso!", "Falha ao adicionar item no carrinho", 1);
+		});
+	
+}
 </script>
 <meta charset="ISO-8859-1">
 <title>Produto</title>
 </head>
 <body>
+<form id="form">
+	<input type="hidden" name="quantidadeSelecionada" id="qtde">
+	<input type="hidden" name="id" id="qtde" value="${produto.id}">
+</form>
+<a href="http://localhost:8888/carrinho" style="display:none;" id="carrinho"></a>
 	<div class="container spacer" style="padding-top: 110px;">
 		<div class="row" style="padding-bottom: 40px;">
 			<div class="col-6 item-photo">
@@ -87,12 +107,12 @@ $(document).ready(function(){
 					src="https://ak1.ostkcdn.com/images/products/8818677/Samsung-Galaxy-S4-I337-16GB-AT-T-Unlocked-GSM-Android-Cell-Phone-85e3430e-6981-4252-a984-245862302c78_600.jpg" />
 			</div>
 			<div class="col-5" style="border: 0px solid gray">
-				<h3>Playstation 4</h3>
+				<h3>${produto.modelo}</h3>
 
 				<h6 class="title-price">
 					<small>Preço</small>
 				</h6>
-				<h3 style="margin-top: 0px;">1.500,00 R$</h3>
+				<h3 style="margin-top: 0px;">R$ ${produto.precoVenda}</h3>
 
 				<div class="section" style="padding-bottom: 20px;">
 					<h6 class="title-attr">
@@ -102,7 +122,8 @@ $(document).ready(function(){
 						<div class="btn-minus">
 							<span>-</span>
 						</div>
-						<input value="1" />
+						<input value="1" id="quantidade"/>
+						
 						<div class="btn-plus">
 							<span>+</span>
 						</div>
@@ -110,11 +131,11 @@ $(document).ready(function(){
 				</div>
 
 				<div class="section" style="padding-bottom: 20px;">
-					<a href="http://localhost:8888/carrinho" class="btn btn-success">
+					<button class="btn btn-success" onclick="adicionarItemCarrinho()">
 						<span style="margin-right: 20px"
 							class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
 						Adicionar ao carrinho
-					</a>
+					</button>
 				</div>
 			</div>
 		</div>

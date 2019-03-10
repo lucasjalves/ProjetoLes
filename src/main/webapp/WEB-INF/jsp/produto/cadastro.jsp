@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,14 +9,17 @@
 <script>
 	$(document).ready(function(){
 		$("#btnCadastrar").on("click", function(){
-			$.post("http://localhost:8888/cliente/cadastrar", $("#form").serialize())
+			$.post("http://localhost:8888/produto/cadastrar", $("#form").serialize())
 				.done(function(data){
-					abrirModalSucessoOuFalha(data, "Produto cadastrado com sucesso!", "Falha ao cadastrar o cliente", 1);
+					abrirModalSucessoOuFalha(data, "Produto cadastrado com sucesso!", "Falha ao cadastrar o produto", 1);
 				})
 				.fail(function(data){
-					abrirModalSucessoOuFalha(data, "Produto cadastrado com sucesso!", "Falha ao cadastrar o cliente", 1);
+					abrirModalSucessoOuFalha(data, "Produto cadastrado com sucesso!", "Falha ao cadastrar o produto", 1);
 				});
 		});	
+		
+		$("#precoCompra").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:',', affixesStay: false});
+		$("#precoVenda").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:',', affixesStay: false});
 	});
 
 
@@ -37,15 +40,31 @@
 					<div class="form-group">
 					    <label>Descrição</label>
 					    <textarea class="form-control" name="descricao"  rows="3"></textarea>
-					</div>					
+					</div>	
 					<div class="form-group">
-						<label>Especificações</label> 
-						<textarea class="form-control" name="descricao"  rows="3"></textarea>
+					    <label>Categoria</label>
+				    <select class="form-control" name="categoria">
+						<c:forEach items="${categorias}" var="categoria">
+							<option value="${categoria}">${categoria}</option>
+						</c:forEach>
+				    </select>
 					</div>									
 					<div class="form-group">
-						<label>Preço</label> 
-						<input type="text" class="form-control" name="preco"  >
+						<label>Especificações</label> 
+						<textarea class="form-control" name="especificacoes"  rows="3"></textarea>
+					</div>									
+					<div class="form-group">
+						<label>Preço de compra</label> 
+						<input type="text" class="form-control" id="precoCompra" name="precoCompra"  >
 					</div>
+					<div class="form-group">
+						<label>Preço de venda</label> 
+						<input type="text" class="form-control" id="precoVenda" name="precoVenda"  >
+					</div>		
+					<div class="form-group">
+						<label>Código de barras</label> 
+						<input type="text" class="form-control" id="codigoBarras" name="codigoBarras"  >
+					</div>								
 					<div class="form-group">
 						<label>Marca</label> 
 						<input type="text" class="form-control" name="marca" >
@@ -81,9 +100,9 @@
 					
 				<div class="form-group">
 				    <label>Status</label>
-				    <select class="form-control">
-				      <option selected>Ativo</option>
-				      <option>Inativo</option>
+				    <select class="form-control" name="ativo">
+				      <option selected value="true">Ativo</option>
+				      <option value="false">Inativo</option>
 				    </select>
 				  </div>																		
 				</form>

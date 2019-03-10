@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,29 +49,33 @@ function removerCupom(){
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td><img src="http://placehold.it/100x100" alt="..."
-						class="img-responsive left">
-						<table class="left">
-							<tr>
-								<td style="border: none;"><strong>Playstation 4</strong></td>
-							</tr>
-							<tr>
-								<td style="border: none;">Sony</td>
-							</tr>
-						</table></td>
-					<td><input type="number" class="form-control"
-						style="width: 80px; margin-top: 30px;" value="1" /></td>
-					<td><label style="margin-top: 35px; font-weight: bold;">R$
-							1500,00 </label></td>
-					<td><label style="color: red; margin-top: 35px;">R$
-							1.500,00</label></td>
-					<td><button style="margin-top: 30px;"
-							class="btn btn-outline-danger">Remover</button></td>
-				</tr>
-
+				<c:if test="${carrinho != null}">
+					<c:forEach items="${carrinho.keySet()}" var="id">
+					<c:set var="itemCarrinho" value="${carrinho.get(id)}"/>
+						<tr>
+							<td><img src="http://placehold.it/100x100" alt="..."
+								class="img-responsive left">
+								<table class="left">
+									<tr>
+										<td style="border: none;"><strong>${itemCarrinho.produto.modelo}</strong></td>
+									</tr>
+									<tr>
+										<td style="border: none;">${itemCarrinho.produto.marca}</td>
+									</tr>
+								</table></td>
+							<td><input type="number" class="form-control"
+								style="width: 80px; margin-top: 30px;" value="${itemCarrinho.quantidade}" /></td>
+							<td><label style="margin-top: 35px; font-weight: bold;">R$
+									${itemCarrinho.produto.precoVenda} </label></td>
+							<td><label style="color: red; margin-top: 35px;">R$
+									${itemCarrinho.valorTotal}</label></td>
+							<td><button style="margin-top: 30px;"
+									class="btn btn-outline-danger">Remover</button></td>
+						</tr>
+					</c:forEach>
+				</c:if>
 			</tbody>
-
+			
 		</table>
 		<div class="card-deck">
 			<div class="card" style="width: 18rem;height: 250px;">

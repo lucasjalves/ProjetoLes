@@ -1,17 +1,16 @@
 package com.github.lucasjalves.projetoles.entidade;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
+import com.github.lucasjalves.projetoles.enums.Categorias;
 
 @Entity
 public class Produto extends Entidade{
-	private String titulo;
+	private String nome;
 	private String descricao;
-	private String preco;
+	private String precoCompra;
+	private String precoVenda;
 	private String marca;
 	private String modelo;
 	private String altura;
@@ -19,12 +18,38 @@ public class Produto extends Entidade{
 	private String comprimento;
 	private String peso;
 	private String especificacoes;
+	private String codigoBarras;
+	private Categorias categoria;	
+	@Transient
+	private Integer quantidadeSelecionada;
 	private Integer estoque;
-	@OneToMany(cascade=CascadeType.ALL)
-	private List<Categoria> categorias = new ArrayList<>();
 	private String conteudoEmbalagem;
 	private boolean ativo;
 	
+	public Integer getQuantidadeSelecionada() {
+		return quantidadeSelecionada;
+	}
+
+	public void setQuantidadeSelecionada(Integer quantidadeSelecionada) {
+		this.quantidadeSelecionada = quantidadeSelecionada;
+	}
+
+	public Categorias getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categorias categoria) {
+		this.categoria = categoria;
+	}
+
+	public String getCodigoBarras() {
+		return codigoBarras;
+	}
+
+	public void setCodigoBarras(String codigoBarras) {
+		this.codigoBarras = codigoBarras;
+	}
+
 	public boolean isAtivo() {
 		return ativo;
 	}
@@ -33,12 +58,12 @@ public class Produto extends Entidade{
 		this.ativo = ativo;
 	}
 
-	public String getTitulo() {
-		return titulo;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public String getDescricao() {
@@ -49,13 +74,6 @@ public class Produto extends Entidade{
 		this.descricao = descricao;
 	}
 
-	public String getPreco() {
-		return preco;
-	}
-
-	public void setPreco(String preco) {
-		this.preco = preco;
-	}
 
 	public String getMarca() {
 		return marca;
@@ -113,14 +131,6 @@ public class Produto extends Entidade{
 		this.especificacoes = especificacoes;
 	}
 
-	public List<Categoria> getCategorias() {
-		return categorias;
-	}
-
-	public void setCategorias(List<Categoria> categorias) {
-		this.categorias = categorias;
-	}
-
 	public String getConteudoEmbalagem() {
 		return conteudoEmbalagem;
 	}
@@ -137,4 +147,21 @@ public class Produto extends Entidade{
 		this.estoque = estoque;
 	}
 
+	public String getPrecoCompra() {
+		return precoCompra;
+	}
+
+	public void setPrecoCompra(String precoCompra) {
+		this.precoCompra = precoCompra;
+	}
+
+	public String getPrecoVenda() {
+		return precoVenda;
+	}
+
+	public void setPrecoVenda(String precoVenda) {
+		this.precoVenda = precoVenda;
+	}
+
+	
 }

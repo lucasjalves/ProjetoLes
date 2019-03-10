@@ -1,6 +1,7 @@
 package com.github.lucasjalves.projetoles.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.lucasjalves.projetoles.entidade.Cliente;
+import com.github.lucasjalves.projetoles.enums.TipoUsuario;
 import com.github.lucasjalves.projetoles.rns.Resultado;
 import com.github.lucasjalves.projetoles.service.ClienteService;
 
@@ -34,6 +36,7 @@ public class ClienteController {
 	@RequestMapping("/cliente/cadastrar")
 	@ResponseBody
 	public Resultado cadastrarCliente(@ModelAttribute Cliente cliente) {
+		cliente.setTipoUsuario(TipoUsuario.ADMIN);
 		return service.cadastrar(cliente);
 	}
 	
@@ -80,6 +83,25 @@ public class ClienteController {
 	public ModelAndView detalhe(ModelAndView modelView) {
 		modelView.setViewName("painel/admin/detalheUsuario");
 		return modelView;
+	}
+
+	@RequestMapping("/cliente/login")
+	public ModelAndView login(ModelAndView modelView) {
+		modelView.setViewName("cliente/login");
+		return modelView;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/cliente/efetuarLogin")
+	public Boolean login(@ModelAttribute Cliente cliente) throws Exception {
+		List<Cliente> clientes = 
+				(List<Cliente>) service.consultar(cliente).getEntidades();
+		
+		if(clientes.contains(cliente)) {
+			throw new Exception("Usuário não encontrado");
+		}
+		Cliente cli = clientes.get(0);
+		return cli.getTipoUsuario().equals(TipoUsuario.ADMIN);
 	}
 	
 	@RequestMapping("/painel")

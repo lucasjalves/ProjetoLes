@@ -22,9 +22,9 @@
 </div>
 
 <script>
-	function abrirModalSucessoOuFalha(resultado, mensagemSucesso, mensagemFalha, qtdeMensagemAExibir){
+	function abrirModalSucessoOuFalha(resultado, mensagemSucesso, mensagemFalha, qtdeMensagemAExibir, ignorarSucesso, ignorarFalha){
 		$("#textoModal").html("");
-		if(resultado === undefined || resultado == null || resultado.mensagem === undefined){
+		if((resultado === undefined || resultado == null || resultado.mensagem === undefined) && ignorarFalha !== true){
 			$("#tituloModal").text("Falha");
 			if(mensagemFalha === undefined || mensagemFalha == null){
 				$("#textoModal").text("Ocorreu um problema, tente novamente mais tarde!");
@@ -32,9 +32,9 @@
 				$("#textoModal").text(mensagemFalha);
 			}
 			$("#btnAbrirModal").click();
-			return;
+			return false;
 		}
-		if(resultado.mensagem.length > 0){
+		if(resultado.mensagem.length > 0 && ignorarFalha !== true){
 			$("#tituloModal").text("Falha");
 			$.each(resultado.mensagem, function(index, mensagemErro){
 				if(qtdeMensagemAExibir == 1){
@@ -46,13 +46,20 @@
 				}
 			});
 			$("#btnAbrirModal").click();
-			return;
+			return false;
 		}
-		if(resultado.mensagem.length === 0){
+		if(resultado.mensagem.length === 0 && ignorarSucesso !== true){
 			$("#tituloModal").text("Sucesso");
 			$("#textoModal").text(mensagemSucesso);
 			$("#btnAbrirModal").click();
+			return true;
 		}
+	}
+	
+	function abrirModal(titulo, mensagem){
+		$("#tituloModal").text("Sucesso");
+		$("#textoModal").text(mensagemSucesso);
+		$("#btnAbrirModal").click();		
 	}
 
 </script>

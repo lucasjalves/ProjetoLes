@@ -1,29 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <jsp:include page="../header.jsp"></jsp:include>
 <meta charset="ISO-8859-1">
 <script>
-	var listaProdutos = [];
-	var produto={};
-	produto.marca="Sony";
-	produto.modelo="PS4";
-	produto.preco="1.500,00 R$";
-	produto.estoque="100";
-	produto.status="Ativo";
-	listaProdutos.push(produto);
-	listaProdutos = JSON.stringify(listaProdutos);
+	var listaProdutos = ${produtos};
 	$(document).ready(function(){
-		try{
-			listaProdutos = JSON.parse(listaProdutos);
-		}catch(ex){
-			listaProdutos = {};
-		}
 		
 		renderizarTabela(listaProdutos);
+		$('#tabela').DataTable({
+			"searching" : false
+		});
 	});
 	
 	function desativar(id){
@@ -32,10 +22,11 @@
 			return;
 		}
 		$("#idProduto").val(id);
-		$.post("http://localhost:8888/produto/deletar", $("#form").serialize())
-		.done(function(data){
-			renderizarTabela(data.entidades);
-			abrirModalSucessoOuFalha(data, "Produto desativado com sucesso!", "Falha ao desativar o produto", 1);
+		$.post("http://localhost:8888/produto/desativar", $("#form").serialize())
+		.done(function(data){		
+			if(abrirModalSucessoOuFalha(data, "Produto desativado com sucesso!", "Falha ao desativar o produto", 1)){
+				renderizarTabela(data.entidades);
+			}
 		})
 		.fail(function(data){
 			abrirModalSucessoOuFalha(data, "Produto desativado com sucesso!", "Falha ao desativar o produto", 1);
@@ -57,18 +48,59 @@
 	function renderizarTabela(json){
 		$("tbody").html("");
 		$.each(json, function(index, produto){
-			var string = "<tr><th scope='row'>" + produto.marca + "</th>"
+			var string = "<tr><th scope='row'>" + produto.id + "</th>"
+				+ "<td>" + produto.codigoBarras + "</td>" 
 				+ "<td>" + produto.modelo + "</td>" 
-				+ "<td>" + produto.preco + "</td>"
+				+ "<td>" + produto.marca + "</td>" 
+				+ "<td>" + produto.precoVenda + "</td>"
 				+ "<td>" + produto.estoque + "</td>"
-				+ "<td>" + produto.status + "</td>"
-				+ "<td><button type='button' class='btn btn-danger' onclick='desativar("+produto.id+")'>Desativar</button><a href='http://localhost:8888/produto/alteracao' class='btn btn-info'>Alterar</a></td>"
+				+ "<td>" + produto.categoria + "</td>"
+				+ "<td>" + produto.ativo + "</td>"
+				+ "<td><a class='btn-link'onclick='desativar("+produto.id+")' style='color: red;margin-right: 20px;'>X</a><button onclick='alterar("+produto.id+")' class='btn btn-info'>Alterar</button></td>"
 				+ "</tr>";
-				
 				$("tbody").append(string);
 		});		
 	}
 
+	function buscar(){
+		var json = listaProdutos;
+		var atributos = [];
+		$("#busca .busca").each(function(){
+			let valor = $(this).val().replace(/ +?/g, '');
+			if(valor.length > 0){
+				let atributo = $(this).attr("atributo");
+				atributos.push(atributo);
+			}
+		});
+		
+		if(atributos.length > 0){
+			var jsonFiltrado = $.grep(json, function(produto, i){
+				for(let j = 0; j < atributos.length; j++){
+					let atributo = atributos[j];
+					let valor = $("#"+atributo).val().toLowerCase().replace(/\s+/g, '');
+					let valorAtributoProduto = produto[atributo].toString().toLowerCase().replace(/\s+/g, '');
+					if(!valorAtributoProduto.includes(valor)){
+						return false;
+					}
+				}
+				return true;
+			});			
+			
+			remontarTabela(jsonFiltrado);
+		}else{
+			remontarTabela(listaProdutos);
+		}
+
+	}
+	
+	function remontarTabela(json){
+		$('#tabela').DataTable().clear();
+		$('#tabela').DataTable().destroy();
+		renderizarTabela(json);
+		$('#tabela').DataTable({
+			"searching" : false
+		});			
+	}
 </script>
 <title>Consulta de Produtos(Admin)</title>
 </head>
@@ -77,28 +109,75 @@
 	<input type="hidden" name='id' id="idProduto" />
 </form>
 	<div class="container" style="margin-top: 100px;">
-		<form class="form-inline">
-			<div class="form-group mb-3 col-md-4 col-md-offset-4">
-				<label class="sr-only">Filtro</label> 
-				<select class="custom-select" style="width: 100%">
-				  <option selected>Marca</option>
-				  <option value="1">Produto</option>
-				  <option value="2">Status</option>
-				  <option value="3">Estoque</option>
-				</select>
+		<div class="accordion" id="accordionExample" style="margin-bottom: 20px;">
+			<div class="card">
+				<div class="card-header" id="headingOne">
+					<h5 class="mb-0">
+						<button class="btn btn-link" type="button" data-toggle="collapse"
+							data-target="#collapseOne" aria-expanded="true"
+							aria-controls="collapseOne">Buscar</button>
+					</h5>
+				</div>
+
+				<div id="collapseOne" class="collapse show"
+					aria-labelledby="headingOne" data-parent="#accordionExample">
+					<div class="card-body">
+						<form id="busca">
+							<div class="form-row">
+								<div class="col">
+									<label>Modelo</label> 
+									<input type="text" class="form-control busca" placeholder="Modelo" id="modelo" atributo="modelo">
+								</div>
+								<div class="col">
+									<label>Marca</label> 
+									<input type="text" class="form-control busca" placeholder="Marca" id="marca" atributo="marca">
+								</div>
+								<div class="col">
+									<label>Código de barras</label> 
+									<input type="text" class="form-control busca" placeholder="Cod. Barras" id="codigoBarras" atributo="codigoBarras">
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col">
+									<label>ID</label> <input type="text" class="form-control busca" placeholder="ID" id="id" atributo="id">
+								</div>
+								<div class="col">
+									<label>Status</label>
+									 <select class="form-control busca" atributo="ativo" id="ativo">
+										<option selected value="">Selecione...</option>
+										<option value="true">Ativo</option>
+										<option value="false">Inativo</option>
+									</select>
+								</div>
+								<div class="col">
+									<label>Categoria</label> <select class="form-control busca" atributo="categoria" id="categoria">
+										<option selected value="">Selecione...</option>
+										<c:forEach items="${categorias}" var="categoria">
+											<option value="${categoria}">${categoria}</option>
+										</c:forEach>
+									</select>
+								</div>							
+							</div>
+								<div class="form-row" style="margin-top: 20px;">
+									<div class="col">
+										<a href="#" class="btn btn-primary" onclick="buscar()">Buscar</a>
+									</div>								
+								</div>								
+						</form>
+					</div>
+				</div>
 			</div>
-			<div class="form-group mx-sm-4 mb-3 col-md-4 col-md-offset-4">
-				<input type="text" class="form-control" style="width: 100%" placeholder="Digite">
-			</div>
-			<a href="#" class="btn btn-primary mb-3">Buscar</a>
-		</form>
-		<table class="table table-hover">
+		</div>
+		<table id="tabela" class="table table-hover">
 		  <thead>
-		    <tr>
+		    <tr>	
+		      <th scope="col">ID</th>
+		      <th scope="col">Cód. Barras</th>
+		      <th scope="col">Modelo</th>
 		      <th scope="col">Marca</th>
-		      <th scope="col">Produto</th>
-		      <th scope="col">Preço</th>
+		      <th scope="col">Preço de Venda</th>
 		      <th scope="col">Estoque</th>
+		      <th scope="col">Categoria</th>
 		      <th scope="col">Status</th>
 		      <th scope="col">Ações</th>
 		    </tr>
@@ -111,3 +190,5 @@
 	<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>
+
+

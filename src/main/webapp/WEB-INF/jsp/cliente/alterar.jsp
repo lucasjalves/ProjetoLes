@@ -17,6 +17,11 @@
 					abrirModalSucessoOuFalha(data, "Cliente alterado com sucesso!", "Falha ao cadastrar o cliente", 1);
 				});
 		});	
+		
+		$("#cpfCnpj").mask("000.000.000-00");
+		$("#dtNascimento").mask("23/07/1997");
+		$("#genero").val("${cliente.genero}");
+		$("#status").val("${cliente.ativo}");
 	});
 
 </script>
@@ -29,6 +34,7 @@
 			<div class="card-body">
 				<h5 class="card-title">Alterar dados</h5>
 				<form id="form">
+				<input type="hidden" name="cpfCnpj" value="${cliente.cpfCnpj}" >
 				<input type="hidden" name="id" value="${cliente.id}" />
 					<div class="form-group">
 						<label>Nome Completo</label> 
@@ -36,16 +42,30 @@
 					</div>
 					<div class="form-group">
 						<label>CPF/CNPJ</label> 
-						<input type="text" class="form-control" name="cpfCnpj" placeholder="CPF/CNPJ" value="${cliente.cpfCnpj}" disabled>
+						<input type="text" class="form-control"placeholder="CPF/CNPJ" value="${cliente.cpfCnpj}" disabled>
 					</div>													
 					<div class="form-group">
 						<label>Data nascimento</label> 
-						<input type="text" class="form-control" name="dtNascimento" placeholder="DD/MM/YYYY" value="${cliente.dtNascimento}"required>
+						<input type="text" class="form-control" name="dtNascimento" placeholder="DD/MM/YYYY" id="dtNascimento" value="${cliente.dtNascimento}"required>
 					</div>
+				  <div class="form-group">
+				    <label>Gênero</label>
+				    <select class="form-control" id="genero" name="genero">
+				      <option value="M">M</option>
+				      <option value="F">F</option>
+				    </select>
+				  </div>				
 					<div class="form-group">
 						<label>Username</label> 
 						<input type="text" class="form-control" name="username" placeholder="Username" value="${cliente.username}" required>
 					</div>	
+				<div class="form-group">
+				    <label>Status</label>
+				    <select id="status" class="form-control" name="ativo">
+				      <option value="true">Ativo</option>
+				      <option value="false">Inativo</option>
+				    </select>
+				  </div>					
 					<div class="form-group">
 						<label>Senha</label> 
 						<input type="password" class="form-control" name="senha" placeholder="Senha" required>

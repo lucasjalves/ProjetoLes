@@ -8,7 +8,6 @@ import com.github.lucasjalves.projetoles.rns.Resultado;
 
 @Service
 public interface ClienteService {
-
 	public Resultado cadastrar(Cliente cliente);
 	public Resultado consultar(Entidade entidade);
 	public Resultado deletar(Cliente cliente);

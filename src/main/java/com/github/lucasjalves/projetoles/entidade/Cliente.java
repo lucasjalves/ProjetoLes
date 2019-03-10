@@ -1,9 +1,8 @@
 package com.github.lucasjalves.projetoles.entidade;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import com.github.lucasjalves.projetoles.enums.TipoUsuario;
 
 @Entity
 public class Cliente extends Entidade {
@@ -15,6 +14,7 @@ public class Cliente extends Entidade {
 	private String senha;
 	private String genero;
 	private boolean ativo;
+	private TipoUsuario tipoUsuario;
 	
 	public String getGenero() {
 		return genero;
@@ -58,7 +58,42 @@ public class Cliente extends Entidade {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
+	public TipoUsuario getTipoUsuario() {
+		return tipoUsuario;
+	}
+	public void setTipoUsuario(TipoUsuario tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
+	}
 	
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((cpfCnpj == null) ? 0 : cpfCnpj.hashCode());
+		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cliente other = (Cliente) obj;
+		if (cpfCnpj == null) {
+			if (other.cpfCnpj != null)
+				return false;
+		} else if (!cpfCnpj.equals(other.cpfCnpj))
+			return false;
+		if (senha == null) {
+			if (other.senha != null)
+				return false;
+		} else if (!senha.equals(other.senha))
+			return false;
+		return true;
+	}	
 	
 }
