@@ -14,7 +14,7 @@
 			<div class="modal-body" id="textoModal"></div>
 
 			<div class="modal-footer">
-				<button type="button" class="btn btn-info" data-dismiss="modal">Ok</button>
+				<button type="button" class="btn btn-info" data-dismiss="modal" id="btnOkModal">Ok</button>
 			</div>
 
 		</div>
@@ -22,8 +22,9 @@
 </div>
 
 <script>
-	function abrirModalSucessoOuFalha(resultado, mensagemSucesso, mensagemFalha, qtdeMensagemAExibir, ignorarSucesso, ignorarFalha){
+	function abrirModalSucessoOuFalha(resultado, mensagemSucesso, mensagemFalha, qtdeMensagemAExibir, ignorarSucesso, ignorarFalha, onOkFunction){
 		$("#textoModal").html("");
+		$("#btnOkModal").off("onclick");
 		if((resultado === undefined || resultado == null || resultado.mensagem === undefined) && ignorarFalha !== true){
 			$("#tituloModal").text("Falha");
 			if(mensagemFalha === undefined || mensagemFalha == null){
@@ -52,8 +53,14 @@
 			$("#tituloModal").text("Sucesso");
 			$("#textoModal").text(mensagemSucesso);
 			$("#btnAbrirModal").click();
+			if(onOkFunction !== undefined){
+				$("#btnOkModal").on("click",function(){
+					onOkFunction();
+				});
+			}
 			return true;
 		}
+
 	}
 	
 	function abrirModal(titulo, mensagem){

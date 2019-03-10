@@ -10,7 +10,7 @@ import com.github.lucasjalves.projetoles.rns.Resultado;
   public interface ProdutoService {
 	 Resultado cadastrar(Produto produto);
 	 Resultado consultar(Entidade entidade);
-	 Resultado deletar(Produto produto);
-	 Resultado consultarPorId(Produto produto);
+	 Resultado desativar(Long id) throws Exception ;
+	 Resultado consultarPorId(Long id) throws Exception;
 	 Resultado alterar(Produto produto);
 }

@@ -10,7 +10,7 @@ import com.github.lucasjalves.projetoles.rns.Resultado;
 public interface ClienteService {
 	public Resultado cadastrar(Cliente cliente);
 	public Resultado consultar(Entidade entidade);
-	public Resultado deletar(Cliente cliente);
-	public Resultado consultarPorId(Cliente cliente);
+	public Resultado deletar(Long id) throws Exception;
+	public Resultado consultarPorId(String id) throws Exception;
 	public Resultado alterar(Cliente cliente);
 }

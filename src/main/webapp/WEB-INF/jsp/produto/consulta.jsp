@@ -24,9 +24,9 @@
 		$("#idProduto").val(id);
 		$.post("http://localhost:8888/produto/desativar", $("#form").serialize())
 		.done(function(data){		
-			if(abrirModalSucessoOuFalha(data, "Produto desativado com sucesso!", "Falha ao desativar o produto", 1)){
-				renderizarTabela(data.entidades);
-			}
+			abrirModalSucessoOuFalha(data, "Produto desativado com sucesso!", "Falha ao desativar o produto", 1, false,false,function(){
+				window.location.replace("http://localhost:8888/produto/consulta");
+			});
 		})
 		.fail(function(data){
 			abrirModalSucessoOuFalha(data, "Produto desativado com sucesso!", "Falha ao desativar o produto", 1);

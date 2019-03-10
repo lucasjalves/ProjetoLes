@@ -1,5 +1,7 @@
 package com.github.lucasjalves.projetoles.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,20 +27,37 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 
 	@Override
-	public Resultado deletar(Cliente cliente) {
-		return facade.excluir(cliente);
+	public Resultado deletar(Long id) throws Exception {
+		Cliente cliente = new Cliente();
+		cliente.setId(id);
+		Resultado resultado = facade.buscarPorId(cliente);
+		List<Cliente> listaClientes = 
+				(List<Cliente>) resultado.getEntidades();
+		
+		if(listaClientes.isEmpty()) {
+			throw new Exception("Cliente não encontrado!");
+		}
+		
+		Cliente c = listaClientes.get(0);
+		c.setAtivo(false);
+		return facade.alterar(c);
 	}
 
 	@Override
-	public Resultado consultarPorId(Cliente cliente) {
-		return facade.buscarPorId(cliente);
+	public Resultado consultarPorId(String id) throws Exception{
+		Cliente cliente = new Cliente();
+		cliente.setId(Long.parseLong(id));
+		Resultado resultado = facade.buscarPorId(cliente);
+		if(resultado.getEntidades().isEmpty()) {
+			throw new Exception("Cliente não encontrado! ");
+		}
+		return resultado;
 	}
 
 	@Override
 	public Resultado alterar(Cliente cliente) {
 		return facade.alterar(cliente);
 	}
-	
 	
 	
 }

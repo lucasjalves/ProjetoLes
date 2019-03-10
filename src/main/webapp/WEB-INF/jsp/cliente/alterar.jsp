@@ -34,7 +34,6 @@
 			<div class="card-body">
 				<h5 class="card-title">Alterar dados</h5>
 				<form id="form">
-				<input type="hidden" name="cpfCnpj" value="${cliente.cpfCnpj}" >
 				<input type="hidden" name="id" value="${cliente.id}" />
 					<div class="form-group">
 						<label>Nome Completo</label> 
@@ -42,7 +41,7 @@
 					</div>
 					<div class="form-group">
 						<label>CPF/CNPJ</label> 
-						<input type="text" class="form-control"placeholder="CPF/CNPJ" value="${cliente.cpfCnpj}" disabled>
+						<input type="text" class="form-control"placeholder="CPF/CNPJ" name="cpfCnpj" value="${cliente.cpfCnpj}">
 					</div>													
 					<div class="form-group">
 						<label>Data nascimento</label> 
@@ -54,7 +53,11 @@
 				      <option value="M">M</option>
 				      <option value="F">F</option>
 				    </select>
-				  </div>				
+				  </div>
+					<div class="form-group">
+						<label>E-mail</label> 
+						<input type="text" class="form-control" name="email" placeholder="Nome" id="email" value="${cliente.email}" required>
+					</div>					  				
 					<div class="form-group">
 						<label>Username</label> 
 						<input type="text" class="form-control" name="username" placeholder="Username" value="${cliente.username}" required>

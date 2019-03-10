@@ -2,18 +2,15 @@ package com.github.lucasjalves.projetoles.facade.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
 import com.github.lucasjalves.projetoles.dao.DAO;
-import com.github.lucasjalves.projetoles.dao.impl.DAOImpl;
 import com.github.lucasjalves.projetoles.entidade.Entidade;
 import com.github.lucasjalves.projetoles.facade.Facade;
 import com.github.lucasjalves.projetoles.helper.ProcessarRegraNegocioHelper;
-import com.github.lucasjalves.projetoles.helper.RepositoryHelper;
-import com.github.lucasjalves.projetoles.rns.Mensagem;
 import com.github.lucasjalves.projetoles.rns.Resultado;
 
 @Component
@@ -77,6 +74,18 @@ final public class FacadeImpl implements Facade {
 			resultado.setEntidades(lista);
 		}
 		return resultado;
+	}
+	
+	@Override
+	public Resultado buscarPorFiltro(Entidade entidade, List<Predicate<? extends Entidade>> predicados) {
+		Resultado resultado = process(entidade, "CONSULTAR");
+		if(resultado.getMensagem().size() == 0) {
+			List<Entidade> lista = 
+					dao.buscarPorFiltro(entidade, predicados);
+			
+			resultado.setEntidades(lista);
+		}
+		return resultado;		
 	}
 	
 	private Resultado process(Entidade entidade, String operacao){

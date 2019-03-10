@@ -62,7 +62,7 @@ public class ProdutoController extends ControllerBase{
 	
 	@RequestMapping("/produto/alteracao")
 	public ModelAndView paginaAlteracaoProduto(ModelAndView modelView,@RequestParam Long id) throws Exception {
-		Produto produto = buscarProduto(id);
+		Produto produto = (Produto) service.consultarPorId(id).getEntidades().get(0);
 		modelView.setViewName("produto/alterar");
 		modelView.addObject("categorias", Categorias.values());
 		modelView.addObject("produto", produto);
@@ -73,7 +73,7 @@ public class ProdutoController extends ControllerBase{
 	@RequestMapping("/produto/detalhe")
 	public ModelAndView paginaDetalheProduto(@RequestParam Long id) throws Exception {
 		ModelAndView modelView = new ModelAndView();
-		Produto produto = buscarProduto(id);
+		Produto produto = (Produto) service.consultarPorId(id).getEntidades().get(0);
 		httpSession.setAttribute("produto", produto);
 		modelView.addObject("produto", produto);
 		modelView.setViewName("produto/detalhe");
@@ -96,24 +96,7 @@ public class ProdutoController extends ControllerBase{
 	@ResponseBody
 	@RequestMapping("/produto/desativar")
 	public Resultado desativar(@RequestParam Long id) throws Exception {
-		Produto produto = buscarProduto(id);
-		produto.setAtivo(false);
-		Resultado resultado = service.alterar(produto);
-		if(resultado.getMensagem().isEmpty()) {
-			return service.consultar(new Produto());
-		}
-		return resultado;
+		return service.desativar(id);
 	}
 	
-	private Produto buscarProduto(Long id) throws Exception {
-		Produto produto = new Produto();
-		produto.setId(id);
-
-		List<Produto> produtos = (List<Produto>) service.consultarPorId(produto).getEntidades();
-		if(produtos.size() == 0) {
-			throw new Exception("Produto não encontrado");
-		}
-		
-		return produtos.get(0);
-	}
 }

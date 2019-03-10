@@ -1,5 +1,7 @@
 package com.github.lucasjalves.projetoles.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,14 +28,38 @@ public class ProdutoServiceImpl implements ProdutoService{
 	}
 
 	@Override
-	public Resultado deletar(Produto produto) {
-		// TODO Auto-generated method stub
-		return null;
+	public Resultado desativar(Long id) throws Exception   {
+		Produto produto = new Produto();
+		produto.setId(id);
+		
+		Resultado resultado = facade.buscarPorId(produto);
+		if(resultado.getEntidades().isEmpty()){
+			throw new Exception("Produto não encontrado");
+		}
+		if(resultado.getMensagem().isEmpty()) {
+			produto = (Produto) resultado.getEntidades().get(0);
+			produto.setAtivo(false);
+			return facade.alterar(produto);
+		}
+		
+		return resultado;
 	}
 
 	@Override
-	public Resultado consultarPorId(Produto produto) {
-		return facade.buscarPorId(produto);
+	public Resultado consultarPorId(Long id) throws Exception {
+		Produto produto = new Produto();
+		produto.setId(id);
+		Resultado resultado = 
+				facade.buscarPorId(produto);
+		
+		List<Produto> produtos = 
+				(List<Produto>) resultado.getEntidades();
+		
+		if(produtos.isEmpty()) {
+			throw new Exception("Produto não encontrado");
+		}
+		
+		return resultado;
 	}
 
 	@Override

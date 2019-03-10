@@ -51,18 +51,19 @@ public class ClienteController {
 	@RequestMapping("/cliente/deletar")
 	@ResponseBody
 	public Resultado deletarCliente(@ModelAttribute Cliente cliente) {
-		service.deletar(cliente);
-		return service.consultar(new Cliente());
+		try {
+			return service.deletar(cliente.getId());
+		} catch (Exception e) {
+			return new Resultado(e.getMessage());
+		}
 	}
 	
 	@RequestMapping("/cliente/alteracao")
-	public ModelAndView paginaAlterarCliente(@RequestParam String id) {
+	public ModelAndView paginaAlterarCliente(@RequestParam String id) throws Exception {
 		ModelAndView modelView = new ModelAndView();
 		modelView.setViewName("cliente/alterar");
-		Cliente cliente = new Cliente();
-		cliente.setId(Long.parseLong(id));
-		Cliente clienteSelecionado = (Cliente) service.consultarPorId(cliente).getEntidades().get(0);
-		modelView.addObject("cliente", clienteSelecionado);
+		Cliente cliente = (Cliente) service.consultarPorId(id).getEntidades().get(0);
+		modelView.addObject("cliente", cliente);
 		
 		return modelView;
 	}

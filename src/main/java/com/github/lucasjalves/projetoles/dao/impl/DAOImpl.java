@@ -2,6 +2,8 @@ package com.github.lucasjalves.projetoles.dao.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -47,6 +49,20 @@ final public class DAOImpl implements DAO {
 	public Entidade buscarPorId(Entidade entidade) {
 		Optional<? extends Entidade> lista = (Optional<? extends Entidade>) repositoryHelper.getRepository(entidade).findById(entidade.getId());
 		return lista.get();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Entidade> buscarPorFiltro(Entidade entidade, List<Predicate<? extends Entidade>> listaPredicados){
+		List<Entidade> listaEntidades = (List<Entidade>) repositoryHelper.getRepository(entidade).findAll();
+		for(Predicate predicate: listaPredicados) {
+			listaEntidades = (List<Entidade>) listaEntidades.stream()
+					.filter(predicate)
+					.collect(Collectors.toList());
+			
+		}
+		
+		return listaEntidades;
 	}
 
 

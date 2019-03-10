@@ -31,15 +31,14 @@ public class CarrinhoController extends ControllerBase{
 	
 	@ResponseBody
 	@RequestMapping("/adicionar")
-	public Resultado adicionar(@ModelAttribute Produto produto) {
+	public Resultado adicionar(@ModelAttribute Produto produto) throws Exception {
 		Integer quantidade = produto.getQuantidadeSelecionada() + getQuantidadeNoCarrinho(produto);
 		
-		Produto produtoCadastrado = (Produto) service.consultarPorId(produto)
-				.getEntidades()
-				.get(0);
+		Produto produtoCadastrado = 
+				(Produto) service.consultarPorId(produto.getId()).getEntidades().get(0);
 		
 		produtoCadastrado.setQuantidadeSelecionada(quantidade);
-		Resultado resultado = service.consultarPorId(produtoCadastrado);
+		Resultado resultado = service.consultarPorId(produtoCadastrado.getId());
 		
 		if(resultado.getMensagem().isEmpty()) {
 			adicionarItemCarrinho(produtoCadastrado, quantidade);

@@ -12,6 +12,7 @@ public class Cliente extends Entidade {
 	private String dtNascimento;
 	private String username;
 	private String senha;
+	private String email;
 	private String genero;
 	private boolean ativo;
 	private TipoUsuario tipoUsuario;
@@ -65,35 +66,12 @@ public class Cliente extends Entidade {
 		this.tipoUsuario = tipoUsuario;
 	}
 	
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((cpfCnpj == null) ? 0 : cpfCnpj.hashCode());
-		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
-		return result;
+	public String getEmail() {
+		return email;
 	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Cliente other = (Cliente) obj;
-		if (cpfCnpj == null) {
-			if (other.cpfCnpj != null)
-				return false;
-		} else if (!cpfCnpj.equals(other.cpfCnpj))
-			return false;
-		if (senha == null) {
-			if (other.senha != null)
-				return false;
-		} else if (!senha.equals(other.senha))
-			return false;
-		return true;
-	}	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	
 }
