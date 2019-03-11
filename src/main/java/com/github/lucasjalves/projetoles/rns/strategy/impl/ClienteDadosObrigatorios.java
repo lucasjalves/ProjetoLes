@@ -19,7 +19,7 @@ public class ClienteDadosObrigatorios implements Strategy<Cliente> {
 			mensagem.add(new Mensagem("CPF/CNPJ vazio!"));
 		}
 		
-		if(StringUtils.isNullOrEmpty(entidade.getDtNascimento())) {
+		if(entidade.getDtNascimento() == null) {
 			mensagem.add(new Mensagem("Data de nascimento vazia!"));
 		}
 		if(StringUtils.isNullOrEmpty(entidade.getNome())) {

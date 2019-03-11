@@ -7,22 +7,24 @@
 <jsp:include page="../header.jsp"></jsp:include>
 <meta charset="ISO-8859-1">
 <script>
-	var listaCupons = [];
-	var cupom={};
-	cupom.codigo="AABB11";
-	cupom.dtVencimento="23/07/2019";
-	cupom.desconto="100%";
-	cupom.status="Ativo";
-	listaCupons.push(cupom);
-	listaCupons = JSON.stringify(listaCupons);
+	var listaCupons = ${cupons};
+
+	function formatarValoresLista(json){
+		$.each(json, function(index, cupom){
+			dataVencimento = cupom.dataVencimento.split("-").reverse().join("/");
+			cupom.dataVencimento = dataVencimento;
+			valor = cupom.valorDesconto.toString()
+			valor = parseFloat(valor).toFixed(2);
+			cupom.valorDesconto = valor.replace(",",".") + " %";
+		});
+	}
 	$(document).ready(function(){
-		try{
-			listaCupons = JSON.parse(listaCupons);
-		}catch(ex){
-			listaCupons = {};
-		}
-		
+		formatarValoresLista(listaCupons);
 		renderizarTabela(listaCupons);
+		$('#tabela').DataTable({
+			"searching" : false
+		});
+		$("#dataVencimento").mask("00/00/0000");
 	});
 	
 	function desativar(id){
@@ -56,17 +58,57 @@
 	function renderizarTabela(json){
 		$("tbody").html("");
 		$.each(json, function(index, cupom){
-			var string = "<tr><th scope='row'>" + cupom.codigo + "</th>"
-				+ "<td>" + cupom.dtVencimento + "</td>"
-				+ "<td>" + cupom.desconto + "</td>"
+			var string = "<tr><th scope='row'>" + cupom.id + "</th>"
+				+ "<td>" + cupom.codigo + "</td>"
+				+ "<td>" + cupom.dataVencimento + "</td>"
+				+ "<td>" + cupom.valorDesconto + "</td>"
 				+ "<td>" + cupom.status + "</td>"
-				+ "<td><button type='button' class='btn btn-danger' onclick='desativar("+cupom.id+")'>Desativar</button><a href='http://localhost:8888/cupom/alteracao' class='btn btn-info'>Alterar</a></td>"
+				+ "<td><a class='btn-link' onclick='desativar("+cupom.id+")' style='color: red;margin-right: 20px;' >X</a><a href='#' onclick='alterar("+cupom.id+")' class='btn btn-info'>Alterar</a></td>"
 				+ "</tr>";
 				
 				$("tbody").append(string);
 		});		
 	}
+	
+	function buscar(){
+		var json = listaCupons;
+		var atributos = [];
+		$("#busca .busca").each(function(){
+			let valor = $(this).val().replace(/ +?/g, '');
+			if(valor.length > 0){
+				let atributo = $(this).attr("atributo");
+				atributos.push(atributo);
+			}
+		});
+		
+		if(atributos.length > 0){
+			var jsonFiltrado = $.grep(json, function(cupom, i){
+				for(let j = 0; j < atributos.length; j++){
+					let atributo = atributos[j];
+					let valor = $("#"+atributo).val().toLowerCase().replace(/\s+/g, '');
+					let valorAtributoCupom = cupom[atributo].toString().toLowerCase().replace(/\s+/g, '');
+					if(!valorAtributoCupom.includes(valor)){
+						return false;
+					}
+				}
+				return true;
+			});			
+			
+			remontarTabela(jsonFiltrado);
+		}else{
+			remontarTabela(listaCupons);
+		}
 
+	}
+	
+	function remontarTabela(json){
+		$('#tabela').DataTable().clear();
+		$('#tabela').DataTable().destroy();
+		renderizarTabela(json);
+		$('#tabela').DataTable({
+			"searching" : false
+		});			
+	}
 </script>
 <title>Consulta de Cupons(Admin)</title>
 </head>
@@ -75,24 +117,60 @@
 	<input type="hidden" name='id' id="idCupom" />
 </form>
 	<div class="container" style="margin-top: 100px;">
-		<form class="form-inline">
-			<div class="form-group mb-3 col-md-4 col-md-offset-4">
-				<label class="sr-only">Filtro</label> 
-				<select class="custom-select" style="width: 100%">
-				  <option value="1">Código</option>
-				  <option value="2">Data vencimento</option>
-				  <option value="3">Desconto</option>
-				  <option value="4">Status</option>
-				</select>
+		<div class="accordion" id="accordionExample" style="margin-bottom: 20px;">
+			<div class="card">
+				<div class="card-header" id="headingOne">
+					<h5 class="mb-0">
+						<button class="btn btn-link" type="button" data-toggle="collapse"
+							data-target="#collapseOne" aria-expanded="true"
+							aria-controls="collapseOne">Buscar</button>
+					</h5>
+				</div>
+
+				<div id="collapseOne" class="collapse show"
+					aria-labelledby="headingOne" data-parent="#accordionExample">
+					<div class="card-body">
+						<form id="busca">
+							<div class="form-row">
+								<div class="col">
+									<label>ID</label> 
+									<input type="text" class="form-control busca" placeholder="ID" id="id" atributo="id">
+								</div>
+								<div class="col">
+									<label>Código</label> 
+									<input type="text" class="form-control busca" placeholder="Código" id="codigo" atributo="codigo">
+								</div>
+
+							</div>
+							<div class="form-row">
+								<div class="col">
+									<label>Vencimento</label> 
+									<input type="text" class="form-control busca" placeholder="Data vencimento" id="dataVencimento" atributo="dataVencimento">
+								</div>	
+								<div class="col">
+									<label>Status</label>
+									 <select class="form-control busca" atributo="status" id="status">
+										<option selected value="">Selecione...</option>
+										<option value="true">Ativo</option>
+										<option value="false">Inativo</option>
+									</select>
+								</div>																					
+							</div>
+					
+							<div class="form-row" style="margin-top: 20px;">
+								<div class="col">
+									<a href="#" class="btn btn-primary" onclick="buscar()">Buscar</a>
+								</div>								
+							</div>								
+						</form>
+					</div>
+				</div>
 			</div>
-			<div class="form-group mx-sm-4 mb-3 col-md-4 col-md-offset-4">
-				<input type="text" class="form-control" style="width: 100%" placeholder="Digite">
-			</div>
-			<a href="#" class="btn btn-primary mb-3">Buscar</a>
-		</form>
-		<table class="table table-hover">
+		</div>		
+		<table id="tabela" class="table table-hover">
 		  <thead>
 		    <tr>
+		   	  <th scope="col">ID</th>
 		      <th scope="col">Código</th>
 		      <th scope="col">Data vencimento</th>
 		      <th scope="col">Desconto</th>

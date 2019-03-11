@@ -41,7 +41,7 @@
 					</div>
 					<div class="form-group">
 						<label>CPF/CNPJ</label> 
-						<input type="text" class="form-control"placeholder="CPF/CNPJ" name="cpfCnpj" value="${cliente.cpfCnpj}">
+						<input type="text" class="form-control"placeholder="CPF/CNPJ" id="cpfCnpj" name="cpfCnpj" value="${cliente.cpfCnpj}">
 					</div>													
 					<div class="form-group">
 						<label>Data nascimento</label> 

@@ -1,6 +1,10 @@
 package com.github.lucasjalves.projetoles.entidade;
 
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.github.lucasjalves.projetoles.enums.TipoUsuario;
 
@@ -9,7 +13,9 @@ public class Cliente extends Entidade {
 
 	private String cpfCnpj;
 	private String nome;
-	private String dtNascimento;
+	
+	@DateTimeFormat(pattern="dd/MM/yyyy")
+	private LocalDate dtNascimento;
 	private String username;
 	private String senha;
 	private String email;
@@ -41,10 +47,10 @@ public class Cliente extends Entidade {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getDtNascimento() {
+	public LocalDate getDtNascimento() {
 		return dtNascimento;
 	}
-	public void setDtNascimento(String dtNascimento) {
+	public void setDtNascimento(LocalDate dtNascimento) {
 		this.dtNascimento = dtNascimento;
 	}
 	public String getUsername() {
