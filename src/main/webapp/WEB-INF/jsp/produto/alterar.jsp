@@ -12,7 +12,7 @@
 		$("#btnAlterar").on("click", function(){
 			$.post("http://localhost:8888/produto/alterar", $("#form").serialize())
 				.done(function(data){
-					abrirModalSucessoOuFalha(data, "Produto alterado com sucesso!", "Falha ao alterar o produto", 1);
+					abrirModalSucessoOuFalha(data, "Produto alterado com sucesso!", "Falha ao alterar o produto", data.mensagem.length);
 				})
 				.fail(function(data){
 					abrirModalSucessoOuFalha(data, "Produto alterado com sucesso!", "Falha ao alterar o produto", 1);

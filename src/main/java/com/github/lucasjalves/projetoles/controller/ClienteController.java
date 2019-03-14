@@ -1,7 +1,6 @@
 package com.github.lucasjalves.projetoles.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,14 +14,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.lucasjalves.projetoles.entidade.Cliente;
 import com.github.lucasjalves.projetoles.enums.TipoUsuario;
+import com.github.lucasjalves.projetoles.facade.Facade;
 import com.github.lucasjalves.projetoles.rns.Resultado;
-import com.github.lucasjalves.projetoles.service.ClienteService;
-
+@SuppressWarnings("unchecked")
 @Controller
 public class ClienteController {
 
 	@Autowired
-	ClienteService service;
+	private Facade facade;
 	
 	@Autowired
 	ObjectMapper mapper;
@@ -37,13 +36,14 @@ public class ClienteController {
 	@ResponseBody
 	public Resultado cadastrarCliente(@ModelAttribute Cliente cliente) {
 		cliente.setTipoUsuario(TipoUsuario.ADMIN);
-		return service.cadastrar(cliente);
+		return facade.salvar(cliente);
 	}
 	
 	@RequestMapping("/cliente/consulta")
 	public ModelAndView paginaConsultaCliente(ModelAndView modelView) throws JsonProcessingException {
 		modelView.setViewName("cliente/consulta");
-		List<Cliente> listaTodosClientes = (List<Cliente>) service.consultar(new Cliente()).getEntidades();
+		
+		List<Cliente> listaTodosClientes = (List<Cliente>) facade.consultar(new Cliente()).getEntidades();
 		modelView.addObject("listaClientes", mapper.writeValueAsString(listaTodosClientes));
 		return modelView;
 	}
@@ -51,18 +51,16 @@ public class ClienteController {
 	@RequestMapping("/cliente/deletar")
 	@ResponseBody
 	public Resultado deletarCliente(@ModelAttribute Cliente cliente) {
-		try {
-			return service.deletar(cliente.getId());
-		} catch (Exception e) {
-			return new Resultado(e.getMessage());
-		}
+		Cliente c = (Cliente) facade.consultar(cliente).getEntidades().get(0);
+		c.setAtivo(false);
+		return facade.alterar(c);
 	}
 	
 	@RequestMapping("/cliente/alteracao")
-	public ModelAndView paginaAlterarCliente(@RequestParam String id) throws Exception {
+	public ModelAndView paginaAlterarCliente(@RequestParam Long id) throws Exception {
 		ModelAndView modelView = new ModelAndView();
 		modelView.setViewName("cliente/alterar");
-		Cliente cliente = (Cliente) service.consultarPorId(id).getEntidades().get(0);
+		Cliente cliente = (Cliente) facade.consultar(new Cliente().withId(id)).getEntidades().get(0);
 		modelView.addObject("cliente", cliente);
 		
 		return modelView;
@@ -71,7 +69,7 @@ public class ClienteController {
 	@RequestMapping("/cliente/alterar")
 	@ResponseBody
 	public Resultado alterarCliente(@ModelAttribute Cliente cliente) {
-		return service.alterar(cliente);
+		return facade.alterar(cliente);
 	}	
 	
 	@RequestMapping("/cliente/dados")
@@ -96,11 +94,8 @@ public class ClienteController {
 	@RequestMapping("/cliente/efetuarLogin")
 	public Boolean login(@ModelAttribute Cliente cliente) throws Exception {
 		List<Cliente> clientes = 
-				(List<Cliente>) service.consultar(cliente).getEntidades();
+				(List<Cliente>) facade.consultar(cliente).getEntidades();
 		
-		if(clientes.contains(cliente)) {
-			throw new Exception("Usuário não encontrado");
-		}
 		Cliente cli = clientes.get(0);
 		return cli.getTipoUsuario().equals(TipoUsuario.ADMIN);
 	}

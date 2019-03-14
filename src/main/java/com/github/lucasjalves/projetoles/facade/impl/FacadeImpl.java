@@ -1,100 +1,159 @@
 package com.github.lucasjalves.projetoles.facade.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.github.lucasjalves.projetoles.dao.DAO;
+import com.github.lucasjalves.projetoles.dao.impl.ClienteDAO;
+import com.github.lucasjalves.projetoles.dao.impl.CupomDAO;
+import com.github.lucasjalves.projetoles.dao.impl.ProdutoDAO;
+import com.github.lucasjalves.projetoles.entidade.Cliente;
+import com.github.lucasjalves.projetoles.entidade.Cupom;
 import com.github.lucasjalves.projetoles.entidade.Entidade;
+import com.github.lucasjalves.projetoles.entidade.Produto;
 import com.github.lucasjalves.projetoles.facade.Facade;
 import com.github.lucasjalves.projetoles.helper.ProcessarRegraNegocioHelper;
 import com.github.lucasjalves.projetoles.rns.Resultado;
+import com.github.lucasjalves.projetoles.rns.strategy.Strategy;
+import com.github.lucasjalves.projetoles.rns.strategy.impl.ClienteDadosObrigatorios;
+import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosCupom;
+import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosProduto;
+import com.github.lucasjalves.projetoles.rns.strategy.impl.EntidadeDadoObrigatorio;
+import com.github.lucasjalves.projetoles.rns.strategy.impl.QuantidadeEstoqueProduto;
 
 @Component
 final public class FacadeImpl implements Facade {
 
-	@Autowired
 	private ProcessarRegraNegocioHelper regraNegocioHelper;
 	
-	@Autowired
-	private DAO dao;
+	private Map<String, Map<String, List<Strategy>>> rns = 
+			new HashMap<>();
 	
+	private Map<String, DAO> daos = new HashMap<>();
+	
+	@Autowired
+	private ClienteDAO clienteDAO;
+	
+	@Autowired
+	private ProdutoDAO produtoDAO;
+	
+	@Autowired
+	private CupomDAO cupomDAO;
+	@PostConstruct
+	public void setUpRns() {
+		
+		Map<String,List<Strategy>> mapaStrategyProduto = new HashMap<>();
+		
+		
+		List<Strategy> rnsProduto =new ArrayList<>();
+		List<Strategy> rnsProdutoAlterar =new ArrayList<>();
+		List<Strategy> rnsProdutoConsulta = new ArrayList<>();
+		rnsProduto.add(new DadosObrigatoriosProduto());
+		rnsProdutoAlterar.add(new DadosObrigatoriosProduto());
+		rnsProdutoAlterar.add(new EntidadeDadoObrigatorio());
+		rnsProdutoConsulta.add(new QuantidadeEstoqueProduto());
+		mapaStrategyProduto.put("SALVAR", rnsProduto);
+		mapaStrategyProduto.put("ALTERAR", rnsProdutoAlterar);
+		mapaStrategyProduto.put("CONSULTAR", rnsProdutoConsulta);
+		rns.put(Produto.class.getName(), mapaStrategyProduto);
+		
+		
+		Map<String,List<Strategy>> mapaStrategyCliente = new HashMap<>();
+		List<Strategy> rnsCliente = new ArrayList<>();
+		List<Strategy> rnsClienteAlterar = new ArrayList<>();
+		
+		rnsCliente.add(new ClienteDadosObrigatorios());
+		rnsClienteAlterar.add(new EntidadeDadoObrigatorio());
+		rnsClienteAlterar.add(new ClienteDadosObrigatorios());
+		
+		mapaStrategyCliente.put("SALVAR", rnsCliente);
+		mapaStrategyCliente.put("ALTERAR", rnsClienteAlterar);
+		rns.put(Cliente.class.getName(), mapaStrategyCliente);
+		
+		
+		Map<String, List<Strategy>> mapaStrategyCoupom = new HashMap<>();
+		List<Strategy> rnsCupom = new ArrayList<>();
+		List<Strategy> rnsCupomAlterar = new ArrayList<>();
+		
+		rnsCupom.add(new DadosObrigatoriosCupom());	
+		rnsCupomAlterar.add(new DadosObrigatoriosCupom());
+		rnsCupomAlterar.add(new EntidadeDadoObrigatorio());
+		
+		mapaStrategyCoupom.put("SALVAR", rnsCupom);
+		mapaStrategyCoupom.put("ALTERAR", rnsCupomAlterar);
+		
+		rns.put(Cupom.class.getName(), mapaStrategyCoupom);
+		
+		daos.put(Cliente.class.getName(), clienteDAO);
+		daos.put(Produto.class.getName(), produtoDAO);
+		daos.put(Cupom.class.getName(), cupomDAO);
+	}
 	@Override
 	public Resultado salvar(Entidade entidade) {
-		Resultado resultado = process(entidade, "SALVAR");
-		if(resultado.getMensagem().size() == 0) {
-			List<Entidade> lista = new ArrayList<>();
-			lista.add(dao.salvar(entidade));
-			resultado.setEntidades(lista);
+		Resultado resultado = new Resultado();	
+		List<String> mensagens = processar(entidade, "SALVAR");
+		resultado.setMensagem(mensagens);
+		if(mensagens.isEmpty()) {
+			daos.get(entidade.getClass().getName()).salvar(entidade);
 		}
 		return resultado;
 	}
 
 	@Override
-	public Resultado buscar(Entidade entidade) {
-		Resultado resultado = process(entidade, "CONSULTAR");
-		if(resultado.getMensagem().size() == 0) {
-			resultado.setEntidades(dao.buscar(entidade));
+	public Resultado consultar(Entidade entidade) {
+		Resultado resultado = new Resultado();	
+		List<String> mensagens = processar(entidade, "CONSULTAR");
+		resultado.setMensagem(mensagens);
+		if(mensagens.isEmpty()) {
+			resultado.setEntidades(daos.get(entidade.getClass().getName()).buscar(entidade));
 		}
+		
 		return resultado;
 	}
 
 	@Override
 	public Resultado alterar(Entidade entidade) {
-		Resultado resultado = process(entidade, "ALTERAR");
-		if(resultado.getMensagem().size() == 0) {
-			List<Entidade> lista = new ArrayList<>();
-			lista.add(dao.alterar(entidade));
-			resultado.setEntidades(lista);	
+		Resultado resultado = new Resultado();	
+		List<String> mensagens = processar(entidade, "ALTERAR");
+		resultado.setMensagem(mensagens);
+		if(mensagens.isEmpty()) {
+			daos.get(entidade.getClass().getName()).salvar(entidade);
 		}
 		return resultado;
 	}
 
 	@Override
 	public Resultado excluir(Entidade entidade) {
-		Resultado resultado = process(entidade, "EXCLUIR");
-		if(resultado.getMensagem().size() == 0) {
-			List<Entidade> lista = new ArrayList<>();
-			lista.add(dao.excluir(entidade));
-			resultado.setEntidades(lista);
-		}		
-		return resultado;
-	}
-
-	@Override
-	public Resultado buscarPorId(Entidade entidade) {
-		Resultado resultado = process(entidade, "CONSULTAR");
-		if(resultado.getMensagem().size() == 0) {
-			Entidade e = dao.buscarPorId(entidade);
-			ArrayList<Entidade> lista = new ArrayList<>();
-			lista.add(e);
-			resultado.setEntidades(lista);
+		Resultado resultado = new Resultado();	
+		List<String> mensagens = processar(entidade, "EXCLUIR");
+		resultado.setMensagem(mensagens);
+		if(mensagens.isEmpty()) {
+			daos.get(entidade.getClass().getName()).excluir(entidade);
 		}
 		return resultado;
 	}
-	
-	@Override
-	public Resultado buscarPorFiltro(Entidade entidade, List<Predicate<? extends Entidade>> predicados) {
-		Resultado resultado = process(entidade, "CONSULTAR");
-		if(resultado.getMensagem().size() == 0) {
-			List<Entidade> lista = 
-					dao.buscarPorFiltro(entidade, predicados);
-			
-			resultado.setEntidades(lista);
+
+	private List<String> processar(Entidade entidade, String operacao) {
+		List<String> mensagens = new ArrayList<>();
+		Map<String, List<Strategy>> rnsEntidade = 
+				rns.get(entidade.getClass().getName());
+		
+		List<Strategy> listaRns = rnsEntidade.get(operacao);
+		if(listaRns == null) {
+			return mensagens;
 		}
-		return resultado;		
+		for(Strategy strategy: listaRns) {
+			mensagens.addAll(strategy.processar(entidade));
+		}
+		
+		return mensagens;
 	}
-	
-	private Resultado process(Entidade entidade, String operacao){
-		Resultado resultado = new Resultado();
-		resultado.setMensagem(regraNegocioHelper.processarRegraNegocio(entidade, operacao));
-		return resultado;
-	}
-
-
-	
 
 }

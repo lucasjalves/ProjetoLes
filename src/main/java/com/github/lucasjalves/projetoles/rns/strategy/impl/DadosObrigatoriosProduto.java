@@ -3,62 +3,63 @@ package com.github.lucasjalves.projetoles.rns.strategy.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.lucasjalves.projetoles.annotation.RegraNegocio;
+import com.github.lucasjalves.projetoles.entidade.Entidade;
 import com.github.lucasjalves.projetoles.entidade.Produto;
-import com.github.lucasjalves.projetoles.rns.Mensagem;
 import com.github.lucasjalves.projetoles.rns.strategy.Strategy;
 import com.github.lucasjalves.projetoles.util.StringUtils;
 
-@RegraNegocio(classe=Produto.class, operacao={"SALVAR", "ALTERAR"})
-public class DadosObrigatoriosProduto implements Strategy<Produto>{
+public class DadosObrigatoriosProduto implements Strategy{
 
-	private List<Mensagem> mensagens = new ArrayList<>();
+	
 	@Override
-	public List<Mensagem> processar(Produto entidade) {
+	public List<String> processar(Entidade produto) {
+		List<String> mensagens = new ArrayList<>();
+		Produto entidade = (Produto)produto;
+		
 		if(StringUtils.isNullOrEmpty(entidade.getNome())) {
-			mensagens.add(new Mensagem("Nome vazia!"));
+			mensagens.add("Nome vazio!");
 		}
 		if(StringUtils.isNullOrEmpty(entidade.getAltura())) {
-			mensagens.add(new Mensagem("Altura vazia!"));
+			mensagens.add("Altura vazia!");
 		}
 		if(StringUtils.isNullOrEmpty(entidade.getCodigoBarras())) {
-			mensagens.add(new Mensagem("Codigo de barras vazio!"));
+			mensagens.add("Codigo de barras vazio!");
 		}
 		if(StringUtils.isNullOrEmpty(entidade.getComprimento())) {
-			mensagens.add(new Mensagem("Comprimento vazio!"));
+			mensagens.add("Comprimento vazio!");
 		}		
 		if(StringUtils.isNullOrEmpty(entidade.getConteudoEmbalagem())) {
-			mensagens.add(new Mensagem("Conteudo embalagem vazio!"));
+			mensagens.add("Conteudo embalagem vazio!");
 		}		
 		if(StringUtils.isNullOrEmpty(entidade.getDescricao())) {
-			mensagens.add(new Mensagem("Descrição vazia!"));
+			mensagens.add("Descrição vazia!");
 		}
 		if(StringUtils.isNullOrEmpty(entidade.getEspecificacoes())) {
-			mensagens.add(new Mensagem("Especificações vazio!"));
+			mensagens.add("Especificações vazio!");
 		}	
 		if(StringUtils.isNullOrEmpty(entidade.getLargura())) {
-			mensagens.add(new Mensagem("Largura vazia!"));
+			mensagens.add("Largura vazia!");
 		}	
 		if(StringUtils.isNullOrEmpty(entidade.getMarca())) {
-			mensagens.add(new Mensagem("Marca vazio!"));
+			mensagens.add("Marca vazio!");
 		}			
 		if(StringUtils.isNullOrEmpty(entidade.getModelo())) {
-			mensagens.add(new Mensagem("Modelo vazio!"));
+			mensagens.add("Modelo vazio!");
 		}			
 		if(StringUtils.isNullOrEmpty(entidade.getPeso())) {
-			mensagens.add(new Mensagem("Peso vazia!"));
+			mensagens.add("Peso vazia!");
 		}			
 		if(StringUtils.isNullOrEmpty(entidade.getPrecoCompra())) {
-			mensagens.add(new Mensagem("Preco compra vazio!"));
+			mensagens.add("Preco compra vazio!");
 		}	
 		if(StringUtils.isNullOrEmpty(entidade.getPrecoVenda())) {
-			mensagens.add(new Mensagem("Preco venda vazia!"));
+			mensagens.add("Preco venda vazia!");
 		}
 		if(entidade.getCategoria() == null) {
-			mensagens.add(new Mensagem("Categoria vazia!"));
+			mensagens.add("Categoria vazia!");
 		}	
 		if(entidade.getEstoque() == null) {
-			mensagens.add(new Mensagem("Estoque vazio!"));
+			mensagens.add("Estoque vazio!");
 		}
 		return mensagens;
 	}

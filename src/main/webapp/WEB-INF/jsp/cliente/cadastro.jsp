@@ -11,7 +11,7 @@
 		$("#btnCadastrar").on("click", function(){
 			$.post("http://localhost:8888/cliente/cadastrar", $("#form").serialize())
 				.done(function(data){
-					abrirModalSucessoOuFalha(data, "Cliente cadastrado com sucesso!", "Falha ao cadastrar o cliente", 1);
+					abrirModalSucessoOuFalha(data, "Cliente cadastrado com sucesso!", "Falha ao cadastrar o cliente", data.mensagem.length);
 				})
 				.fail(function(data){
 					abrirModalSucessoOuFalha(data, "Cliente cadastrado com sucesso!", "Falha ao cadastrar o cliente", 1);

@@ -1,7 +1,5 @@
 package com.github.lucasjalves.projetoles.entidade;
 
-import java.time.LocalDate;
-
 import javax.persistence.Entity;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,24 +13,28 @@ public class Cliente extends Entidade {
 	private String nome;
 	
 	@DateTimeFormat(pattern="dd/MM/yyyy")
-	private LocalDate dtNascimento;
+	private String dtNascimento;
 	private String username;
 	private String senha;
 	private String email;
 	private String genero;
-	private boolean ativo;
+	private Boolean ativo;
 	private TipoUsuario tipoUsuario;
 	
+	public Cliente withId(Long id) {
+		this.setId(id);
+		return this;
+	}
 	public String getGenero() {
 		return genero;
 	}
 	public void setGenero(String genero) {
 		this.genero = genero;
 	}
-	public boolean isAtivo() {
+	public Boolean getAtivo() {
 		return ativo;
 	}
-	public void setAtivo(boolean ativo) {
+	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
 	}
 	public String getCpfCnpj() {
@@ -47,10 +49,10 @@ public class Cliente extends Entidade {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public LocalDate getDtNascimento() {
+	public String getDtNascimento() {
 		return dtNascimento;
 	}
-	public void setDtNascimento(LocalDate dtNascimento) {
+	public void setDtNascimento(String dtNascimento) {
 		this.dtNascimento = dtNascimento;
 	}
 	public String getUsername() {

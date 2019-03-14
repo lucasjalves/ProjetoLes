@@ -1,7 +1,6 @@
 package com.github.lucasjalves.projetoles.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,14 +14,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.lucasjalves.projetoles.entidade.Produto;
 import com.github.lucasjalves.projetoles.enums.Categorias;
+import com.github.lucasjalves.projetoles.facade.Facade;
 import com.github.lucasjalves.projetoles.rns.Resultado;
-import com.github.lucasjalves.projetoles.service.ProdutoService;
 @SuppressWarnings("unchecked")
 @Controller
 public class ProdutoController extends ControllerBase{
 	
 	@Autowired
-	private ProdutoService service;
+	private Facade facade;
 	
 	@Autowired
 	private ObjectMapper mapper;
@@ -32,14 +31,7 @@ public class ProdutoController extends ControllerBase{
 	public ModelAndView home(ModelAndView modelView) throws JsonProcessingException {
 		modelView.setViewName("home");
 		
-		List<Produto> listaProdutos = 
-				(List<Produto>) service.consultar(new Produto()).getEntidades();
-		
-		listaProdutos = listaProdutos
-				.stream()
-				.filter(produto -> produto.isAtivo())
-				.collect(Collectors.toList());
-				
+		List<Produto> listaProdutos = (List<Produto>) facade.consultar(new Produto().withAtivo(true)).getEntidades();
 		modelView.addObject("listaProdutos", mapper.writeValueAsString(listaProdutos));
 		return modelView;
 	}
@@ -53,7 +45,7 @@ public class ProdutoController extends ControllerBase{
 	
 	@RequestMapping("/produto/consulta")
 	public ModelAndView paginaConsultaProduto(ModelAndView modelView) throws JsonProcessingException {
-		List<Produto> produtos = (List<Produto>) service.consultar(new Produto()).getEntidades();
+		List<Produto> produtos = (List<Produto>) facade.consultar(new Produto()).getEntidades();
 		modelView.setViewName("produto/consulta");
 		modelView.addObject("produtos", mapper.writeValueAsString(produtos));
 		modelView.addObject("categorias", Categorias.values());
@@ -62,7 +54,7 @@ public class ProdutoController extends ControllerBase{
 	
 	@RequestMapping("/produto/alteracao")
 	public ModelAndView paginaAlteracaoProduto(ModelAndView modelView,@RequestParam Long id) throws Exception {
-		Produto produto = (Produto) service.consultarPorId(id).getEntidades().get(0);
+		Produto produto = (Produto) facade.consultar(new Produto().withId(id)).getEntidades().get(0);
 		modelView.setViewName("produto/alterar");
 		modelView.addObject("categorias", Categorias.values());
 		modelView.addObject("produto", produto);
@@ -73,7 +65,7 @@ public class ProdutoController extends ControllerBase{
 	@RequestMapping("/produto/detalhe")
 	public ModelAndView paginaDetalheProduto(@RequestParam Long id) throws Exception {
 		ModelAndView modelView = new ModelAndView();
-		Produto produto = (Produto) service.consultarPorId(id).getEntidades().get(0);
+		Produto produto =(Produto) facade.consultar(new Produto().withId(id)).getEntidades().get(0);
 		httpSession.setAttribute("produto", produto);
 		modelView.addObject("produto", produto);
 		modelView.setViewName("produto/detalhe");
@@ -84,19 +76,22 @@ public class ProdutoController extends ControllerBase{
 	@ResponseBody
 	@RequestMapping("/produto/cadastrar")
 	public Resultado cadastrar(@ModelAttribute Produto produto) {
-		return service.cadastrar(produto);
+		return facade.salvar(produto);
 	}
 
 	@ResponseBody
 	@RequestMapping("/produto/alterar")
 	public Resultado alterar(@ModelAttribute Produto produto) {
-		return service.alterar(produto);
+		return facade.alterar(produto);
 	}
 	
 	@ResponseBody
 	@RequestMapping("/produto/desativar")
 	public Resultado desativar(@RequestParam Long id) throws Exception {
-		return service.desativar(id);
+		Produto produto =(Produto) facade.consultar(new Produto().withId(id)).getEntidades().get(0);
+		produto.setAtivo(false);
+		
+		return facade.alterar(produto);
 	}
 	
 }

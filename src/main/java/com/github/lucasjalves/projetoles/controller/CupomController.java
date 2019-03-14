@@ -13,9 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.lucasjalves.projetoles.entidade.Cupom;
-import com.github.lucasjalves.projetoles.entidade.Produto;
+import com.github.lucasjalves.projetoles.facade.Facade;
 import com.github.lucasjalves.projetoles.rns.Resultado;
-import com.github.lucasjalves.projetoles.service.CupomService;
 
 @Controller
 @RequestMapping("/cupom")
@@ -23,8 +22,9 @@ public class CupomController {
 
 	@Autowired
 	private ObjectMapper mapper;
+
 	@Autowired
-	private CupomService service;
+	private Facade facade;
 	@RequestMapping("/cadastro")
 	public ModelAndView paginaCadastroProduto(ModelAndView modelView) {
 		modelView.setViewName("cupom/cadastro");
@@ -34,7 +34,7 @@ public class CupomController {
 	@RequestMapping("/consulta")
 	public ModelAndView paginaConsultaProduto(ModelAndView modelView) throws JsonProcessingException {
 		Resultado resultado = 
-				service.consultar(new Cupom());
+				facade.consultar(new Cupom());
 		
 		List<Cupom> lista = 
 				(List<Cupom>) resultado.getEntidades();
@@ -47,13 +47,13 @@ public class CupomController {
 	@ResponseBody
 	@RequestMapping("/alterar")
 	public Resultado alterar(@ModelAttribute Cupom cupom) {
-		return service.alterar(cupom);
+		return facade.alterar(cupom);
 	}
 	
 	@RequestMapping("/alteracao")
 	public ModelAndView paginaAlteracaoProduto(ModelAndView modelView, @RequestParam Long id) throws Exception {
 		Cupom cupom = 
-				(Cupom) service.consultarPorId(id).getEntidades().get(0);
+				(Cupom) facade.consultar(new Cupom().withId(id)).getEntidades().get(0);
 		modelView.setViewName("cupom/alterar");
 		modelView.addObject("cupom", cupom);
 		return modelView;
@@ -62,6 +62,6 @@ public class CupomController {
 	@ResponseBody
 	@RequestMapping("/cadastrar")
 	public Resultado cadastrar(@ModelAttribute Cupom cupom) {
-		return service.cadastrar(cupom);
+		return facade.salvar(cupom);
 	}
 }

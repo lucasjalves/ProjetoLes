@@ -11,7 +11,7 @@
 		$("#btnCadastrar").on("click", function(){
 			$.post("http://localhost:8888/produto/cadastrar", $("#form").serialize())
 				.done(function(data){
-					abrirModalSucessoOuFalha(data, "Produto cadastrado com sucesso!", "Falha ao cadastrar o produto", 1);
+					abrirModalSucessoOuFalha(data, "Produto cadastrado com sucesso!", "Falha ao cadastrar o produto", data.mensagem.length);
 				})
 				.fail(function(data){
 					abrirModalSucessoOuFalha(data, "Produto cadastrado com sucesso!", "Falha ao cadastrar o produto", 1);

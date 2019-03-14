@@ -4,20 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.lucasjalves.projetoles.annotation.RegraNegocio;
+import com.github.lucasjalves.projetoles.entidade.Entidade;
 import com.github.lucasjalves.projetoles.entidade.Produto;
-import com.github.lucasjalves.projetoles.rns.Mensagem;
 import com.github.lucasjalves.projetoles.rns.strategy.Strategy;
 
 @RegraNegocio(classe=Produto.class, operacao={"CONSULTAR"})
-public class QuantidadeEstoqueProduto implements Strategy<Produto>{
-
-	private List<Mensagem> mensagem = new ArrayList<>();
+public class QuantidadeEstoqueProduto implements Strategy{
+ 
 
 	@Override
-	public List<Mensagem> processar(Produto entidade) {
+	public List<String> processar(Entidade produto) {
+		List<String> mensagem = new ArrayList<>();
+		Produto entidade = (Produto)produto;
 		if(entidade.getEstoque() != null && entidade.getQuantidadeSelecionada() != null) {
 			if(entidade.getQuantidadeSelecionada() > entidade.getEstoque()) {
-				mensagem.add(new Mensagem("Quantidade não disponível em estoque"));
+				mensagem.add("Quantidade não disponível em estoque");
 			}
 		}
 		return mensagem;

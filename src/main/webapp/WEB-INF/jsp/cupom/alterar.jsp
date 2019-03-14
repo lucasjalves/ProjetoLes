@@ -18,7 +18,7 @@
 			$("#hiddenDesconto").val(desconto);
 			$.post("http://localhost:8888/cupom/alterar", $("#form").serialize())
 				.done(function(data){
-					abrirModalSucessoOuFalha(data, "Cupom alterado com sucesso!", "Falha ao alterado o Cupom", 1);
+					abrirModalSucessoOuFalha(data, "Cupom alterado com sucesso!", "Falha ao alterado o Cupom", data.mensagem.length);
 				})
 				.fail(function(data){
 					abrirModalSucessoOuFalha(data, "Cupom alterado com sucesso!", "Falha ao alterado o Cupom", 1);

@@ -11,15 +11,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.github.lucasjalves.projetoles.entidade.ItemCarrinho;
 import com.github.lucasjalves.projetoles.entidade.Produto;
+import com.github.lucasjalves.projetoles.facade.Facade;
 import com.github.lucasjalves.projetoles.rns.Resultado;
-import com.github.lucasjalves.projetoles.service.ProdutoService;
 
 @Controller
 @RequestMapping("/carrinho")
 public class CarrinhoController extends ControllerBase{
 
+
 	@Autowired
-	private ProdutoService service;
+	private Facade facade;
 	
 	@RequestMapping("")
 	public ModelAndView carrinho() {
@@ -35,10 +36,10 @@ public class CarrinhoController extends ControllerBase{
 		Integer quantidade = produto.getQuantidadeSelecionada() + getQuantidadeNoCarrinho(produto);
 		
 		Produto produtoCadastrado = 
-				(Produto) service.consultarPorId(produto.getId()).getEntidades().get(0);
+				(Produto) facade.consultar(produto).getEntidades().get(0);
 		
 		produtoCadastrado.setQuantidadeSelecionada(quantidade);
-		Resultado resultado = service.consultarPorId(produtoCadastrado.getId());
+		Resultado resultado = facade.consultar(new Produto().withId(produto.getId()));
 		
 		if(resultado.getMensagem().isEmpty()) {
 			adicionarItemCarrinho(produtoCadastrado, quantidade);

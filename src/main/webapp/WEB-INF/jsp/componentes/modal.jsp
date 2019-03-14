@@ -39,10 +39,10 @@
 			$("#tituloModal").text("Falha");
 			$.each(resultado.mensagem, function(index, mensagemErro){
 				if(qtdeMensagemAExibir == 1){
-					$("#textoModal").text(mensagemErro.mensagem);
+					$("#textoModal").text(mensagemErro);
 				}
 				if(qtdeMensagemAExibir > 1 || qtdeMensagemAExibir === undefined || qtdeMensagemAExibir === null){
-					var texto = "<p>" + mensagemErro.mensagem + "</p>";
+					var texto = "<p>" + mensagemErro + "</p>";
 					$("#textoModal").append(texto);
 				}
 			});

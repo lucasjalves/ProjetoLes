@@ -24,7 +24,17 @@ public class Produto extends Entidade{
 	private Integer quantidadeSelecionada;
 	private Integer estoque;
 	private String conteudoEmbalagem;
-	private boolean ativo;
+	private Boolean ativo;
+	
+	public Produto withAtivo(Boolean ativo) {
+		this.ativo = ativo;
+		return this;
+	}
+
+	public Produto withId(Long id) {
+		this.setId(id);
+		return this;
+	}
 	
 	public Integer getQuantidadeSelecionada() {
 		return quantidadeSelecionada;
@@ -50,11 +60,11 @@ public class Produto extends Entidade{
 		this.codigoBarras = codigoBarras;
 	}
 
-	public boolean isAtivo() {
+	public Boolean getAtivo() {
 		return ativo;
 	}
 
-	public void setAtivo(boolean ativo) {
+	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
 	}
 

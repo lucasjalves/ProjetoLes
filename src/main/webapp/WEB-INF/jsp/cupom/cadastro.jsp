@@ -14,7 +14,7 @@
 			$("#hiddenDesconto").val(desconto);
 			$.post("http://localhost:8888/cupom/cadastrar", $("#form").serialize())
 				.done(function(data){
-					abrirModalSucessoOuFalha(data, "Cupom cadastrado com sucesso!", "Falha ao cadastrar o cupom", 1);
+					abrirModalSucessoOuFalha(data, "Cupom cadastrado com sucesso!", "Falha ao cadastrar o cupom",  data.mensagem.length);
 				})
 				.fail(function(data){
 					abrirModalSucessoOuFalha(data, "Cupom cadastrado com sucesso!", "Falha ao cadastrar o cupom", 1);

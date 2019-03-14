@@ -8,16 +8,16 @@ import com.github.lucasjalves.projetoles.entidade.Entidade;
 final public class Resultado {
 	public Resultado(String... mensagens) {
 		for(String m: mensagens) {
-			this.mensagem.add(new Mensagem(m));
+			this.mensagem.add(m);
 		}
 	}
-	private List<Mensagem> mensagem =  new ArrayList<>();
+	private List<String> mensagem =  new ArrayList<>();
 	private List<? extends Entidade> entidades = new ArrayList<>();
 	
-	public List<Mensagem> getMensagem() {
+	public List<String> getMensagem() {
 		return mensagem;
 	}
-	public void setMensagem(List<Mensagem> mensagem) {
+	public void setMensagem(List<String> mensagem) {
 		this.mensagem = mensagem;
 	}
 	public List<? extends Entidade> getEntidades() {

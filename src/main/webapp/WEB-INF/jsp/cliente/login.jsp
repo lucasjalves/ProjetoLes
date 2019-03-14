@@ -8,7 +8,7 @@
 <meta charset="ISO-8859-1">
 <script>
 	$(document).ready(function(){
-		$("#cpfCnpj").mask("000.000.000.00");
+		$("#cpfCnpj").mask("000.000.000-00");
 		$("#btnCadastrar").on("click", function(){
 			
 			$.post("http://localhost:8888/cliente/efetuarLogin", $("#form").serialize())
