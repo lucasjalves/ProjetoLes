@@ -23,6 +23,37 @@ function removerCupom(){
 	$("#btnRemoverCupom").hide();	
 	
 }
+
+function atualizarQuantidade(id, input, quantidadeSessao){
+	if(input.value.replace(/\D/g, "").length === 0){
+		input.value = quantidadeSessao;
+		return;
+	}
+	$("#idProduto").val(id);
+	$("#quantidade").val(input.value);
+	$.post("http://localhost:8888/carrinho/alterar", $("#form").serialize())
+	.done(function(data){
+		var sucesso = abrirModalSucessoOuFalha(data, "Produto cadastrado com sucesso!", "Falha ao cadastrar o cliente", 1, true, false);
+		if(sucesso){
+			window.location.replace("http://localhost:8888/carrinho");
+		}
+	})
+	.fail(function(data){
+		abrirModalSucessoOuFalha(data, "Produto cadastrado com sucesso!", "Falha ao adicionar item no carrinho", 1);
+	});
+}
+
+function remover(id){
+	$("#idProduto").val(id);
+	$.post("http://localhost:8888/carrinho/remover", $("#form").serialize())
+	.done(function(data){
+		window.location.replace("http://localhost:8888/carrinho");
+		
+	})
+	.fail(function(data){
+		abrirModalSucessoOuFalha(data, "Produto cadastrado com sucesso!", "Falha ao adicionar item no carrinho", 1);
+	});
+}
 </script>
 <jsp:include page="../header.jsp"></jsp:include>
 <meta charset="ISO-8859-1">
@@ -37,6 +68,10 @@ function removerCupom(){
 </style>
 </head>
 <body>
+<form id="form">
+ <input type="hidden" name="id" id="idProduto" />
+ <input type="hidden"  name="quantidadeSelecionada" id="quantidade" value=""/>
+</form>
 	<div class="container spacer">
 		<table class="table table-bordered">
 			<thead class="thead-dark">
@@ -50,8 +85,7 @@ function removerCupom(){
 			</thead>
 			<tbody>
 				<c:if test="${carrinho != null}">
-					<c:forEach items="${carrinho.keySet()}" var="id">
-					<c:set var="itemCarrinho" value="${carrinho.get(id)}"/>
+					<c:forEach items="${carrinho.itensCarrinho}" var="itemCarrinho">
 						<tr>
 							<td><img src="http://placehold.it/100x100" alt="..."
 								class="img-responsive left">
@@ -64,13 +98,13 @@ function removerCupom(){
 									</tr>
 								</table></td>
 							<td><input type="number" class="form-control"
-								style="width: 80px; margin-top: 30px;" value="${itemCarrinho.quantidade}" /></td>
+								style="width: 80px; margin-top: 30px;" onfocusout="atualizarQuantidade('${itemCarrinho.produto.id}', this, '${itemCarrinho.quantidade}')"value="${itemCarrinho.quantidade}" /></td>
 							<td><label style="margin-top: 35px; font-weight: bold;">R$
 									${itemCarrinho.produto.precoVenda} </label></td>
 							<td><label style="color: red; margin-top: 35px;">R$
 									${itemCarrinho.valorTotal}</label></td>
 							<td><button style="margin-top: 30px;"
-									class="btn btn-outline-danger">Remover</button></td>
+									class="btn btn-outline-danger" onclick="remover('${itemCarrinho.produto.id}')">Remover</button></td>
 						</tr>
 					</c:forEach>
 				</c:if>

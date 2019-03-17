@@ -1,17 +1,21 @@
 package com.github.lucasjalves.projetoles.entidade;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Carrinho {
 
-	List<ItemCarrinho> listaItemCarrinho = new ArrayList<>();
+	Set<ItemCarrinho> itensCarrinho = new HashSet<>();
 
-	public List<ItemCarrinho> getListaItemCarrinho() {
-		return listaItemCarrinho;
+	public Set<ItemCarrinho> getItensCarrinho() {
+		return itensCarrinho;
 	}
 
-	public void setListaItemCarrinho(List<ItemCarrinho> listaItemCarrinho) {
-		this.listaItemCarrinho = listaItemCarrinho;
+	public void setItensCarrinho(Set<ItemCarrinho> itensCarrinho) {
+		this.itensCarrinho = itensCarrinho;
+	}
+	
+	public void addItem(ItemCarrinho itemCarrinho) {
+		this.itensCarrinho.add(itemCarrinho);
 	}
 }

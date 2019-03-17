@@ -18,6 +18,9 @@ public class QuantidadeEstoqueProdutoCarrinho implements Strategy{
 			if(entidade.getQuantidadeSelecionada() > entidade.getEstoque()) {
 				mensagem.add("Quantidade não disponível em estoque");
 			}
+			if(entidade.getQuantidadeSelecionada() <= 0) {
+				mensagem.add("A quantidade para ser adicionada ao carrinho deve ser maior que zero");
+			}
 		}
 		return mensagem;
 	}

@@ -60,7 +60,9 @@
 			}
 			return true;
 		}
-
+		if(resultado.mensagem.length === 0 && ignorarSucesso == true){
+			return true;
+		}
 	}
 	
 	function abrirModal(titulo, mensagem){
