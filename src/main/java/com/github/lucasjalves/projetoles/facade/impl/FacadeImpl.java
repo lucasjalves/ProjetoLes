@@ -19,7 +19,6 @@ import com.github.lucasjalves.projetoles.entidade.Cupom;
 import com.github.lucasjalves.projetoles.entidade.Entidade;
 import com.github.lucasjalves.projetoles.entidade.Produto;
 import com.github.lucasjalves.projetoles.facade.Facade;
-import com.github.lucasjalves.projetoles.helper.ProcessarRegraNegocioHelper;
 import com.github.lucasjalves.projetoles.rns.Resultado;
 import com.github.lucasjalves.projetoles.rns.strategy.Strategy;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.ClienteDadosObrigatorios;
@@ -27,11 +26,12 @@ import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosCupo
 import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosProduto;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.EntidadeDadoObrigatorio;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.QuantidadeEstoqueProduto;
+import com.github.lucasjalves.projetoles.rns.strategy.impl.QuantidadeEstoqueProdutoCarrinho;
+import com.github.lucasjalves.projetoles.rns.strategy.impl.ValorVendaProduto;
 
 @Component
 final public class FacadeImpl implements Facade {
 
-	private ProcessarRegraNegocioHelper regraNegocioHelper;
 	
 	private Map<String, Map<String, List<Strategy>>> rns = 
 			new HashMap<>();
@@ -56,9 +56,13 @@ final public class FacadeImpl implements Facade {
 		List<Strategy> rnsProdutoAlterar =new ArrayList<>();
 		List<Strategy> rnsProdutoConsulta = new ArrayList<>();
 		rnsProduto.add(new DadosObrigatoriosProduto());
+		rnsProduto.add(new QuantidadeEstoqueProduto());
+		rnsProduto.add(new ValorVendaProduto());
 		rnsProdutoAlterar.add(new DadosObrigatoriosProduto());
 		rnsProdutoAlterar.add(new EntidadeDadoObrigatorio());
-		rnsProdutoConsulta.add(new QuantidadeEstoqueProduto());
+		rnsProdutoAlterar.add(new QuantidadeEstoqueProduto());
+		rnsProdutoAlterar.add(new ValorVendaProduto());
+		rnsProdutoConsulta.add(new QuantidadeEstoqueProdutoCarrinho());
 		mapaStrategyProduto.put("SALVAR", rnsProduto);
 		mapaStrategyProduto.put("ALTERAR", rnsProdutoAlterar);
 		mapaStrategyProduto.put("CONSULTAR", rnsProdutoConsulta);

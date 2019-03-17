@@ -1,6 +1,11 @@
 package com.github.lucasjalves.projetoles.entidade;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -21,6 +26,17 @@ public class Cliente extends Entidade {
 	private Boolean ativo;
 	private TipoUsuario tipoUsuario;
 	
+	@OneToMany(cascade=CascadeType.ALL)
+	List<Pedido> pedidos = new ArrayList<>();
+	
+	@OneToMany(cascade=CascadeType.ALL)
+	List<Ticket> tickets = new ArrayList<>();
+	
+	@OneToMany(cascade=CascadeType.ALL)
+	List<Endereco> enderecos = new ArrayList<>();
+	
+	@OneToMany(cascade=CascadeType.ALL)
+	List<CartaoCredito> cartoes = new ArrayList<>();
 	public Cliente withId(Long id) {
 		this.setId(id);
 		return this;
@@ -80,6 +96,19 @@ public class Cliente extends Entidade {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+	public List<Ticket> getTickets() {
+		return tickets;
+	}
+	public void setTickets(List<Ticket> tickets) {
+		this.tickets = tickets;
+	}
 
+	
 	
 }

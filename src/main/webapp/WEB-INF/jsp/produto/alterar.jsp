@@ -9,7 +9,7 @@
 <meta charset="ISO-8859-1">
 <script>
 	$(document).ready(function(){
-		$("#btnAlterar").on("click", function(){
+		$("#btnCadastrar").on("click", function(){
 			$.post("http://localhost:8888/produto/alterar", $("#form").serialize())
 				.done(function(data){
 					abrirModalSucessoOuFalha(data, "Produto alterado com sucesso!", "Falha ao alterar o produto", data.mensagem.length);
@@ -108,7 +108,7 @@
 				    </select>
 				  </div>																		
 				</form>
-				<button class="btn btn-primary" id="btnAlterar">Alterar</button>
+				<button class="btn btn-primary" id="btnCadastrar">Alterar</button>
 
 			</div>
 		</div>

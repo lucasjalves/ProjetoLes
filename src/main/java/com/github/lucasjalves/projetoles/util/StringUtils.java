@@ -15,4 +15,9 @@ public final class StringUtils {
 		}
 		return false;
 	}
+	
+	public static Double StringToValor(String valor) throws Exception{
+		String textoFormatado = valor.replaceAll("[.]", "").replaceAll("[,]", ".");
+		return Double.parseDouble(textoFormatado);
+	}
 }

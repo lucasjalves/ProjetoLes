@@ -61,6 +61,9 @@ public class DadosObrigatoriosProduto implements Strategy{
 		if(entidade.getEstoque() == null) {
 			mensagens.add("Estoque vazio!");
 		}
+		if(entidade.getAtivo() == null) {
+			mensagens.add("Status vazio!");
+		}
 		return mensagens;
 	}
 

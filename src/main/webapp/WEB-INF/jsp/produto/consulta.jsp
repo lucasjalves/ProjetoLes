@@ -56,7 +56,7 @@
 				+ "<td>" + produto.estoque + "</td>"
 				+ "<td>" + produto.categoria + "</td>"
 				+ "<td>" + produto.ativo + "</td>"
-				+ "<td><a class='btn-link'onclick='desativar("+produto.id+")' style='color: red;margin-right: 20px;'>X</a><button onclick='alterar("+produto.id+")' class='btn btn-info'>Alterar</button></td>"
+				+ "<td><a class='btn-link'onclick='desativar("+produto.id+")' style='color: red;margin-right: 20px;'>X</a><button id='"+index+"'onclick='alterar("+produto.id+")' class='btn btn-info'>Alterar</button></td>"
 				+ "</tr>";
 				$("tbody").append(string);
 		});		
