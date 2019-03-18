@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 @Entity
 public class Endereco extends Entidade{
 
+	private String nome;
 	private String pais;
 	private String uf;
 	private String cidade;
@@ -61,5 +62,12 @@ public class Endereco extends Entidade{
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
 	}
+	public String getNome() {
+		return nome;
+	}
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	
 	
 }

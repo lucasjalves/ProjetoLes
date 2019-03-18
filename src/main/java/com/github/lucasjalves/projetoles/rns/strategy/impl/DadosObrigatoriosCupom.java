@@ -20,15 +20,13 @@ public class DadosObrigatoriosCupom implements Strategy {
 		if(StringUtils.isNullOrEmpty(cupom.getCodigo())) {
 			mensagens.add("Código vazio");
 		}
-		if(cupom.getValorDesconto() == null || cupom.getValorDesconto() <= 0.00) {
+		if(cupom.getValorDesconto() == null) {
 			mensagens.add("Valor do desconto deve ser maior que 0");
 		}
 		if(cupom.getDataVencimento() == null) {
 			mensagens.add("Data de vencimento vazia!");
 		}
-		if(cupom.getValorDesconto() > 100.00) {
-			mensagens.add("O valor do desconto deve ser igual ou menor que 100%");
-		}
+
 		
 		return mensagens;
 	}

@@ -22,12 +22,14 @@ import com.github.lucasjalves.projetoles.facade.Facade;
 import com.github.lucasjalves.projetoles.rns.Resultado;
 import com.github.lucasjalves.projetoles.rns.strategy.Strategy;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.ClienteDadosObrigatorios;
+import com.github.lucasjalves.projetoles.rns.strategy.impl.CupomValido;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosCupom;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosProduto;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.EntidadeDadoObrigatorio;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.QuantidadeEstoqueProduto;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.QuantidadeEstoqueProdutoCarrinho;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.ValorVendaProduto;
+import com.github.lucasjalves.projetoles.rns.strategy.impl.ValoresValidosCupom;
 
 @Component
 final public class FacadeImpl implements Facade {
@@ -85,14 +87,18 @@ final public class FacadeImpl implements Facade {
 		Map<String, List<Strategy>> mapaStrategyCoupom = new HashMap<>();
 		List<Strategy> rnsCupom = new ArrayList<>();
 		List<Strategy> rnsCupomAlterar = new ArrayList<>();
+		List<Strategy> rnsCupomConsultar = new ArrayList<>();
 		
 		rnsCupom.add(new DadosObrigatoriosCupom());	
+		rnsCupom.add(new ValoresValidosCupom());
 		rnsCupomAlterar.add(new DadosObrigatoriosCupom());
 		rnsCupomAlterar.add(new EntidadeDadoObrigatorio());
+		rnsCupomAlterar.add(new ValoresValidosCupom());
+		rnsCupomConsultar.add(new CupomValido());
 		
 		mapaStrategyCoupom.put("SALVAR", rnsCupom);
 		mapaStrategyCoupom.put("ALTERAR", rnsCupomAlterar);
-		
+		mapaStrategyCoupom.put("CONSULTAR", rnsCupomConsultar);
 		rns.put(Cupom.class.getName(), mapaStrategyCoupom);
 		
 		daos.put(Cliente.class.getName(), clienteDAO);

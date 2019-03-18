@@ -6,22 +6,31 @@
 <head>
 <script>
 function aplicarCupom(){
-	if($("#codigoCupom").val().length === 0){
-		$("#descontoCupom").text("Cupom AABB11 expirado").show().attr("style","color: red; border: none;");
-		return;
-	}
-	$("#descontoCupom").text("Cupom AABB11 -- 5,00%").show().attr("style","color: green; border: none;");
-	$("#desconto").text("R$ 75,75").attr("style", "color: green;");
-	$("#total").text("R$ 1.439,25");
-	$("#btnRemoverCupom").show();
+	$("#codigoCupomValido").val($("#codigoCupom").val());
+	$.post("http://localhost:8888/carrinho/adicionarCupom", $("#formCupom").serialize())
+	.done(function(data){
+		var sucesso = abrirModalSucessoOuFalha(data, " ", "Falha ao adicionar o cupom", 1, true, false);
+		if(sucesso){
+			window.location.replace("http://localhost:8888/carrinho");
+		}
+	})
+	.fail(function(data){
+		abrirModalSucessoOuFalha(data, " ", "Falha ao adicionar o cupom", 1);
+	});
 }
 
 function removerCupom(){
-	$("#descontoCupom").hide();
-	$("#desconto").text("R$ 0,00").attr("style", "");
-	$("#total").text("R$ 1.515,00");
-	$("#btnRemoverCupom").hide();	
 	
+	$.post("http://localhost:8888/carrinho/removerCupom", $("#formCupom").serialize())
+	.done(function(data){
+		var sucesso = abrirModalSucessoOuFalha(data, " ", "Falha ao remover o cupom", 1, true, false);
+		if(sucesso){
+			window.location.replace("http://localhost:8888/carrinho");
+		}
+	})
+	.fail(function(data){
+		abrirModalSucessoOuFalha(data, " ", "Falha ao remover o cupom", 1);
+	});	
 }
 
 function atualizarQuantidade(id, input, quantidadeSessao){
@@ -33,13 +42,15 @@ function atualizarQuantidade(id, input, quantidadeSessao){
 	$("#quantidade").val(input.value);
 	$.post("http://localhost:8888/carrinho/alterar", $("#form").serialize())
 	.done(function(data){
-		var sucesso = abrirModalSucessoOuFalha(data, "Produto cadastrado com sucesso!", "Falha ao cadastrar o cliente", 1, true, false);
+		var sucesso = abrirModalSucessoOuFalha(data, " ", "Falha ao adicionar item no carrinho", 1, true, false);
 		if(sucesso){
 			window.location.replace("http://localhost:8888/carrinho");
+		}else{
+			input.value = quantidadeSessao;
 		}
 	})
 	.fail(function(data){
-		abrirModalSucessoOuFalha(data, "Produto cadastrado com sucesso!", "Falha ao adicionar item no carrinho", 1);
+		abrirModalSucessoOuFalha(data, " ", "Falha ao adicionar item no carrinho", 1);
 	});
 }
 
@@ -72,6 +83,9 @@ function remover(id){
  <input type="hidden" name="id" id="idProduto" />
  <input type="hidden"  name="quantidadeSelecionada" id="quantidade" value=""/>
 </form>
+<form id="formCupom">
+ 	<input type="hidden" name="codigo" id="codigoCupomValido" />
+</form>
 	<div class="container spacer">
 		<table class="table table-bordered">
 			<thead class="thead-dark">
@@ -94,17 +108,32 @@ function remover(id){
 										<td style="border: none;"><strong>${itemCarrinho.produto.modelo}</strong></td>
 									</tr>
 									<tr>
-										<td style="border: none;">${itemCarrinho.produto.marca}</td>
+										<td style="border: none;">${itemCarrinho.produto.marca} - 
+											<c:if test="${!itemCarrinho.status}"><strong style="color: red; float: right;">Este item será removido por indisponibilidade</strong></c:if>
+											<c:if test="${itemCarrinho.quantidadeAtualizada}"><strong style="color: red; float: right;">Quantidade alterada devido estoque!</strong></c:if>
+										</td>
 									</tr>
 								</table></td>
-							<td><input type="number" class="form-control"
-								style="width: 80px; margin-top: 30px;" onfocusout="atualizarQuantidade('${itemCarrinho.produto.id}', this, '${itemCarrinho.quantidade}')"value="${itemCarrinho.quantidade}" /></td>
+							<td>
+								<c:if test="${itemCarrinho.status}">
+									<input type="number" class="form-control"style="width: 80px; margin-top: 30px;" onfocusout="atualizarQuantidade('${itemCarrinho.produto.id}', this, '${itemCarrinho.quantidade}')"value="${itemCarrinho.quantidade}" />
+								</c:if>
+								<c:if test="${!itemCarrinho.status}">
+									<input type="number" class="form-control"style="width: 80px; margin-top: 30px;" value="0" disabled />
+								</c:if>								
+							</td>
 							<td><label style="margin-top: 35px; font-weight: bold;">R$
 									${itemCarrinho.produto.precoVenda} </label></td>
 							<td><label style="color: red; margin-top: 35px;">R$
 									${itemCarrinho.valorTotal}</label></td>
-							<td><button style="margin-top: 30px;"
-									class="btn btn-outline-danger" onclick="remover('${itemCarrinho.produto.id}')">Remover</button></td>
+							<td>
+								<c:if test="${itemCarrinho.status}">
+									<button style="margin-top: 30px;" class="btn btn-outline-danger" onclick="remover('${itemCarrinho.produto.id}')">Remover</button>
+								</c:if>
+								<c:if test="${!itemCarrinho.status}">
+									<button style="margin-top: 30px;" class="btn btn-secondary" disabled>Remover</button>
+								</c:if>
+							</td>
 						</tr>
 					</c:forEach>
 				</c:if>
@@ -116,14 +145,24 @@ function remover(id){
 				<div class="card-header"><strong>Endereços</strong></div>
 				<div class="card-body">
 					<div class="form-group row">
-						<div class="col-sm-5">
-							<select class="form-control" id="exampleFormControlSelect1">
-								<option>Casa 1</option>
-								<option>Casa 2</option>
-							</select>
+						<div class="col-sm-12">
+							<c:if test="${cliente != null}">
+								<select class="form-control" id="exampleFormControlSelect1">
+									<option>Selecione...</option>
+										<c:forEach items="${cliente.enderecos}" var="endereco">
+											<option value="${endereco.id}">${endereco.nome}</option>										
+										</c:forEach>
+								</select>
+							</c:if>
+							<c:if test="${cliente == null}">
+								<p style="color: red;">Você deve estar logado para escolher um endereço de entrega</p>
+							</c:if>							
 						</div>
+						
 					</div>
-					<button class="btn btn-success" data-toggle="modal" data-target="#cadastro">Cadastrar novo</button>
+					<c:if test="${cliente != null}">
+						<button class="btn btn-success" data-toggle="modal" data-target="#cadastro">Cadastrar novo</button>
+					</c:if>		
 				</div>
 			</div>
 			<div class="card" style="width: 18rem;">
@@ -132,25 +171,47 @@ function remover(id){
 				</div>
 				<div class="card-body">
 					<ul class="list-group list-group-flush">
+						<c:if test="${carrinho.cupom == null}">
+							<li class="list-group-item"><strong>Cupom</strong><label
+								class="right"><input type="text" id="codigoCupom" class="form-control" /></label></li>
+							<li class="list-group-item right" style="display: none; color: green; border: none;" id="descontoCupom"></li>
+							<li class="list-group-item" style="border: none;"> 
+								<button class="btn btn-success" style="margin-left: 15px;" onclick="aplicarCupom();">Aplicar</button>
+							</li>
+						</c:if>
+						<c:if test="${carrinho.cupom != null}">
+							<li class="list-group-item"><strong>Cupom</strong><label
+								class="right"><input type="text" id="codigoCupom" name="codigo" class="form-control" /></label></li>
 
-						<li class="list-group-item"><strong>Cupom</strong><label
-							class="right"><input type="text" id="codigoCupom" class="form-control" /></label></li>
-						<li class="list-group-item right" style="display: none; color: green; border: none;" id="descontoCupom"></li>
-						<li class="list-group-item" style="border: none;"> 
-							<button class="btn btn-success" style="margin-left: 15px;" onclick="aplicarCupom();">Aplicar</button>
-							<button class="btn btn-danger" id="btnRemoverCupom" style="display:none;" onclick="removerCupom();">Remover</button>
-						</li>
+							<li class="list-group-item right" style="color: green; border: none;" id="descontoCupom">Cupom ${carrinho.cupom.codigo} -- ${carrinho.cupom.valorDesconto}%</li>
+							<c:if test="${!carrinho.statusCupom}">
+								<strong style="color: red">Este cupom será removido por vencimento/desativado!</strong>
+							</c:if>
+							<li class="list-group-item" style="border: none;"> 
+								<button class="btn btn-success" style="margin-left: 15px;" onclick="aplicarCupom();">Aplicar</button>
+								<button class="btn btn-danger" id="btnRemoverCupom" onclick="removerCupom();">Remover</button>
+							</li>
+						</c:if>
 					</ul>
 					
 				</div>
 			</div>
 			<div class="card right" style="width: 18rem; height: 250px;">
 				<ul class="list-group list-group-flush">
-					<li class="list-group-item"><strong>Total</strong><label class="right">R$ 1.500,00</label></li>
-					<li class="list-group-item"><strong>Frete</strong><label class="right">R$ 15,00</label></li>
-					<li class="list-group-item"><strong>Desconto</strong><label class="right" id="desconto">R$ 0,00</label></li>
-					<li class="list-group-item"><strong>Total da compra</strong><label class="right" id="total">R$ 1.515,00</label></li>
+					<c:if test="${carrinho == null}">
+						<li class="list-group-item"><strong>Total</strong><label class="right">R$ 0,00</label></li>
+						<li class="list-group-item"><strong>Frete</strong><label class="right">R$ 0,00</label></li>
+						<li class="list-group-item"><strong>Desconto</strong><label class="right" id="desconto">R$ 0,00</label></li>
+						<li class="list-group-item"><strong>Total da compra</strong><label class="right" id="total">R$ 0,00</label></li>
+					</c:if>
+					<c:if test="${carrinho != null}">
+						<li class="list-group-item"><strong>Total</strong><label class="right">R$ ${carrinho.total}</label></li>
+						<li class="list-group-item"><strong>Frete</strong><label class="right">R$ ${carrinho.frete}</label></li>
+						<li class="list-group-item"><strong>Desconto</strong><label class="right" id="desconto">R$ ${carrinho.desconto}</label></li>
+						<li class="list-group-item"><strong>Total da compra</strong><label class="right" id="total">R$ ${carrinho.totalCompra}</label></li>					
+					</c:if>
 				</ul>
+				
 			</div>
 
 		</div>

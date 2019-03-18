@@ -4,6 +4,8 @@ public class ItemCarrinho {
 	private Integer quantidade;
 	private Produto produto = new Produto();
 	private String valorTotal;
+	private boolean status = true;
+	private boolean quantidadeAtualizada;
 	
 	public ItemCarrinho withProduto(Produto produto) {
 		this.produto = produto;
@@ -26,6 +28,21 @@ public class ItemCarrinho {
 	}
 	public void setValorTotal(String valorTotal) {
 		this.valorTotal = valorTotal;
+	}
+	
+	
+	
+	public boolean isQuantidadeAtualizada() {
+		return quantidadeAtualizada;
+	}
+	public void setQuantidadeAtualizada(boolean quantidadeAtualizada) {
+		this.quantidadeAtualizada = quantidadeAtualizada;
+	}
+	public boolean isStatus() {
+		return status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 	@Override
 	public int hashCode() {

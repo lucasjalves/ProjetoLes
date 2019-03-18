@@ -20,4 +20,10 @@ public final class StringUtils {
 		String textoFormatado = valor.replaceAll("[.]", "").replaceAll("[,]", ".");
 		return Double.parseDouble(textoFormatado);
 	}
+	
+	public static Double StringToDouble(String valor){
+		String textoFormatado = valor.replaceAll("[.]", "").replaceAll("[,]", ".");
+		return Double.parseDouble(textoFormatado);
+	}
+	
 }

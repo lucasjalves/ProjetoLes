@@ -30,7 +30,7 @@ public class CupomDAO implements DAO{
 		List<Predicate<Cupom>> filtro = new ArrayList<>();
 				
 		if(!StringUtils.isNullOrEmpty(cupom.getCodigo())) {
-			filtro.add(c -> c.getCodigo().equals(cupom.getCodigo()));
+			filtro.add(c -> c.getCodigo().equalsIgnoreCase(cupom.getCodigo()));
 		}
 		
 		if(!StringUtils.isNullOrEmpty(cupom.getDataVencimento())) {

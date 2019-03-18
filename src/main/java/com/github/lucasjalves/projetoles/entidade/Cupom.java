@@ -1,6 +1,7 @@
 package com.github.lucasjalves.projetoles.entidade;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 @Entity
 public class Cupom extends Entidade{
@@ -9,10 +10,25 @@ public class Cupom extends Entidade{
 	private Boolean status;
 	private String dataVencimento;
 	private Double valorDesconto = 0.00;
+	@Transient
+	private boolean validar;
+	
 	
 	public Cupom withId(Long id) {
 		this.setId(id);
 		return this;
+	}
+	
+	public Cupom withValidar(boolean validar) {
+		this.validar = validar;
+		return this;
+	}
+	
+	public boolean isValidar() {
+		return validar;
+	}
+	public void setValidar(boolean validar) {
+		this.validar = validar;
 	}
 	public String getCodigo() {
 		return codigo;
