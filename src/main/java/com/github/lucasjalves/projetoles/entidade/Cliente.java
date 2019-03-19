@@ -5,9 +5,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 import com.github.lucasjalves.projetoles.enums.TipoUsuario;
 
@@ -16,8 +15,6 @@ public class Cliente extends Entidade {
 
 	private String cpfCnpj;
 	private String nome;
-	
-	@DateTimeFormat(pattern="dd/MM/yyyy")
 	private String dtNascimento;
 	private String username;
 	private String senha;
@@ -32,7 +29,7 @@ public class Cliente extends Entidade {
 	@OneToMany(cascade=CascadeType.ALL)
 	List<Ticket> tickets = new ArrayList<>();
 	
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	List<Endereco> enderecos = new ArrayList<>();
 	
 	@OneToMany(cascade=CascadeType.ALL)
@@ -109,6 +106,21 @@ public class Cliente extends Entidade {
 		this.tickets = tickets;
 	}
 
-	
+	public List<Endereco> getEnderecos() {
+		return enderecos;
+	}
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
+	}
+	public List<CartaoCredito> getCartoes() {
+		return cartoes;
+	}
+	public void setCartoes(List<CartaoCredito> cartoes) {
+		this.cartoes = cartoes;
+	}
+	public Cliente withEndereco(Endereco endereco) {
+		this.enderecos.add(endereco);
+		return this;
+	}
 	
 }

@@ -38,6 +38,9 @@ public class CarrinhoController extends ControllerBase{
 			Carrinho c =  AtualizarCarrinhoHelper.atualizarSessao((Carrinho)carrinho.clone());
 			httpSession.setAttribute("carrinho", CarrinhoHelper.atualizarValores(c));
 		}
+		if(cliente != null) {
+			cliente = (Cliente) facade.consultar(cliente).getEntidades().get(0);
+		}
 		ModelAndView modelView = new ModelAndView();
 		modelView.setViewName("carrinho/carrinho");
 		modelView.addObject("carrinho", carrinho);

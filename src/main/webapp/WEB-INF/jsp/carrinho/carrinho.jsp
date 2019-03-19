@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<jsp:include page="../header.jsp"></jsp:include>
 <script>
 function aplicarCupom(){
 	$("#codigoCupomValido").val($("#codigoCupom").val());
@@ -65,8 +66,19 @@ function remover(id){
 		abrirModalSucessoOuFalha(data, "Produto cadastrado com sucesso!", "Falha ao adicionar item no carrinho", 1);
 	});
 }
+
+$(document).ready(function(){
+	$("#btnCadastrarEndereco").on("click", function(){
+		cadastrarEndereco(function(data){
+			if(abrirModalSucessoOuFalha(data, " ", "Falha ao cadastrar o endereço", data.mensagem.length, true, false)){
+				window.location.replace("http://localhost:8888/carrinho");
+			}
+		}, function(data){
+			abrirModalSucessoOuFalha(data, " ", "Falha ao cadastrar o endereço", data.mensagem.length, false, false);
+		});
+	});
+});
 </script>
-<jsp:include page="../header.jsp"></jsp:include>
 <meta charset="ISO-8859-1">
 <title>Carrinho</title>
 <style>
@@ -228,41 +240,11 @@ function remover(id){
 	        </button>
 	      </div>
 	      <div class="modal-body">
-				<form id="form">
-					<div class="form-group">
-						<label>CEP</label> 
-						<input type="text" class="form-control" name="nome" placeholder="Rua" required>
-					</div>
-					<div class="form-group">
-						<label>Rua</label> 
-						<input type="text" class="form-control" name="cpfCnpj" placeholder="Rua" required>
-					</div>		
-					<div class="form-group">
-						<label>Complemento</label> 
-						<input type="text" class="form-control" name="senha" placeholder="Estado" required>
-					</div>														
-					<div class="form-group">
-						<label>Bairro</label> 
-						<input type="text" class="form-control" name="dtNascimento" placeholder="Bairro" required>
-					</div>
-					<div class="form-group">
-						<label>Cidade</label> 
-						<input type="text" class="form-control" name="username" placeholder="Cidade" required>
-					</div>	
-					<div class="form-group">
-						<label>Estado</label> 
-						<input type="text" class="form-control" name="senha" placeholder="Estado" required>
-					</div>
-					
-					<div class="form-group">
-						<label>País</label> 
-						<input type="text" class="form-control" name="senha" placeholder="País" required>
-					</div>																
-				</form>
+				<jsp:include page="../componentes/formEndereco.jsp"></jsp:include>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+	        <button type="button" class="btn btn-primary" id="btnCadastrarEndereco" data-dismiss="modal">Salvar</button>
 	      </div>
 	    </div>
 	  </div>

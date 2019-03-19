@@ -18,7 +18,7 @@ import com.github.lucasjalves.projetoles.facade.Facade;
 import com.github.lucasjalves.projetoles.rns.Resultado;
 @SuppressWarnings("unchecked")
 @Controller
-public class ClienteController {
+public class ClienteController extends ControllerBase {
 
 	@Autowired
 	private Facade facade;
@@ -96,7 +96,11 @@ public class ClienteController {
 		List<Cliente> clientes = 
 				(List<Cliente>) facade.consultar(cliente).getEntidades();
 		
+		if(clientes.isEmpty()) {
+			throw new Exception("Cliente não encontrado");
+		}
 		Cliente cli = clientes.get(0);
+		httpSession.setAttribute("cliente", cli);
 		return cli.getTipoUsuario().equals(TipoUsuario.ADMIN);
 	}
 	
