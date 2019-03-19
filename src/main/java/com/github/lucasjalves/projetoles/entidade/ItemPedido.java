@@ -9,7 +9,7 @@ public class ItemPedido extends Entidade{
 	private Integer quantidade;
 	
 	@OneToOne(cascade=CascadeType.ALL)
-	private Produto produto = new Produto();
+	private ProdutoPedido produto = new ProdutoPedido();
 	private String valorTotal;
 	public Integer getQuantidade() {
 		return quantidade;
@@ -17,10 +17,10 @@ public class ItemPedido extends Entidade{
 	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
 	}
-	public Produto getProduto() {
+	public ProdutoPedido getProduto() {
 		return produto;
 	}
-	public void setProduto(Produto produto) {
+	public void setProduto(ProdutoPedido produto) {
 		this.produto = produto;
 	}
 	public String getValorTotal() {
@@ -28,5 +28,20 @@ public class ItemPedido extends Entidade{
 	}
 	public void setValorTotal(String valorTotal) {
 		this.valorTotal = valorTotal;
+	}
+	
+	public ItemPedido withProduto(Produto produto) {
+		this.produto = (ProdutoPedido)produto;
+		return this;
+	}
+	
+	public ItemPedido withQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
+		return this;
+	}
+	
+	public ItemPedido withValorTotal(String valorTotal) {
+		this.valorTotal = valorTotal;
+		return this;
 	}
 }

@@ -17,8 +17,12 @@ public class Pedido extends Entidade{
 
 	private StatusPedido status;
 	private String dtPedido;
-	private String valorTotalPedido;
+	private String total;
 	private String frete;
+	private String desconto;
+	private String totalCompra;
+	private String hora;
+	private Cupom cupom;
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<CartaoCreditoPagamento>  cartoes = new ArrayList<>();
 	
@@ -48,14 +52,6 @@ public class Pedido extends Entidade{
 
 	public void setDtPedido(String dtPedido) {
 		this.dtPedido = dtPedido;
-	}
-
-	public String getValorTotalPedido() {
-		return valorTotalPedido;
-	}
-
-	public void setValorTotalPedido(String valorTotalPedido) {
-		this.valorTotalPedido = valorTotalPedido;
 	}
 
 	public String getFrete() {
@@ -88,6 +84,46 @@ public class Pedido extends Entidade{
 
 	public void setCreditoUtilizado(String creditoUtilizado) {
 		this.creditoUtilizado = creditoUtilizado;
+	}
+
+	public String getTotal() {
+		return total;
+	}
+
+	public void setTotal(String total) {
+		this.total = total;
+	}
+
+	public String getDesconto() {
+		return desconto;
+	}
+
+	public void setDesconto(String desconto) {
+		this.desconto = desconto;
+	}
+
+	public String getTotalCompra() {
+		return totalCompra;
+	}
+
+	public void setTotalCompra(String totalCompra) {
+		this.totalCompra = totalCompra;
+	}
+
+	public Cupom getCupom() {
+		return cupom;
+	}
+
+	public void setCupom(Cupom cupom) {
+		this.cupom = cupom;
+	}
+
+	public String getHora() {
+		return hora;
+	}
+
+	public void setHora(String hora) {
+		this.hora = hora;
 	}
 	
 	

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 class ControllerBase {
 	
+	
 	@Autowired
 	protected HttpSession httpSession;
 	
