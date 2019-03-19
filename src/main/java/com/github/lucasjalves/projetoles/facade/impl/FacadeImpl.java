@@ -28,6 +28,8 @@ import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosProd
 import com.github.lucasjalves.projetoles.rns.strategy.impl.EntidadeDadoObrigatorio;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.QuantidadeEstoqueProduto;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.QuantidadeEstoqueProdutoCarrinho;
+import com.github.lucasjalves.projetoles.rns.strategy.impl.TamanhoMaximoEspecificacao;
+import com.github.lucasjalves.projetoles.rns.strategy.impl.ValorMedidasProduto;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.ValorVendaProduto;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.ValoresValidosCupom;
 
@@ -60,10 +62,14 @@ final public class FacadeImpl implements Facade {
 		rnsProduto.add(new DadosObrigatoriosProduto());
 		rnsProduto.add(new QuantidadeEstoqueProduto());
 		rnsProduto.add(new ValorVendaProduto());
+		rnsProduto.add(new ValorMedidasProduto());
+		rnsProduto.add(new TamanhoMaximoEspecificacao());
 		rnsProdutoAlterar.add(new DadosObrigatoriosProduto());
 		rnsProdutoAlterar.add(new EntidadeDadoObrigatorio());
 		rnsProdutoAlterar.add(new QuantidadeEstoqueProduto());
 		rnsProdutoAlterar.add(new ValorVendaProduto());
+		rnsProdutoAlterar.add(new ValorMedidasProduto());
+		rnsProdutoAlterar.add(new TamanhoMaximoEspecificacao());
 		rnsProdutoConsulta.add(new QuantidadeEstoqueProdutoCarrinho());
 		mapaStrategyProduto.put("SALVAR", rnsProduto);
 		mapaStrategyProduto.put("ALTERAR", rnsProdutoAlterar);
@@ -72,30 +78,28 @@ final public class FacadeImpl implements Facade {
 		
 		
 		Map<String,List<Strategy>> mapaStrategyCliente = new HashMap<>();
+		
 		List<Strategy> rnsCliente = new ArrayList<>();
 		List<Strategy> rnsClienteAlterar = new ArrayList<>();
-		
 		rnsCliente.add(new ClienteDadosObrigatorios());
 		rnsClienteAlterar.add(new EntidadeDadoObrigatorio());
 		rnsClienteAlterar.add(new ClienteDadosObrigatorios());
-		
 		mapaStrategyCliente.put("SALVAR", rnsCliente);
 		mapaStrategyCliente.put("ALTERAR", rnsClienteAlterar);
 		rns.put(Cliente.class.getName(), mapaStrategyCliente);
 		
 		
 		Map<String, List<Strategy>> mapaStrategyCoupom = new HashMap<>();
+		
 		List<Strategy> rnsCupom = new ArrayList<>();
 		List<Strategy> rnsCupomAlterar = new ArrayList<>();
 		List<Strategy> rnsCupomConsultar = new ArrayList<>();
-		
 		rnsCupom.add(new DadosObrigatoriosCupom());	
 		rnsCupom.add(new ValoresValidosCupom());
 		rnsCupomAlterar.add(new DadosObrigatoriosCupom());
 		rnsCupomAlterar.add(new EntidadeDadoObrigatorio());
 		rnsCupomAlterar.add(new ValoresValidosCupom());
 		rnsCupomConsultar.add(new CupomValido());
-		
 		mapaStrategyCoupom.put("SALVAR", rnsCupom);
 		mapaStrategyCoupom.put("ALTERAR", rnsCupomAlterar);
 		mapaStrategyCoupom.put("CONSULTAR", rnsCupomConsultar);
