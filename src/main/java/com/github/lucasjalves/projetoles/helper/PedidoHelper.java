@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 
 import com.github.lucasjalves.projetoles.entidade.Carrinho;
 import com.github.lucasjalves.projetoles.entidade.Cliente;
+import com.github.lucasjalves.projetoles.entidade.CupomPedido;
 import com.github.lucasjalves.projetoles.entidade.Endereco;
+import com.github.lucasjalves.projetoles.entidade.EnderecoPedido;
 import com.github.lucasjalves.projetoles.entidade.ItemCarrinho;
 import com.github.lucasjalves.projetoles.entidade.ItemPedido;
 import com.github.lucasjalves.projetoles.entidade.Pedido;
@@ -18,7 +20,7 @@ import com.github.lucasjalves.projetoles.entidade.Produto;
 import com.github.lucasjalves.projetoles.enums.StatusPedido;
 import com.github.lucasjalves.projetoles.facade.Facade;
 import com.github.lucasjalves.projetoles.util.CalculoUtil;
-import com.github.lucasjalves.projetoles.util.FormatadorLocalDateTime;
+import com.github.lucasjalves.projetoles.util.FormatadorDataUtil;
 import com.github.lucasjalves.projetoles.util.FreteUtil;
 import com.github.lucasjalves.projetoles.util.StringUtils;
 
@@ -40,7 +42,7 @@ public class PedidoHelper {
 				.collect(Collectors.toList());
 		
 		if(!enderecos.isEmpty()) {
-			pedido.setEndereco(enderecos.get(0));
+			pedido.setEndereco((EnderecoPedido)enderecos.get(0));
 		}
 		
 		Iterator<ItemCarrinho> it = carrinho.getItensCarrinho().iterator();
@@ -50,7 +52,7 @@ public class PedidoHelper {
 		if(carrinho.getCupom() != null) {
 			desconto = carrinho.getCupom().getValorDesconto() / 100;
 			desconto = desconto * total;	
-			pedido.setCupom(carrinho.getCupom());
+			pedido.setCupom((CupomPedido)carrinho.getCupom());
 		}
 		while(it.hasNext()) {
 			ItemCarrinho i = it.next();
@@ -65,14 +67,14 @@ public class PedidoHelper {
 										.withQuantidade(i.getQuantidade())
 										.withValorTotal(CalculoUtil.calcularValorTotal(produto.getPrecoVenda(), i.getQuantidade()));
 			itemPedido.getProduto().setId(null);
-			pedido.getItemsPedido().add(itemPedido);
+			pedido.getItensPedido().add(itemPedido);
 		}
 		pedido.setTotal(String.format("%,.2f", total));
 		pedido.setFrete(String.format("%,.2f", frete));
 		pedido.setDesconto(String.format("%,.2f", desconto));
 		pedido.setTotalCompra(String.format("%,.2f", (total - desconto) + frete));
 		pedido.setStatus(StatusPedido.SOLICITADO);
-		String dtHora = FormatadorLocalDateTime.dataFormatada(LocalDateTime.now());
+		String dtHora = FormatadorDataUtil.dataFormatada(LocalDateTime.now());
 		pedido.setDtPedido(dtHora.split("T")[0]);
 		pedido.setHora(dtHora.split("T")[1]);
 		return pedido;

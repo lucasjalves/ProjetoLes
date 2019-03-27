@@ -20,6 +20,19 @@ function aplicarCupom(){
 	});
 }
 
+function efetuarPedido(){
+	$("#idEndereco").val($("#comboEndereco").val());
+	$.post("http://localhost:8888/pedido/confirmar", $("#formEnderecoHidden").serialize())
+	.done(function(data){
+		var sucesso = abrirModalSucessoOuFalha(data, " ", "Falha ao confirmar o pedido", 1, true, false);
+		if(sucesso){
+			window.location.replace("http://localhost:8888/pedido/confirmacao?id=0");
+		}
+	})
+	.fail(function(data){
+		abrirModalSucessoOuFalha(data, " ", "Falha ao confirmar o pedido", 1);
+	});
+}
 function removerCupom(){
 	
 	$.post("http://localhost:8888/carrinho/removerCupom", $("#formCupom").serialize())
@@ -98,6 +111,10 @@ $(document).ready(function(){
 <form id="formCupom">
  	<input type="hidden" name="codigo" id="codigoCupomValido" />
 </form>
+<form id="formEnderecoHidden">
+	<input type="hidden" name="id" id="idEndereco" />
+</form>
+
 	<div class="container spacer">
 		<table class="table table-bordered">
 			<thead class="thead-dark">
@@ -159,7 +176,7 @@ $(document).ready(function(){
 					<div class="form-group row">
 						<div class="col-sm-12">
 							<c:if test="${cliente != null}">
-								<select class="form-control" id="exampleFormControlSelect1">
+								<select class="form-control" id="comboEndereco">
 									<option>Selecione...</option>
 										<c:forEach items="${cliente.enderecos}" var="endereco">
 											<option value="${endereco.id}">${endereco.nome}</option>										
@@ -227,7 +244,7 @@ $(document).ready(function(){
 			</div>
 
 		</div>
-			 <a class="btn btn-warning right" href="http://localhost:8888/pedido/confirmacao" style="margin-left: 15px; margin-top: 30px;" >Finalizar compra</a>
+			 <a class="btn btn-warning right" href="#" style="margin-left: 15px; margin-top: 30px;" onclick="efetuarPedido();">Finalizar compra</a>
 	</div>
 
 	<div class="modal fade" id="cadastro">

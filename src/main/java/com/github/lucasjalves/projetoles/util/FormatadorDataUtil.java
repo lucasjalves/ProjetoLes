@@ -1,10 +1,11 @@
 package com.github.lucasjalves.projetoles.util;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public final class FormatadorLocalDateTime {
+public final class FormatadorDataUtil {
 	
-	private FormatadorLocalDateTime() {
+	private FormatadorDataUtil() {
 		
 	}
 	
@@ -19,5 +20,14 @@ public final class FormatadorLocalDateTime {
 		String[] splitHr = split[1].split("[.]");
 		
 		return data + "T" + splitHr[0];
+	}
+	
+	public static LocalDate toLocalDate(String data) {
+		String[] dataSplit = data.split("/");
+		
+		return LocalDate.now().withDayOfMonth(Integer.parseInt(dataSplit[0]))
+			.withMonth(Integer.parseInt(dataSplit[1]))
+			.withYear(Integer.parseInt(dataSplit[2]));
+		
 	}
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,15 +46,16 @@
 					<div class="card-body">
 						<table class="table left" style="width: 45%;">
 							<tbody>
+							<c:forEach items="${pedido.itensPedido}" var="item">
 								<tr>
-									<td><strong>1x Playstation 4</strong></td>
-									<td><label>R$ 1500,00 </label></td>
-								</tr>
-
+									<td><strong>${item.quantidade}x ${item.produto.modelo}</strong></td>
+									<td><label>R$ ${item.produto.precoVenda} </label></td>
+								</tr>							
+							</c:forEach>
 							</tbody>
 						</table>
 						<div class="right">
-							<p>&nbsp;&nbsp;Total dos itens: R$ 1.500,00 </p>
+							<p>&nbsp;&nbsp;</p>
 							<p>+ Frete: R$ 15,00</p>
 							<p>- Desconto: R$ 75,75  (Cupom: AABB11 de 5,00%)</p>
 							<p style="color: green;">&nbsp;&nbsp;Total à pagar: R$ 1.439,25</p>

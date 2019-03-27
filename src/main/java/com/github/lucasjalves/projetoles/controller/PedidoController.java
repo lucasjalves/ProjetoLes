@@ -4,12 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.github.lucasjalves.projetoles.entidade.Carrinho;
 import com.github.lucasjalves.projetoles.entidade.Cliente;
 import com.github.lucasjalves.projetoles.entidade.Endereco;
+import com.github.lucasjalves.projetoles.entidade.Pedido;
 import com.github.lucasjalves.projetoles.facade.Facade;
+import com.github.lucasjalves.projetoles.helper.PedidoHelper;
 import com.github.lucasjalves.projetoles.rns.Resultado;
 
 @Controller
@@ -24,6 +28,10 @@ public class PedidoController extends ControllerBase{
 	@Autowired
 	private Facade facade;
 	
+	@Autowired
+	private PedidoHelper pedidoHelper;
+	
+	@ResponseBody
 	@RequestMapping("/confirmar")
 	public Resultado confirmar(@ModelAttribute Endereco endereco) {
 		Cliente cliente =
@@ -39,12 +47,37 @@ public class PedidoController extends ControllerBase{
 			return new Resultado("Carrinho inexistente!");
 		}
 		
+		Pedido pedido = pedidoHelper.gerarPedido(endereco, carrinho, cliente);
+		Resultado resultado = facade.salvar(pedido);
+		if(resultado.getMensagem().isEmpty()) {
+			Pedido p = (Pedido) resultado.getEntidades().get(0);
+			cliente.getPedidos().add(pedido);
+			resultado = facade.alterar(cliente);
+			cliente.getPedidos().remove(pedido);
+			
+			httpSession.setAttribute("pedido", p);
+			httpSession.removeAttribute("carrinho");
+		}
 		
+		return resultado;
+				
 	}
 	
 	@RequestMapping("/confirmacao")
-	public ModelAndView confirmacao(ModelAndView modelView) {
-		modelView.setViewName(PAGINA);
+	public ModelAndView confirmacao(ModelAndView modelView, @RequestParam Long id) {
+		Pedido pedido = (Pedido)httpSession.getAttribute("pedido");
+		
+		Cliente cliente =
+				(Cliente) httpSession.getAttribute("cliente");
+		
+		cliente = (Cliente) facade.consultar(cliente).getEntidades().get(0);
+		if(pedido == null) {
+			pedido = (Pedido) facade.consultar(new Pedido().withId(id)).getEntidades().get(0);
+		}
+		httpSession.removeAttribute("pedido");
+		modelView.addObject("pedido", pedido);
+		modelView.addObject("cliente", cliente);
+		
 		return modelView;
 	}
 	

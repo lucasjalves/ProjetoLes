@@ -1,6 +1,9 @@
 package com.github.lucasjalves.projetoles.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,16 +18,26 @@ public class PedidoDAO implements DAO{
 
 	@Autowired
 	private PedidoRepository repository;
+	
 	@Override
 	public Entidade salvar(Entidade entidade) {
-		Pedido pedido = (Pedido)entidade;
-		return repository.save(pedido);
+		return entidade;
 	}
 
 	@Override
 	public List<Entidade> buscar(Entidade entidade) {
-		// TODO Auto-generated method stub
-		return null;
+		Pedido p = (Pedido)entidade;
+		List<Predicate<Pedido>> filtro = new ArrayList<>();
+		
+		if(p.getId() != null) {
+			filtro.add(pedido -> pedido.equals(p));
+		}
+		if(p.getStatus() != null) {
+			filtro.add(pedido -> pedido.getStatus().equals(p.getStatus()));
+		}
+		Predicate<Pedido> compositePredicate = filtro.stream().reduce(c -> true, Predicate::and);
+		
+		return repository.findAll().stream().filter(compositePredicate).collect(Collectors.toList());
 	}
 
 	@Override

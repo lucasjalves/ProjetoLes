@@ -14,11 +14,13 @@ import com.github.lucasjalves.projetoles.dao.DAO;
 import com.github.lucasjalves.projetoles.dao.impl.ClienteDAO;
 import com.github.lucasjalves.projetoles.dao.impl.CupomDAO;
 import com.github.lucasjalves.projetoles.dao.impl.EnderecoDAO;
+import com.github.lucasjalves.projetoles.dao.impl.PedidoDAO;
 import com.github.lucasjalves.projetoles.dao.impl.ProdutoDAO;
 import com.github.lucasjalves.projetoles.entidade.Cliente;
 import com.github.lucasjalves.projetoles.entidade.Cupom;
 import com.github.lucasjalves.projetoles.entidade.Endereco;
 import com.github.lucasjalves.projetoles.entidade.Entidade;
+import com.github.lucasjalves.projetoles.entidade.Pedido;
 import com.github.lucasjalves.projetoles.entidade.Produto;
 import com.github.lucasjalves.projetoles.facade.Facade;
 import com.github.lucasjalves.projetoles.rns.Resultado;
@@ -27,6 +29,7 @@ import com.github.lucasjalves.projetoles.rns.strategy.impl.ClienteDadosObrigator
 import com.github.lucasjalves.projetoles.rns.strategy.impl.CupomValido;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosCupom;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosEndereco;
+import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosPedido;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosProduto;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.EntidadeDadoObrigatorio;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.QuantidadeEstoqueProduto;
@@ -56,12 +59,13 @@ final public class FacadeImpl implements Facade {
 	
 	@Autowired
 	private EnderecoDAO enderecoDAO;
+	
+	@Autowired
+	private PedidoDAO pedidoDAO;
 	@PostConstruct
 	public void setUpRns() {
 		
-		Map<String,List<Strategy>> mapaStrategyProduto = new HashMap<>();
-		
-		
+		Map<String,List<Strategy>> mapaStrategyProduto = new HashMap<>();	
 		List<Strategy> rnsProduto =new ArrayList<>();
 		List<Strategy> rnsProdutoAlterar =new ArrayList<>();
 		List<Strategy> rnsProdutoConsulta = new ArrayList<>();
@@ -83,8 +87,7 @@ final public class FacadeImpl implements Facade {
 		rns.put(Produto.class.getName(), mapaStrategyProduto);
 		
 		
-		Map<String,List<Strategy>> mapaStrategyCliente = new HashMap<>();
-		
+		Map<String,List<Strategy>> mapaStrategyCliente = new HashMap<>();	
 		List<Strategy> rnsCliente = new ArrayList<>();
 		List<Strategy> rnsClienteAlterar = new ArrayList<>();
 		rnsCliente.add(new ClienteDadosObrigatorios());
@@ -95,8 +98,7 @@ final public class FacadeImpl implements Facade {
 		rns.put(Cliente.class.getName(), mapaStrategyCliente);
 		
 		
-		Map<String, List<Strategy>> mapaStrategyCoupom = new HashMap<>();
-		
+		Map<String, List<Strategy>> mapaStrategyCoupom = new HashMap<>();	
 		List<Strategy> rnsCupom = new ArrayList<>();
 		List<Strategy> rnsCupomAlterar = new ArrayList<>();
 		List<Strategy> rnsCupomConsultar = new ArrayList<>();
@@ -122,11 +124,17 @@ final public class FacadeImpl implements Facade {
 		mapaStrategyEndereco.put("ALTERAR", rnsEnderecoAlterar);
 		rns.put(Endereco.class.getName(), mapaStrategyEndereco);
 		
+		Map<String, List<Strategy>> mapaStrategyPedido = new HashMap<>();
+		List<Strategy> rnsPedido = new ArrayList<>();
+		rnsPedido.add(new DadosObrigatoriosPedido());
+		mapaStrategyPedido.put("SALVAR", rnsPedido);
+		rns.put(Pedido.class.getName(), mapaStrategyPedido);
 		
 		daos.put(Cliente.class.getName(), clienteDAO);
 		daos.put(Produto.class.getName(), produtoDAO);
 		daos.put(Cupom.class.getName(), cupomDAO);
 		daos.put(Endereco.class.getName(), enderecoDAO);
+		daos.put(Pedido.class.getName(), pedidoDAO);
 	}
 	@Override
 	public Resultado salvar(Entidade entidade) {
@@ -157,7 +165,10 @@ final public class FacadeImpl implements Facade {
 		List<String> mensagens = processar(entidade, "ALTERAR");
 		resultado.setMensagem(mensagens);
 		if(mensagens.isEmpty()) {
-			daos.get(entidade.getClass().getName()).salvar(entidade);
+			Entidade e = daos.get(entidade.getClass().getName()).salvar(entidade);
+			List<Entidade> list = new ArrayList<>();
+			list.add(e);
+			resultado.setEntidades(list);
 		}
 		return resultado;
 	}

@@ -11,6 +11,7 @@ final public class Resultado {
 			this.mensagem.add(m);
 		}
 	}
+	
 	private List<String> mensagem =  new ArrayList<>();
 	private List<? extends Entidade> entidades = new ArrayList<>();
 	

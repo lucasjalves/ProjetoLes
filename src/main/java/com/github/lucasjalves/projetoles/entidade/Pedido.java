@@ -13,7 +13,7 @@ import com.github.lucasjalves.projetoles.enums.StatusPedido;
 @Entity
 public class Pedido extends Entidade{
 	@OneToMany(cascade=CascadeType.ALL)
-	List<ItemPedido> itemsPedido = new ArrayList<>();
+	List<ItemPedido> itensPedido = new ArrayList<>();
 
 	private StatusPedido status;
 	private String dtPedido;
@@ -22,20 +22,25 @@ public class Pedido extends Entidade{
 	private String desconto;
 	private String totalCompra;
 	private String hora;
-	private Cupom cupom;
+	@OneToOne
+	private CupomPedido cupomPedido;
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<CartaoCreditoPagamento>  cartoes = new ArrayList<>();
 	
 	@OneToOne(cascade=CascadeType.ALL)
-	private Endereco endereco = new Endereco();
+	private EnderecoPedido endereco;
 	private String creditoUtilizado = "0";
 	
-	public List<ItemPedido> getItemsPedido() {
-		return itemsPedido;
+	public Pedido withId(Long id) {
+		this.setId(id);
+		return this;
+	}
+	public List<ItemPedido> getItensPedido() {
+		return itensPedido;
 	}
 
-	public void setItemsPedido(List<ItemPedido> itemsPedido) {
-		this.itemsPedido = itemsPedido;
+	public void setItensPedido(List<ItemPedido> itensPedido) {
+		this.itensPedido = itensPedido;
 	}
 
 	public StatusPedido getStatus() {
@@ -70,11 +75,11 @@ public class Pedido extends Entidade{
 		this.cartoes = cartoes;
 	}
 
-	public Endereco getEndereco() {
+	public EnderecoPedido getEndereco() {
 		return endereco;
 	}
 
-	public void setEndereco(Endereco endereco) {
+	public void setEndereco(EnderecoPedido endereco) {
 		this.endereco = endereco;
 	}
 
@@ -110,12 +115,12 @@ public class Pedido extends Entidade{
 		this.totalCompra = totalCompra;
 	}
 
-	public Cupom getCupom() {
-		return cupom;
+	public CupomPedido getCupom() {
+		return cupomPedido;
 	}
 
-	public void setCupom(Cupom cupom) {
-		this.cupom = cupom;
+	public void setCupom(CupomPedido cupomPedido) {
+		this.cupomPedido = cupomPedido;
 	}
 
 	public String getHora() {
