@@ -37,6 +37,13 @@ public class EnderecoController extends ControllerBase {
 		}
 		return resultado;
 	}
+	
+	@ResponseBody
+	@RequestMapping("/adicionar")
+	public Resultado adicionar(@ModelAttribute Endereco endereco) {
+		return facade.salvar(endereco);
+
+	}
 	@RequestMapping("/consulta")
 	public ModelAndView consulta(ModelAndView modelView) {
 		modelView.setViewName("painel/iframes/enderecos");

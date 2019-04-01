@@ -17,7 +17,7 @@ public class DadosObrigatoriosEndereco implements Strategy {
 				(Endereco)entidade;
 		
 		if(StringUtils.isNullOrEmpty(endereco.getBairro())) {
-			mensagens.add("Endereço vazio!");
+			mensagens.add("Bairro vazio!");
 		}
 		if(StringUtils.isNullOrEmpty(endereco.getCep())) {
 			mensagens.add("Cep vazio!");
