@@ -22,7 +22,7 @@ public class Pedido extends Entidade{
 	private String desconto;
 	private String totalCompra;
 	private String hora;
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	private Cupom cupomPedido;
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<CartaoCreditoPagamento>  cartoes = new ArrayList<>();
