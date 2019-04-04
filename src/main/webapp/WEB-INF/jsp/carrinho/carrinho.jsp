@@ -81,6 +81,9 @@ function remover(id){
 }
 
 $(document).ready(function(){
+	$("#comboEndereco").on("change", function(){
+		$("#formEnderecoHidden").val($(this).val());
+	});
 	$("#btnCadastrarEndereco").on("click", function(){
 		cadastrarEndereco(function(data){
 			if(abrirModalSucessoOuFalha(data, " ", "Falha ao cadastrar o endereço", data.mensagem.length, true, false)){

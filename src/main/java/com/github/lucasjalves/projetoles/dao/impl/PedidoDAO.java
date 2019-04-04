@@ -21,7 +21,8 @@ public class PedidoDAO implements DAO{
 	
 	@Override
 	public Entidade salvar(Entidade entidade) {
-		return entidade;
+		Pedido p = (Pedido)entidade;
+		return repository.save(p);
 	}
 
 	@Override

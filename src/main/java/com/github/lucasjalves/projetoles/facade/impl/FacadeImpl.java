@@ -145,7 +145,8 @@ final public class FacadeImpl implements Facade {
 		List<String> mensagens = processar(entidade, "SALVAR");
 		resultado.setMensagem(mensagens);
 		if(mensagens.isEmpty()) {
-			daos.get(entidade.getClass().getName()).salvar(entidade);
+			List<Entidade> entidades = new ArrayList<>();
+			entidades.add(daos.get(entidade.getClass().getName()).salvar(entidade));
 		}
 		return resultado;
 	}
