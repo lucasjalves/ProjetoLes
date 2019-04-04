@@ -23,12 +23,12 @@ public class Pedido extends Entidade{
 	private String totalCompra;
 	private String hora;
 	@OneToOne
-	private CupomPedido cupomPedido;
+	private Cupom cupomPedido;
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<CartaoCreditoPagamento>  cartoes = new ArrayList<>();
 	
 	@OneToOne(cascade=CascadeType.ALL)
-	private EnderecoPedido endereco;
+	private Endereco endereco;
 	private String creditoUtilizado = "0";
 	
 	public Pedido withId(Long id) {
@@ -75,11 +75,11 @@ public class Pedido extends Entidade{
 		this.cartoes = cartoes;
 	}
 
-	public EnderecoPedido getEndereco() {
+	public Endereco getEndereco() {
 		return endereco;
 	}
 
-	public void setEndereco(EnderecoPedido endereco) {
+	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
 
@@ -115,11 +115,11 @@ public class Pedido extends Entidade{
 		this.totalCompra = totalCompra;
 	}
 
-	public CupomPedido getCupom() {
+	public Cupom getCupom() {
 		return cupomPedido;
 	}
 
-	public void setCupom(CupomPedido cupomPedido) {
+	public void setCupom(Cupom cupomPedido) {
 		this.cupomPedido = cupomPedido;
 	}
 

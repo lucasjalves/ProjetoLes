@@ -42,7 +42,7 @@ public class PedidoHelper {
 				.collect(Collectors.toList());
 		
 		if(!enderecos.isEmpty()) {
-			pedido.setEndereco((EnderecoPedido)enderecos.get(0));
+			pedido.setEndereco(enderecos.get(0));
 		}
 		
 		Iterator<ItemCarrinho> it = carrinho.getItensCarrinho().iterator();
@@ -52,7 +52,7 @@ public class PedidoHelper {
 		if(carrinho.getCupom() != null) {
 			desconto = carrinho.getCupom().getValorDesconto() / 100;
 			desconto = desconto * total;	
-			pedido.setCupom((CupomPedido)carrinho.getCupom());
+			pedido.setCupom(carrinho.getCupom());
 		}
 		while(it.hasNext()) {
 			ItemCarrinho i = it.next();
