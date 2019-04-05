@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.lucasjalves.projetoles.entidade.Carrinho;
 import com.github.lucasjalves.projetoles.entidade.Cliente;
 import com.github.lucasjalves.projetoles.entidade.Endereco;
@@ -88,8 +89,15 @@ public class PedidoController extends ControllerBase{
 	}
 	
 	@RequestMapping("/consulta")
-	public ModelAndView consulta(ModelAndView modelView) {
+	public ModelAndView consulta(ModelAndView modelView) throws JsonProcessingException {
+		
+		Cliente cliente =
+				(Cliente) httpSession.getAttribute("cliente");
+		
+		cliente = (Cliente) facade.consultar(cliente).getEntidades().get(0);
+		
 		modelView.setViewName(CONSULTA);
+		modelView.addObject("pedidos", mapper.writeValueAsString(cliente.getPedidos()));
 		return modelView;
 	}
 	

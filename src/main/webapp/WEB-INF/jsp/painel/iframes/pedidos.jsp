@@ -1,12 +1,7 @@
 <html>
 <head>
-<script>
-function devolverOuTrocar(){
-	$("#abrirModal").click();
-}
 
 
-</script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link
@@ -23,6 +18,28 @@ function devolverOuTrocar(){
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 <link href="http://localhost:8888/css/styles.css" rel="stylesheet">
+<script>
+function devolverOuTrocar(){
+	$("#abrirModal").click();
+}
+
+$(document).ready(function(){
+	var json = ${pedidos};
+	gerarTabela(json);
+});
+
+function gerarTabela(json){
+	$("#bodyTabela").html("");
+	$.each(json, function(index, pedido){
+		var string ="<th scope='row'>"+pedido.id+"</th>"
+		+ "<td scope='row'>"+pedido.dtPedido+"</td>"
+		+ "<td scope='row'>"+pedido.totalCompra+"</td>"
+		+ "<td scope='row'>"+pedido.status+"</td>";
+		
+		$("#bodyTabela").append(string);
+	});
+}
+</script>
 <style>
 .modal-backdrop, .modal-backdrop.fade.in{
 opacity: 0.1;
@@ -40,7 +57,7 @@ opacity: 0.1;
 				<th scope="col">Ações</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody id="bodyTabela">
 			<tr>
 				<th scope="row">1</th>
 				<td>20/02/2019</td>
