@@ -14,6 +14,7 @@ import com.github.lucasjalves.projetoles.entidade.Cliente;
 import com.github.lucasjalves.projetoles.entidade.Endereco;
 import com.github.lucasjalves.projetoles.entidade.Pedido;
 import com.github.lucasjalves.projetoles.facade.Facade;
+import com.github.lucasjalves.projetoles.helper.EstoqueHelper;
 import com.github.lucasjalves.projetoles.helper.PedidoHelper;
 import com.github.lucasjalves.projetoles.rns.Resultado;
 
@@ -32,9 +33,12 @@ public class PedidoController extends ControllerBase{
 	@Autowired
 	private PedidoHelper pedidoHelper;
 	
+	@Autowired
+	private EstoqueHelper estoqueHelper;
+	
 	@ResponseBody
 	@RequestMapping("/confirmar")
-	public Resultado confirmar(@ModelAttribute Endereco endereco) throws CloneNotSupportedException {
+	public Resultado confirmar(@ModelAttribute Endereco endereco) throws Exception {
 		Cliente cliente =
 				(Cliente) httpSession.getAttribute("cliente");
 		
@@ -51,6 +55,7 @@ public class PedidoController extends ControllerBase{
 		Pedido pedido = pedidoHelper.gerarPedido(endereco, carrinho, cliente);
 		Resultado resultado = facade.salvar(pedido);
 		if(resultado.getMensagem().isEmpty()) {
+			estoqueHelper.atualizarEstoque(carrinho);
 			Pedido p = (Pedido) resultado.getEntidades().get(0);
 			cliente.getPedidos().add(pedido);
 			resultado = facade.alterar(cliente);

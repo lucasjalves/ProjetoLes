@@ -35,9 +35,17 @@ function gerarTabela(json){
 		+ "<td scope='row'>"+pedido.dtPedido+"</td>"
 		+ "<td scope='row'>"+pedido.totalCompra+"</td>"
 		+ "<td scope='row'>"+pedido.status+"</td>";
-		
+		if(pedido.status === "SOLICITADO");
+		{
+			string = string + "<td scope='row'><a class='btn btn-warning' onclick='irParaConfirmacao("+pedido.id+")'>Comprar</a></td>";
+		}
 		$("#bodyTabela").append(string);
 	});
+}
+
+function irParaConfirmacao(id){
+	$("#idConfirmacao").val(id);
+	$("#formConfirmacao").submit();
 }
 </script>
 <style>
@@ -47,6 +55,9 @@ opacity: 0.1;
 </style>
 </head>
 <body>
+<form id="formConfirmacao" target="_parent" action="http://localhost:8888/pedido/confirmacao">
+	<input type="hidden" name="id" id="idConfirmacao" />
+</form>
 	<table class="table table-hover">
 		<thead>
 			<tr>
@@ -58,31 +69,7 @@ opacity: 0.1;
 			</tr>
 		</thead>
 		<tbody id="bodyTabela">
-			<tr>
-				<th scope="row">1</th>
-				<td>20/02/2019</td>
-				<td>1.000,00</td>
-				<td style="color: #FFB300;">NÃO PAGO</td>
-				<td><button href="" class="btn btn-link" onclick="top.window.location.href='http://localhost:8888/pedido/confirmacao';">Comprar</button></td>
-			</tr>
-			<tr>
-				<th scope="row">2</th>
-				<td>21/02/2019</td>
-				<td>1.500,00</td>
-				<td style="color: green;">ENTREGUE</td>
-				<td>
-					<button class="btn btn-link" onclick="devolverOuTrocar()">Trocar/devolver</button>
-					<a class="btn btn-link" href="http://localhost:8888/pedido/efetivacao" target="_blank">Detalhes</a>
-				
-				</td>
-			</tr>
-			<tr>
-				<th scope="row">3</th>
-				<td>22/02/2019</td>
-				<td>500,00</td>
-				<td style="color: red;">CANCELADO</td>
-				<td><a class="btn btn-link" href="http://localhost:8888/pedido/efetivacao" target="_blank">Detalhes</a></td>
-			</tr>
+
 		</tbody>
 	</table>
 

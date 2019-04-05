@@ -23,6 +23,7 @@ public class Cliente extends Entidade {
 	private String email;
 	private String genero;
 	private Boolean ativo;
+	private String creditoDisponivel = "0";
 	private TipoUsuario tipoUsuario;
 	
 	@OneToMany(cascade=CascadeType.ALL)
@@ -127,6 +128,12 @@ public class Cliente extends Entidade {
 	public Cliente withEndereco(Endereco endereco) {
 		this.enderecos.add(endereco);
 		return this;
+	}
+	public String getCreditoDisponivel() {
+		return creditoDisponivel;
+	}
+	public void setCreditoDisponivel(String creditoDisponivel) {
+		this.creditoDisponivel = creditoDisponivel;
 	}
 	
 }

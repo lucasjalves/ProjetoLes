@@ -115,11 +115,11 @@ public class Pedido extends Entidade implements Cloneable{
 		this.totalCompra = totalCompra;
 	}
 
-	public CupomPedido getCupom() {
+	public CupomPedido getCupomPedido() {
 		return cupomPedido;
 	}
 
-	public void setCupom(CupomPedido cupomPedido) {
+	public void setCupomPedido(CupomPedido cupomPedido) {
 		this.cupomPedido = cupomPedido;
 	}
 

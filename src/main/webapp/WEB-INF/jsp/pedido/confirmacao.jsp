@@ -86,7 +86,7 @@
 						</div>
 						<div>
 							<p>${pedido.endereco.cep}</p>
-							<p>${pedido.endereco.rua}, ${pedido.endereco.numero}<c:if test="${pedido.endereco.complemento.length > 0}">, ${pedido.endereco.complemento}</c:if></p>
+							<p>${pedido.endereco.rua}, ${pedido.endereco.numero}<c:if test="${pedido.endereco.complemento != null}">, ${pedido.endereco.complemento}</c:if></p>
 							<p>${pedido.endereco.bairro}</p>
 							<p>${pedido.endereco.cidade}, ${pedido.endereco.uf}, ${pedido.endereco.pais}</p>
 						</div>
@@ -105,7 +105,7 @@
 				<div id="collapseThree" class="collapse"
 					aria-labelledby="headingThree" data-parent="#accordion">
 					<div class="card-body">
-						<p>Crédito disponível: <strong>R$ 1.000,00</strong></p>	
+						<p>Crédito disponível: <strong>R$ ${cliente.creditoDisponivel}</strong></p>	
 						<h6>Deseja utilizar nesta compra?</h6>
 						<div class="form-check form-check-inline">
 						  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">

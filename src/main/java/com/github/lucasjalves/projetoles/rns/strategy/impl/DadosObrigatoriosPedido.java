@@ -20,11 +20,11 @@ public class DadosObrigatoriosPedido implements Strategy {
 			if(p.getEndereco() == null) {
 				mensagens.add("O pedido não pode ser efetivado sem um endereço");
 			}
-			if(p.getCupom() != null) {
+			if(p.getCupomPedido() != null) {
 				LocalDate dtVencimento = 
-						FormatadorDataUtil.toLocalDate(p.getCupom().getDataVencimento());
+						FormatadorDataUtil.toLocalDate(p.getCupomPedido().getDataVencimento());
 				
-				if(!p.getCupom().getStatus()) {
+				if(!p.getCupomPedido().getStatus()) {
 					mensagens.add("O cupom não está mais ativo");
 				}
 				

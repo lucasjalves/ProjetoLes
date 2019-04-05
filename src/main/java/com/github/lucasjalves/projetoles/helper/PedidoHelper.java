@@ -55,8 +55,8 @@ public class PedidoHelper {
 		if(carrinho.getCupom() != null) {
 			desconto = carrinho.getCupom().getValorDesconto() / 100;
 			desconto = desconto * total;	
-			pedido.setCupom(to(carrinho.getCupom()));
-			pedido.getCupom().setId(null);
+			pedido.setCupomPedido(to(carrinho.getCupom()));
+			pedido.getCupomPedido().setId(null);
 		}
 		while(it.hasNext()) {
 			ItemCarrinho i = it.next();
