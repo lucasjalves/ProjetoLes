@@ -5,8 +5,10 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import com.github.lucasjalves.projetoles.enums.TipoUsuario;
 
@@ -24,15 +26,19 @@ public class Cliente extends Entidade {
 	private TipoUsuario tipoUsuario;
 	
 	@OneToMany(cascade=CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	List<Pedido> pedidos = new ArrayList<>();
 	
 	@OneToMany(cascade=CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	List<Ticket> tickets = new ArrayList<>();
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	List<Endereco> enderecos = new ArrayList<>();
 	
 	@OneToMany(cascade=CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	List<CartaoCredito> cartoes = new ArrayList<>();
 	public Cliente withId(Long id) {
 		this.setId(id);

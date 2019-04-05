@@ -180,7 +180,7 @@ $(document).ready(function(){
 						<div class="col-sm-12">
 							<c:if test="${cliente != null}">
 								<select class="form-control" id="comboEndereco">
-									<option>Selecione...</option>
+									<option value="-1">Selecione...</option>
 										<c:forEach items="${cliente.enderecos}" var="endereco">
 											<option value="${endereco.id}">${endereco.nome}</option>										
 										</c:forEach>

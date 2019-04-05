@@ -55,10 +55,11 @@
 							</tbody>
 						</table>
 						<div class="right">
-							<p>&nbsp;&nbsp;</p>
-							<p>+ Frete: R$ 15,00</p>
-							<p>- Desconto: R$ 75,75  (Cupom: AABB11 de 5,00%)</p>
-							<p style="color: green;">&nbsp;&nbsp;Total à pagar: R$ 1.439,25</p>
+							<p>+ Frete: R$ ${pedido.frete}</p>
+							<c:if test="${pedido.cupomPedido != null}">
+								<p>- Desconto: R$ ${pedido.desconto}  (Cupom: ${pedido.cupomPedido.codigo} de ${pedido.cupomPedido.valorDesconto}%)</p>							
+							</c:if>
+							<p style="color: green;">&nbsp;&nbsp;Total à pagar: R$ ${pedido.totalCompra}</p>
 						</div>
 					</div>
 				</div>
@@ -84,10 +85,10 @@
 							</div>
 						</div>
 						<div>
-							<p>08676-000</p>
-							<p>Rua teste, 801, complemento Teste</p>
-							<p>Vila figueira</p>
-							<p>São paulo, SP, Brasil</p>
+							<p>${pedido.endereco.cep}</p>
+							<p>${pedido.endereco.rua}, ${pedido.endereco.numero}<c:if test="${pedido.endereco.complemento.length > 0}">, ${pedido.endereco.complemento}</c:if></p>
+							<p>${pedido.endereco.bairro}</p>
+							<p>${pedido.endereco.cidade}, ${pedido.endereco.uf}, ${pedido.endereco.pais}</p>
 						</div>
 					</div>
 				</div>

@@ -11,7 +11,7 @@ import javax.persistence.OneToOne;
 import com.github.lucasjalves.projetoles.enums.StatusPedido;
 
 @Entity
-public class Pedido extends Entidade{
+public class Pedido extends Entidade implements Cloneable{
 	@OneToMany(cascade=CascadeType.ALL)
 	List<ItemPedido> itensPedido = new ArrayList<>();
 
@@ -23,12 +23,12 @@ public class Pedido extends Entidade{
 	private String totalCompra;
 	private String hora;
 	@OneToOne(cascade=CascadeType.ALL)
-	private Cupom cupomPedido;
+	private CupomPedido cupomPedido;
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<CartaoCreditoPagamento>  cartoes = new ArrayList<>();
 	
 	@OneToOne(cascade=CascadeType.ALL)
-	private Endereco endereco;
+	private EnderecoPedido endereco;
 	private String creditoUtilizado = "0";
 	
 	public Pedido withId(Long id) {
@@ -75,11 +75,11 @@ public class Pedido extends Entidade{
 		this.cartoes = cartoes;
 	}
 
-	public Endereco getEndereco() {
+	public EnderecoPedido getEndereco() {
 		return endereco;
 	}
 
-	public void setEndereco(Endereco endereco) {
+	public void setEndereco(EnderecoPedido endereco) {
 		this.endereco = endereco;
 	}
 
@@ -115,11 +115,11 @@ public class Pedido extends Entidade{
 		this.totalCompra = totalCompra;
 	}
 
-	public Cupom getCupom() {
+	public CupomPedido getCupom() {
 		return cupomPedido;
 	}
 
-	public void setCupom(Cupom cupomPedido) {
+	public void setCupom(CupomPedido cupomPedido) {
 		this.cupomPedido = cupomPedido;
 	}
 
@@ -131,7 +131,10 @@ public class Pedido extends Entidade{
 		this.hora = hora;
 	}
 	
-	
+	@Override
+    public Object clone()throws CloneNotSupportedException{  
+        return (Pedido)super.clone();  
+    }
 	
 	
 	

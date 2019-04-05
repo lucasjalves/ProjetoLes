@@ -32,7 +32,6 @@ import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosEnde
 import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosPedido;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosProduto;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.EntidadeDadoObrigatorio;
-import com.github.lucasjalves.projetoles.rns.strategy.impl.IdadeMinimaCliente;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.QuantidadeEstoqueProduto;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.QuantidadeEstoqueProdutoCarrinho;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.TamanhoMaximoEspecificacao;
@@ -92,10 +91,8 @@ final public class FacadeImpl implements Facade {
 		List<Strategy> rnsCliente = new ArrayList<>();
 		List<Strategy> rnsClienteAlterar = new ArrayList<>();
 		rnsCliente.add(new ClienteDadosObrigatorios());
-		rnsCliente.add(new IdadeMinimaCliente());
 		rnsClienteAlterar.add(new EntidadeDadoObrigatorio());
 		rnsClienteAlterar.add(new ClienteDadosObrigatorios());
-		rnsClienteAlterar.add(new IdadeMinimaCliente());
 		mapaStrategyCliente.put("SALVAR", rnsCliente);
 		mapaStrategyCliente.put("ALTERAR", rnsClienteAlterar);
 		rns.put(Cliente.class.getName(), mapaStrategyCliente) ;
@@ -147,6 +144,7 @@ final public class FacadeImpl implements Facade {
 		if(mensagens.isEmpty()) {
 			List<Entidade> entidades = new ArrayList<>();
 			entidades.add(daos.get(entidade.getClass().getName()).salvar(entidade));
+			resultado.setEntidades(entidades);
 		}
 		return resultado;
 	}

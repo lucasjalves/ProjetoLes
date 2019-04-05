@@ -33,7 +33,7 @@ public class PedidoController extends ControllerBase{
 	
 	@ResponseBody
 	@RequestMapping("/confirmar")
-	public Resultado confirmar(@ModelAttribute Endereco endereco) {
+	public Resultado confirmar(@ModelAttribute Endereco endereco) throws CloneNotSupportedException {
 		Cliente cliente =
 				(Cliente) httpSession.getAttribute("cliente");
 		
