@@ -92,22 +92,36 @@ public class ClienteController extends ControllerBase {
 	
 	@ResponseBody
 	@RequestMapping("/cliente/efetuarLogin")
-	public Boolean login(@ModelAttribute Cliente cliente) throws Exception {
+	public Resultado login(@ModelAttribute Cliente cliente) throws Exception {
 		List<Cliente> clientes = 
 				(List<Cliente>) facade.consultar(cliente).getEntidades();
 		
 		if(clientes.isEmpty()) {
-			throw new Exception("Cliente não encontrado");
+			return new Resultado("Usuário não encontrado");
 		}
 		Cliente cli = clientes.get(0);
 		httpSession.setAttribute("cliente", cli);
-		return cli.getTipoUsuario().equals(TipoUsuario.ADMIN);
+		
+		return new Resultado();
 	}
 	
 	@RequestMapping("/painel")
 	public ModelAndView painel(ModelAndView modelView) {
 		modelView.setViewName("painel/painel");
 		return modelView;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/cliente/logado")
+	public Boolean logado() {
+		Cliente cliente =
+				(Cliente) httpSession.getAttribute("cliente");
+		
+		if(cliente == null){
+			return null;
+		}
+		
+		return TipoUsuario.ADMIN.equals(cliente.getTipoUsuario());
 	}
 	
 }

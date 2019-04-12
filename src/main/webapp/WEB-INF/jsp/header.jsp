@@ -36,13 +36,30 @@ function setCookie(cname, cvalue, exdays) {
 	  return "";
 	}
 	$(document).ready(function(){
-		var admin = getCookie("admin");
-		if(admin == "falseAdmin" || admin == ""){
-			$(".admin").each(function(){
-				$(this).remove();
-			});
-		}
+		usuarioLogado();
 	});
+	
+	function usuarioLogado(){
+		$.ajax({
+			method: 'POST',
+			url: 'http://localhost:8888/cliente/logado',
+			success: function(data){
+				if(data == false){
+					$(".admin").each(function(){
+						$(this).remove();
+					});
+				}
+				if(data == ""){
+					$(".logado").each(function(){
+						$(this).remove();
+					});
+				}
+			},
+			error: function(data){
+				
+			}
+		});
+	}
 </script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -95,7 +112,7 @@ function setCookie(cname, cvalue, exdays) {
 		<li class="nav-item"><a class="nav-link"
 			href="http://localhost:8888/carrinho">Carrinho <span class="sr-only">(current)</span></a>
 		</li>
-		<li class="nav-item"><a class="nav-link"
+		<li class="nav-item logado"><a class="nav-link"
 			href="http://localhost:8888/painel">Minha conta <span class="sr-only">(current)</span></a>
 		</li>
 		<li class="nav-item"><a class="nav-link"

@@ -6,6 +6,7 @@ import java.util.List;
 import com.github.lucasjalves.projetoles.entidade.Entidade;
 import com.github.lucasjalves.projetoles.entidade.Produto;
 import com.github.lucasjalves.projetoles.rns.strategy.Strategy;
+import com.github.lucasjalves.projetoles.util.CalculoUtil;
 import com.github.lucasjalves.projetoles.util.StringUtils;
 
 public class ValorVendaProduto implements Strategy {
@@ -16,8 +17,8 @@ public class ValorVendaProduto implements Strategy {
 		Produto produto = (Produto)entidade;
 		if(!StringUtils.isNullOrEmpty(produto.getPrecoVenda()) && !StringUtils.isNullOrEmpty(produto.getPrecoCompra())) {
 			try {
-				Double valorVenda = StringUtils.StringToValor(produto.getPrecoVenda());
-				Double valorCompra = StringUtils.StringToValor(produto.getPrecoCompra());
+				Double valorVenda = CalculoUtil.StringToValor(produto.getPrecoVenda());
+				Double valorCompra = CalculoUtil.StringToValor(produto.getPrecoCompra());
 				if(valorCompra >= valorVenda) {
 					mensagens.add("O valor de venda deve ser maior que o valor de compra!");
 				}

@@ -13,16 +13,10 @@
 			
 			$.post("http://localhost:8888/cliente/efetuarLogin", $("#form").serialize())
 			.done(function(data){
-				if(data){
-					setCookie("admin", "trueAdmin", 1);
-				}else{
-					setCookie("admin", "falseAdmin", 1);
-				}
-
 				window.location.href = "http://localhost:8888";
 			})
 			.fail(function(data){
-				abrirModal("Falha", "Usuário não encontrado");
+				abrirModalSucessoOuFalha(data, "Falha", "Usuário não encontrado", 1);
 			});			
 		});
 	});

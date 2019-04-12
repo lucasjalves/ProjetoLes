@@ -17,6 +17,7 @@ import com.github.lucasjalves.projetoles.facade.Facade;
 import com.github.lucasjalves.projetoles.helper.EstoqueHelper;
 import com.github.lucasjalves.projetoles.helper.PedidoHelper;
 import com.github.lucasjalves.projetoles.rns.Resultado;
+import com.github.lucasjalves.projetoles.util.CalculoUtil;
 
 @Controller
 @RequestMapping("/pedido")
@@ -83,7 +84,7 @@ public class PedidoController extends ControllerBase{
 		httpSession.removeAttribute("pedido");
 		modelView.addObject("pedido", pedido);
 		modelView.addObject("cliente", cliente);
-		
+		modelView.addObject("creditoZerado", CalculoUtil.isValorZerado(cliente.getCreditoDisponivel()));
 		return modelView;
 	}
 	

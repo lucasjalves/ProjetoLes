@@ -9,7 +9,6 @@ import com.github.lucasjalves.projetoles.entidade.ItemCarrinho;
 import com.github.lucasjalves.projetoles.entidade.Produto;
 import com.github.lucasjalves.projetoles.util.CalculoUtil;
 import com.github.lucasjalves.projetoles.util.FreteUtil;
-import com.github.lucasjalves.projetoles.util.StringUtils;
 
 public  class CarrinhoHelper {
 	private CarrinhoHelper() {
@@ -67,7 +66,7 @@ public  class CarrinhoHelper {
 		Iterator<ItemCarrinho> it= carrinho.getItensCarrinho().iterator();
 		while(it.hasNext()) {
 			ItemCarrinho item = it.next();
-			total = total + (StringUtils.StringToDouble(item.getProduto().getPrecoVenda())) * item.getQuantidade();
+			total = total + (CalculoUtil.StringToDouble(item.getProduto().getPrecoVenda())) * item.getQuantidade();
 			frete = frete + FreteUtil.calcularFrete(item.getProduto(),  item.getQuantidade());
 		}
 		if(carrinho.getCupom() != null) {
@@ -90,7 +89,7 @@ public  class CarrinhoHelper {
 		Iterator<ItemCarrinho> it= carrinho.getItensCarrinho().iterator();
 		while(it.hasNext()) {
 			ItemCarrinho item = it.next();
-			total = total + (StringUtils.StringToDouble(item.getProduto().getPrecoVenda())) * item.getQuantidade();
+			total = total + (CalculoUtil.StringToDouble(item.getProduto().getPrecoVenda())) * item.getQuantidade();
 			frete = frete + FreteUtil.calcularFrete(item.getProduto(), item.getQuantidade());
 		}
 		if(carrinho.getCupom() != null) {

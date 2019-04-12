@@ -24,7 +24,6 @@ import com.github.lucasjalves.projetoles.facade.Facade;
 import com.github.lucasjalves.projetoles.util.CalculoUtil;
 import com.github.lucasjalves.projetoles.util.FormatadorDataUtil;
 import com.github.lucasjalves.projetoles.util.FreteUtil;
-import com.github.lucasjalves.projetoles.util.StringUtils;
 
 @Component
 public class PedidoHelper {
@@ -63,7 +62,7 @@ public class PedidoHelper {
 			Produto produto = produtos.stream().filter(p -> p.equals(i.getProduto()))
 					.collect(Collectors.toList()).get(0);
 			
-			total = total + (StringUtils.StringToDouble(produto.getPrecoVenda())) * i.getQuantidade();
+			total = total + (CalculoUtil.StringToDouble(produto.getPrecoVenda())) * i.getQuantidade();
 			frete = frete + FreteUtil.calcularFrete(produto,  i.getQuantidade());
 			
 			ItemPedido itemPedido = new ItemPedido()

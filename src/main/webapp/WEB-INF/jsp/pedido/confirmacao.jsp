@@ -105,6 +105,7 @@
 				<div id="collapseThree" class="collapse"
 					aria-labelledby="headingThree" data-parent="#accordion">
 					<div class="card-body">
+					<c:if test="${!creditoZerado}">
 						<p>Crédito disponível: <strong>R$ ${cliente.creditoDisponivel}</strong></p>	
 						<h6>Deseja utilizar nesta compra?</h6>
 						<div class="form-check form-check-inline">
@@ -117,6 +118,7 @@
 						</div>					
 						<br>
 						<hr>
+					</c:if>
 						<div class="row">
 							<div class="col-sm-3">
 								<h5 style="margin-top: 6px;">Cartões de crédito</h5>		
@@ -126,13 +128,17 @@
 							</div>							
 						</div>
 						<br>
+	
 						<div id="cartoes">
 							<div class="form-group row">
 								<div class="col-sm-4">
 									<select class="form-control" >
-										<option selected>MasterCard - Final 0123</option>
-										<option>MasterCard - Final 9876 <option>
-										<option>VISA - Final 4567 <option>
+										<option value="-1">Selecione...</option>
+										<c:forEach items="${cliente.cartoes}" var="cartao" >
+											<option value="${cartao.id}">
+												${cartao.bandeira} -- Final ${cartao.numero.substring(cartao.numero.size - 4)}
+											</option>
+										</c:forEach>
 									</select>
 								</div>	
 								<div class="col-sm-2" id="valor1" style="display: none;">
@@ -165,7 +171,7 @@
 									<button class="btn btn-link" onclick="mostrar()">+ Adicionar cartão</button>		
 								</div>
 								<div class="col-sm-6" style="margin-top: 6px;">
-									<p>Total à pagar com cartão: <strong>R$ 439,25</strong></p>	
+									<p>Total à pagar com cartão: <strong>R$ ${pedido.totalCompra}</strong></p>	
 								</div>	
 								<div class="col-sm-2">
 									<a class="btn btn-warning" href="http://localhost:8888/pedido/efetivacao">Efetivar</a>
