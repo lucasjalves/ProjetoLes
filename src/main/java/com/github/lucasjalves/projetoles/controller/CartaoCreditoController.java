@@ -1,4 +1,4 @@
-package com.github.lucasjalves.projetoles.controller;
+ package com.github.lucasjalves.projetoles.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

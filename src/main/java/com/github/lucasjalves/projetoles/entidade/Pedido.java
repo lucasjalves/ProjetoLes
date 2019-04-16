@@ -22,8 +22,12 @@ public class Pedido extends Entidade implements Cloneable{
 	private String desconto;
 	private String totalCompra;
 	private String hora;
+	
+	private Long idCliente;
+	
 	@OneToOne(cascade=CascadeType.ALL)
 	private CupomPedido cupomPedido;
+	
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<CartaoCreditoPagamento>  cartoes = new ArrayList<>();
 	
@@ -131,6 +135,14 @@ public class Pedido extends Entidade implements Cloneable{
 		this.hora = hora;
 	}
 	
+	
+	
+	public Long getIdCliente() {
+		return idCliente;
+	}
+	public void setIdCliente(Long idCliente) {
+		this.idCliente = idCliente;
+	}
 	@Override
     public Object clone()throws CloneNotSupportedException{  
         return (Pedido)super.clone();  

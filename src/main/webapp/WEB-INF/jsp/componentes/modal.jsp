@@ -71,4 +71,51 @@
 		$("#btnAbrirModal").click();		
 	}
 
+	function tratarResponse(params){
+		if(params.callback !== undefined){
+			params.callback();
+			return;
+		}
+		$("#textoModal").html("");
+		$("#btnOkModal").off("onclick");
+		if((params.resultado === undefined || params.resultado == null || params.resultado.mensagem === undefined) && params.ignorarFalha !== true){
+			$("#tituloModal").text("Falha");
+			if(params.mensagemFalha === undefined || params.mensagemFalha == null){
+				$("#textoModal").text("Ocorreu um problema, tente novamente mais tarde!");
+			}else{
+				$("#textoModal").text(params.mensagemFalha);
+			}
+			$("#btnAbrirModal").click();
+			return false;
+		}
+		if(params.resultado.mensagem.length > 0 && params.ignorarFalha !== true){
+			$("#tituloModal").text("Falha");
+			$.each(params.resultado.mensagem, function(index, mensagemErro){
+				if(params.qtdeMensagemAExibir == 1){
+					$("#textoModal").text(mensagemErro);
+				}
+				if(params.qtdeMensagemAExibir > 1 || params.qtdeMensagemAExibir === undefined || params.qtdeMensagemAExibir === null){
+					var texto = "<p>" + mensagemErro + "</p>";
+					$("#textoModal").append(texto);
+				}
+			});
+			$("#btnAbrirModal").click();
+			return false;
+		}
+		if(params.resultado.mensagem.length === 0 && params.ignorarSucesso !== true){
+			$("#tituloModal").text("Sucesso");
+			$("#textoModal").text(params.mensagemSucesso);
+			$("#btnAbrirModal").click();
+			if(params.onOkFunction !== undefined){
+				$("#btnOkModal").on("click",function(){
+					params.onOkFunction();
+				});
+			}
+			return true;
+		}
+		if(params.resultado.mensagem.length === 0 && params.ignorarSucesso == true){
+			return true;
+		}
+		
+	}
 </script>

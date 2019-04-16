@@ -52,7 +52,9 @@ public class PedidoController extends ControllerBase{
 		if(carrinho == null) {
 			return new Resultado("Carrinho inexistente!");
 		}
-		
+		if(carrinho.getItensCarrinho().isEmpty()) {
+			return new Resultado("Itens no carrinho vazios!");
+		}
 		Pedido pedido = pedidoHelper.gerarPedido(endereco, carrinho, cliente);
 		Resultado resultado = facade.salvar(pedido);
 		if(resultado.getMensagem().isEmpty()) {

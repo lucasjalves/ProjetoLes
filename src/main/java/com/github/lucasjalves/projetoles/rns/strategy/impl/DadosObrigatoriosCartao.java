@@ -26,7 +26,11 @@ public class DadosObrigatoriosCartao implements Strategy{
 		if(StringUtils.isNullOrEmpty(cartao.getCvv())) {
 			mensagens.add("Código de verificação vazio!");
 		}
-		
+		if(!StringUtils.isNullOrEmpty(cartao.getCvv())) {
+			if(cartao.getCvv().length() < 3) {
+				mensagens.add("CVV inválido");
+			}
+		}
 		if(StringUtils.isNullOrEmpty(cartao.getDtVencimento())) {
 			mensagens.add("Data vazia!");
 		}
@@ -37,13 +41,14 @@ public class DadosObrigatoriosCartao implements Strategy{
 				mensagens.add("Data inválida!");
 			}
 		}
-		if(StringUtils.isNullOrEmpty(cartao.getNomeTitular())) {
-			mensagens.add("Nome do titular vazio!");
-		}
 		if(StringUtils.isNullOrEmpty(cartao.getNumero())) {
 			mensagens.add("Número do cartão vazio!");
 		}
-		
+		if(!StringUtils.isNullOrEmpty(cartao.getNumero())) {
+			if(cartao.getNumero().length() < 16) {
+				mensagens.add("O cartão deve conter 16 digítos");
+			}
+		}
 		return mensagens;
 	}
 

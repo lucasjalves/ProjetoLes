@@ -34,6 +34,7 @@ public class PedidoHelper {
 	@SuppressWarnings("unchecked")
 	public Pedido gerarPedido(Endereco endereco, Carrinho carrinho, Cliente cliente) throws CloneNotSupportedException {
 		Pedido pedido = new Pedido();
+		pedido.setIdCliente(cliente.getId());
 		List<Produto> produtos = (List<Produto>) facade.consultar(new Produto()).getEntidades();
 		cliente = (Cliente) facade.consultar(cliente).getEntidades().get(0);
 		

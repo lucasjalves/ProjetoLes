@@ -11,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.github.lucasjalves.projetoles.dao.DAO;
+import com.github.lucasjalves.projetoles.dao.impl.CartaoDAO;
 import com.github.lucasjalves.projetoles.dao.impl.ClienteDAO;
 import com.github.lucasjalves.projetoles.dao.impl.CupomDAO;
 import com.github.lucasjalves.projetoles.dao.impl.EnderecoDAO;
 import com.github.lucasjalves.projetoles.dao.impl.PedidoDAO;
 import com.github.lucasjalves.projetoles.dao.impl.ProdutoDAO;
+import com.github.lucasjalves.projetoles.entidade.CartaoCredito;
 import com.github.lucasjalves.projetoles.entidade.Cliente;
 import com.github.lucasjalves.projetoles.entidade.Cupom;
 import com.github.lucasjalves.projetoles.entidade.Endereco;
@@ -27,6 +29,7 @@ import com.github.lucasjalves.projetoles.rns.Resultado;
 import com.github.lucasjalves.projetoles.rns.strategy.Strategy;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.ClienteDadosObrigatorios;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.CupomValido;
+import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosCartao;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosCupom;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosEndereco;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosPedido;
@@ -62,6 +65,10 @@ final public class FacadeImpl implements Facade {
 	
 	@Autowired
 	private PedidoDAO pedidoDAO;
+	
+	@Autowired
+	private CartaoDAO cartaoDAO;
+	
 	@PostConstruct
 	public void setUpRns() {
 		
@@ -130,11 +137,18 @@ final public class FacadeImpl implements Facade {
 		mapaStrategyPedido.put("SALVAR", rnsPedido);
 		rns.put(Pedido.class.getName(), mapaStrategyPedido);
 		
+		Map<String, List<Strategy>> mapaStrategyCartao= new HashMap<>();
+		List<Strategy> rnsCartao = new ArrayList<>();
+		rnsCartao.add(new DadosObrigatoriosCartao());
+		mapaStrategyCartao.put("SALVAR", rnsCartao);
+		rns.put(CartaoCredito.class.getName(), mapaStrategyCartao);
+		
 		daos.put(Cliente.class.getName(), clienteDAO);
 		daos.put(Produto.class.getName(), produtoDAO);
 		daos.put(Cupom.class.getName(), cupomDAO);
 		daos.put(Endereco.class.getName(), enderecoDAO);
 		daos.put(Pedido.class.getName(), pedidoDAO);
+		daos.put(CartaoCredito.class.getName(), cartaoDAO);
 	}
 	@Override
 	public Resultado salvar(Entidade entidade) {
