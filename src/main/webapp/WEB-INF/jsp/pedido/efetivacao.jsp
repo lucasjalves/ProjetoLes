@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+		<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+	
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,18 +26,22 @@
 					<div class="col-sm-6">
 						<table class="table">
 							<tbody>
-								<tr>
-									<td><strong>1x Playstation 4</strong></td>
-									<td><label>R$ 1500,00 </label></td>
-								</tr>
+								<c:forEach var="item" items="${pedido.itensPedido}">
+									<tr>
+										<td><strong>${item.quantidade}x ${item.produto.modelo}</strong></td>
+										<td><label>R$ ${item.produto.precoVenda} </label></td>
+									</tr>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>
 					<div class="col-sm-6">
-						<p>&nbsp;&nbsp;Total dos itens: R$ 1.500,00</p>
-						<p>+ Frete: R$ 15,00</p>
-						<p>- Desconto: R$ 75,75 (Cupom: AABB11 de 5,00%)</p>
-						<p>&nbsp;&nbsp;Total do pedido: R$ 1.439,25</p>
+						<p>&nbsp;&nbsp;Total dos itens: R$ ${pedido.total}</p>
+						<p>+ Frete: R$ ${pedido.frete}</p>
+						<c:if test="${pedido.cupomPedido ne null}">
+							<p>- Desconto: R$ ${pedido.desconto} (Cupom: ${pedido.cupomPedido.codigo} de ${pedido.cupomPedido.valorDesconto}%)</p>
+						</c:if>
+						<p>&nbsp;&nbsp;Total do pedido: R$ ${pedido.totalCompra}</p>
 					</div>
 
 				</div>
@@ -47,10 +53,14 @@
 					</div>
 				</div>
 				<div>
-					<p>08676-000</p>
-					<p>Rua teste, 801, complemento Teste</p>
-					<p>Vila figueira</p>
-					<p>São paulo, SP, Brasil</p>
+					<p>${pedido.endereco.cep}</p>
+						<p>${pedido.endereco.rua}, ${pedido.endereco.numero}
+						<c:if test="${pedido.endereco.complemento ne null}">
+							, ${pedido.endereco.complemento}
+						</c:if>
+						</p>
+					<p>${pedido.endereco.bairro}</p>
+					<p>${pedido.endereco.cidade},${pedido.endereco.uf}, ${pedido.endereco.pais}</p>
 				</div>
 				<br>
 				<hr>
@@ -59,15 +69,20 @@
 						<h5>Pagamento</h5>
 					</div>
 				</div>
-				<p>
-					Crédito utilizado: <strong> R$ 1.000,00</strong>
-				</p>
+				<c:if test="${creditoZerado}">
+					<p>
+						Crédito utilizado: <strong> R$ ${pedido.creditoUtilizado}</strong>
+					</p>				
+				</c:if>
+
 				<p>Pagamento efetuado em: <strong>01/01/2019 às 00:00:00</strong></p>
 				<h6>Cartões</h6>
 				<ul>
-					<li>MasterCard - Final 0123</li>
-					<li>MasterCard - Final 9876</li>
-					<li>VISA - Final 4567</li>
+					<c:forEach items="${pedido.cartoes}" var="cartao" >
+						<li value="${cartao.id}">
+							${cartao.bandeira} -- Final ${cartao.numero.substring(cartao.numero.length() - 4)}
+						</li>
+					</c:forEach>
 				</ul>
 			</div>
 		</div>

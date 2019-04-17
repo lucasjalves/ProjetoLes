@@ -94,8 +94,8 @@
             var cartao = $(this).find("select").val();
             var valor = $(this).find("input").val();
             var json = {
-                valorSelecionado : valor,
-                id: cartao
+                valor : valor,
+                id: parseInt(cartao)
             }
             cartoes.push(json);
         });
@@ -103,7 +103,37 @@
 		return cartoes;
 	}
 	function efetivar(){
-		
+		var cartoes = gerarJsonCartoes()
+		var pedido = {
+			id : ${pedido.id},
+			cartoes: cartoes
+		}	
+		console.log(pedido);
+		$.ajax({
+			method: "POST",
+			url: "http://localhost:8888/pedido/efetivar",
+			data : JSON.stringify(pedido),
+			contentType: "application/json",
+			success: function(data){
+				tratarResponse({
+					resultado: data
+				});
+			
+				if(data.mensagem.length === 0){
+					tratarResponse({
+						callback: function(){
+							$("#formPedidoEfetivacao").submit();
+						}
+					});
+				}
+			},
+			error: function(data){
+				tratarResponse({
+					resultado: data,
+					mensagemFalha: "Falha ao efetivar o pedido"
+				})
+			}
+		})
 	}
 </script>
 <style>
@@ -118,6 +148,10 @@
 <body>
 <form id="formPedido" action="http://localhost:8888/pedido/confirmacao" method="POST">
  <input type="hidden" name="id" value="${pedido.id}" />
+</form>
+
+<form id="formPedidoEfetivacao" action="http://localhost:8888/pedido/efetivacao" method="POST">
+	<input type="hidden" name="id" value="${pedido.id}" />
 </form>
 <div id="fechar" style="display: none;"><div class="col-sm-2"><a href="#" style="color: red" class="btn btn-link"> X</a></div></div>
 	<div class="container spacer">

@@ -1,8 +1,11 @@
 package com.github.lucasjalves.projetoles.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +17,7 @@ import com.github.lucasjalves.projetoles.entidade.Cliente;
 import com.github.lucasjalves.projetoles.entidade.Endereco;
 import com.github.lucasjalves.projetoles.entidade.Pedido;
 import com.github.lucasjalves.projetoles.facade.Facade;
+import com.github.lucasjalves.projetoles.helper.EfetivacaoPedidoHelper;
 import com.github.lucasjalves.projetoles.helper.EstoqueHelper;
 import com.github.lucasjalves.projetoles.helper.PedidoHelper;
 import com.github.lucasjalves.projetoles.rns.Resultado;
@@ -90,9 +94,55 @@ public class PedidoController extends ControllerBase{
 		return modelView;
 	}
 	
+	@ResponseBody
+	@RequestMapping("/efetivar")
+	public Resultado efetivar(@RequestBody Pedido pedido) throws Exception {
+		
+		Cliente cliente =
+				(Cliente) httpSession.getAttribute("cliente");
+		
+		Resultado resultado = 
+				facade.consultar(pedido);
+		
+		Optional<Pedido> pedidoConsulta =
+				(Optional<Pedido>) resultado.getEntidades().stream().findFirst();
+		
+		if(!pedidoConsulta.isPresent()) {
+			return new Resultado("Pedido " + pedido.getId() + " não encontrado");
+		}
+		
+		Pedido pedidoAEfetivar = pedidoConsulta.get();
+		pedidoAEfetivar.setCartoes(pedido.getCartoes());
+		pedido.setTotalCompra(pedidoConsulta.get().getTotalCompra());
+		Resultado resultadoValidacao = 
+				EfetivacaoPedidoHelper.validarPedido(pedido);
+		
+		if(!resultadoValidacao.getMensagem().isEmpty()) {
+			return resultadoValidacao;
+		}
+		
+		Pedido pedidoEfetivacao = 
+				EfetivacaoPedidoHelper.setarDadosParaEfetivar(pedidoAEfetivar, pedido, cliente);
+		
+		
+		return facade.alterar(pedidoEfetivacao);
+	}
+	
 	@RequestMapping("/efetivacao")
-	public ModelAndView efetivacao(ModelAndView modelView) {
+	public ModelAndView efetivacao(ModelAndView modelView, @RequestParam Long id) throws Exception {
+		Resultado resultado = 
+				facade.consultar(new Pedido().withId(id));
+		
+		Optional<Pedido> buscaPedido = 
+				(Optional<Pedido>) resultado.getEntidades().stream().findFirst();
+		
+		if(!buscaPedido.isPresent()) {
+			throw new Exception("Pedido " + id + " não encontrado");
+		}
+		
+		modelView.addObject("pedido", buscaPedido.get());
 		modelView.setViewName(EFETIVACAO);
+		modelView.addObject("creditoZerado", CalculoUtil.isValorZerado(buscaPedido.get().getCreditoUtilizado()));
 		return modelView;
 	}
 	

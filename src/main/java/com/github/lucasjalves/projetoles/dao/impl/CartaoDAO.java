@@ -11,6 +11,7 @@ import com.github.lucasjalves.projetoles.entidade.Entidade;
 @Component
 public class CartaoDAO implements DAO{
 
+	
 	@Override
 	public Entidade salvar(Entidade entidade) {
 		return (CartaoCredito) entidade;
