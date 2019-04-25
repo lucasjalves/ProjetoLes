@@ -17,7 +17,8 @@ import com.github.lucasjalves.projetoles.util.CalculoUtil;
 public final class EfetivacaoPedidoHelper {
 
 	public static Resultado validarPedido(Pedido pedido) {
-		if(pedido.getCartoes().isEmpty()) {
+		boolean creditoUtilizado = CalculoUtil.isValorZerado(pedido.getCreditoUtilizado());
+		if(pedido.getCartoes().isEmpty() && !creditoUtilizado) {
 			return new Resultado("Você deve selecionar um cartão para pagamento");
 		}
 		if(!pedido.getCartoes().isEmpty()) {
@@ -46,17 +47,31 @@ public final class EfetivacaoPedidoHelper {
 		
 		Double valorTotal = CalculoUtil.StringToDouble(pedido.getTotalCompra());
 		
+		if(creditoUtilizado) {
+			valorTotal = valorTotal - CalculoUtil.StringToDouble(pedido.getCreditoUtilizado());
+			if(valorTotal < 0.00) {
+				return new Resultado();
+			}
+		}
 		if(!valor.equals(valorTotal)) {
 			return new Resultado("O valor a pagar por cartão não está igual ao total. Verifique os valores a pagar");
 		}
-		
+	
 		return new Resultado();
 	}
 
 	public static Pedido setarDadosParaEfetivar(Pedido pedidoAEfetivar, Pedido pedidoDadosPagamento, Cliente cliente) throws Exception {
-		pedidoAEfetivar.setCartoes(mapearCartoes(cliente, pedidoDadosPagamento.getCartoes()));
-		pedidoAEfetivar.setStatus(StatusPedido.PAGO);
 		pedidoAEfetivar.setCreditoUtilizado(pedidoDadosPagamento.getCreditoUtilizado());
+		Double creditoUtilizado = CalculoUtil.StringToDouble(pedidoDadosPagamento.getCreditoUtilizado());
+		Double totalCompra = CalculoUtil.StringToDouble(pedidoAEfetivar.getTotalCompra());
+		if(creditoUtilizado < totalCompra) {
+			pedidoAEfetivar.setCartoes(mapearCartoes(cliente, pedidoDadosPagamento.getCartoes()));
+		} else {
+			pedidoAEfetivar.setCreditoUtilizado(pedidoAEfetivar.getTotalCompra());
+		}
+		
+		
+		pedidoAEfetivar.setStatus(StatusPedido.PAGO);
 		pedidoAEfetivar.setIdCliente(cliente.getId());
 		return pedidoAEfetivar;
 	}

@@ -135,6 +135,33 @@
 			}
 		})
 	}
+	
+	function utilizarCredito(utilizar) {
+		const creditoDisponivel = parseFloat('${cliente.creditoDisponivel}'.replace(/\D/g, ""));
+		const totalCompra = parseFloat('${pedido.totalCompra}'.replace(/\D/g, ""));
+		var totalAPagar = totalCompra;
+		if(utilizar){
+			totalAPagar = totalCompra - creditoDisponivel;
+		}
+		
+		if(totalAPagar < 0.00){
+			totalAPagar = 0.00;
+		}
+
+		$("#totalCompra").text(formatNumber(totalAPagar));
+	}
+	
+	function formatNumber(num) {
+	    let string = num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+	    let arrayString = string.split(".");
+	    if(arrayString.length === 1){
+	        return string + ".00";
+	    }
+	    if(arrayString[1].length === 1){
+	        return string + "0";
+	    }
+	    return string;
+	}
 </script>
 <style>
 @media (min-width: 200px)
@@ -233,12 +260,12 @@
 						<p>Crédito disponível: <strong>R$ ${cliente.creditoDisponivel}</strong></p>	
 						<h6>Deseja utilizar nesta compra?</h6>
 						<div class="form-check form-check-inline">
-						  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-						  <label class="form-check-label" for="inlineRadio1">Sim</label>
+						  <input class="form-check-input" type="radio"  id="utilizar" value="option1">
+						  <label class="form-check-label" for="inlineRadio1" onclick="utilizarCredito(true)">Sim</label>
 						</div>
 						<div class="form-check form-check-inline">
-						  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" checked>
-						  <label class="form-check-label" for="inlineRadio2">Não</label>
+						  <input class="form-check-input" type="radio"  id="naoUtilizar" value="option2" checked>
+						  <label class="form-check-label" for="inlineRadio2" onclick="utilizarCredito(false)">Não</label>
 						</div>					
 						<br>
 						<hr>
@@ -279,7 +306,7 @@
 									</c:if>	
 								</div>
 								<div class="col-sm-6" style="margin-top: 6px;">
-									<p>Total à pagar com cartão: <strong>R$ ${pedido.totalCompra}</strong></p>	
+									<p>Total à pagar com cartão: <strong id="totalCompra">R$ ${pedido.totalCompra}</strong></p>	
 								</div>	
 								<div class="col-sm-2">
 									<a class="btn btn-warning" href="#" onclick="efetivar()">Efetivar</a>

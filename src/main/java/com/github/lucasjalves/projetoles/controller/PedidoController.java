@@ -17,6 +17,7 @@ import com.github.lucasjalves.projetoles.entidade.Cliente;
 import com.github.lucasjalves.projetoles.entidade.Endereco;
 import com.github.lucasjalves.projetoles.entidade.Pedido;
 import com.github.lucasjalves.projetoles.facade.Facade;
+import com.github.lucasjalves.projetoles.helper.ClienteHelper;
 import com.github.lucasjalves.projetoles.helper.EfetivacaoPedidoHelper;
 import com.github.lucasjalves.projetoles.helper.EstoqueHelper;
 import com.github.lucasjalves.projetoles.helper.PedidoHelper;
@@ -62,7 +63,12 @@ public class PedidoController extends ControllerBase{
 		Pedido pedido = pedidoHelper.gerarPedido(endereco, carrinho, cliente);
 		Resultado resultado = facade.salvar(pedido);
 		if(resultado.getMensagem().isEmpty()) {
-			estoqueHelper.atualizarEstoque(carrinho);
+			try {
+				estoqueHelper.atualizarEstoque(carrinho);
+			}catch(Exception e) {
+				return new Resultado(e.getMessage());
+			}
+			
 			Pedido p = (Pedido) resultado.getEntidades().get(0);
 			cliente.getPedidos().add(pedido);
 			resultado = facade.alterar(cliente);
@@ -124,8 +130,19 @@ public class PedidoController extends ControllerBase{
 		Pedido pedidoEfetivacao = 
 				EfetivacaoPedidoHelper.setarDadosParaEfetivar(pedidoAEfetivar, pedido, cliente);
 		
+		cliente = ClienteHelper.atualizarCreditoUtilizado(pedidoAEfetivar, cliente);
 		
+		if(CalculoUtil.isValorZerado(pedidoAEfetivar.getCreditoUtilizado())) {
+			return facade.alterar(pedidoEfetivacao);
+		}
+		
+		Resultado resultadoAlteracaoCredito = facade.alterar(cliente);
+		if(!resultadoAlteracaoCredito.getMensagem().isEmpty()) {
+			return resultado;
+		} 
+			
 		return facade.alterar(pedidoEfetivacao);
+		
 	}
 	
 	@RequestMapping("/efetivacao")

@@ -77,6 +77,7 @@ public class PedidoHelper {
 		pedido.setFrete(String.format("%,.2f", frete));
 		pedido.setDesconto(String.format("%,.2f", desconto));
 		pedido.setTotalCompra(String.format("%,.2f", (total - desconto) + frete));
+		pedido.setDesconto(String.format("%,.2f", desconto));
 		pedido.setStatus(StatusPedido.SOLICITADO);
 		String dtHora = FormatadorDataUtil.dataFormatada(LocalDateTime.now());
 		pedido.setDtPedido(dtHora.split("T")[0]);
