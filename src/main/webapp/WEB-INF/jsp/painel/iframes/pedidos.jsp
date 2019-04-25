@@ -31,7 +31,7 @@ $(document).ready(function(){
 function gerarTabela(json){
 	$("#bodyTabela").html("");
 	$.each(json, function(index, pedido){
-		var string ="<th scope='row'>"+pedido.id+"</th>"
+		var string ="<tr><th scope='row'>"+pedido.id+"</th>"
 		+ "<td scope='row'>"+pedido.dtPedido+"</td>"
 		+ "<td scope='row'>"+pedido.totalCompra+"</td>"
 		+ "<td scope='row'>"+pedido.status+"</td>";
@@ -39,6 +39,7 @@ function gerarTabela(json){
 		{
 			string = string + "<td scope='row'><a class='btn btn-warning' onclick='irParaConfirmacao("+pedido.id+")'>Comprar</a></td>";
 		}
+		string = string + "</tr>";
 		$("#bodyTabela").append(string);
 	});
 }

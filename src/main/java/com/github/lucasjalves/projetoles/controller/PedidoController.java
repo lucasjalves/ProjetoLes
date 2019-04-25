@@ -83,13 +83,26 @@ public class PedidoController extends ControllerBase{
 	}
 	
 	@RequestMapping("/confirmacao")
-	public ModelAndView confirmacao(ModelAndView modelView, @RequestParam Long id) {
+	public ModelAndView confirmacao(ModelAndView modelView, @RequestParam Long id) throws Exception {
 		Pedido pedido = (Pedido)httpSession.getAttribute("pedido");
-		
+	
 		Cliente cliente =
 				(Cliente) httpSession.getAttribute("cliente");
 		
 		cliente = (Cliente) facade.consultar(cliente).getEntidades().get(0);
+		if(pedido != null) {
+			final Pedido pedidoClone = pedido;
+			
+			Optional<Pedido> pedidoConfirmado = cliente.getPedidos()
+					.stream().filter(p -> p.equalsPedido(pedidoClone))
+					.findFirst();
+			
+			if(!pedidoConfirmado.isPresent()) {
+				throw new Exception("Pedido não encontrado");
+			}
+			
+			pedido = pedidoConfirmado.get();
+		}
 		if(pedido == null) {
 			pedido = (Pedido) facade.consultar(new Pedido().withId(id)).getEntidades().get(0);
 		}

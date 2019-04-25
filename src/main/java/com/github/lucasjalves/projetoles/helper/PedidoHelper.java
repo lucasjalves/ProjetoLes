@@ -51,13 +51,7 @@ public class PedidoHelper {
 		Iterator<ItemCarrinho> it = carrinho.getItensCarrinho().iterator();
 		Double total = 0.00;
 		Double frete = 0.00;
-		Double desconto = 0.00;
-		if(carrinho.getCupom() != null) {
-			desconto = carrinho.getCupom().getValorDesconto() / 100;
-			desconto = desconto * total;	
-			pedido.setCupomPedido(to(carrinho.getCupom()));
-			pedido.getCupomPedido().setId(null);
-		}
+
 		while(it.hasNext()) {
 			ItemCarrinho i = it.next();
 			Produto produto = produtos.stream().filter(p -> p.equals(i.getProduto()))
@@ -72,6 +66,13 @@ public class PedidoHelper {
 										.withValorTotal(CalculoUtil.calcularValorTotal(produto.getPrecoVenda(), i.getQuantidade()));
 			itemPedido.getProduto().setId(null);
 			pedido.getItensPedido().add(itemPedido);
+		}
+		Double desconto = 0.00;
+		if(carrinho.getCupom() != null) {
+			desconto = carrinho.getCupom().getValorDesconto() / 100;
+			desconto = desconto * total;	
+			pedido.setCupomPedido(to(carrinho.getCupom()));
+			pedido.getCupomPedido().setId(null);
 		}
 		pedido.setTotal(String.format("%,.2f", total));
 		pedido.setFrete(String.format("%,.2f", frete));

@@ -136,17 +136,41 @@ public class Pedido extends Entidade implements Cloneable{
 	}
 	
 	
-	
 	public Long getIdCliente() {
 		return idCliente;
 	}
 	public void setIdCliente(Long idCliente) {
 		this.idCliente = idCliente;
 	}
+	
 	@Override
     public Object clone()throws CloneNotSupportedException{  
         return (Pedido)super.clone();  
     }
+	
+	public boolean equalsPedido(Object obj) {
+		if (this == obj)
+			return true;
+		if (getClass() != obj.getClass())
+			return false;
+		Pedido other = (Pedido) obj;
+		if (dtPedido == null) {
+			if (other.dtPedido != null)
+				return false;
+		} else if (!dtPedido.equals(other.dtPedido))
+			return false;
+		if (hora == null) {
+			if (other.hora != null)
+				return false;
+		} else if (!hora.equals(other.hora))
+			return false;
+		if (idCliente == null) {
+			if (other.idCliente != null)
+				return false;
+		} else if (!idCliente.equals(other.idCliente))
+			return false;
+		return true;
+	}
 	
 	
 	
