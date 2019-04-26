@@ -18,13 +18,8 @@ import com.github.lucasjalves.projetoles.rns.Resultado;
 
 @Controller
 @RequestMapping("/cupom")
-public class CupomController {
+public class CupomController extends ControllerBase {
 
-	@Autowired
-	private ObjectMapper mapper;
-
-	@Autowired
-	private Facade facade;
 	@RequestMapping("/cadastro")
 	public ModelAndView paginaCadastroProduto(ModelAndView modelView) {
 		modelView.setViewName("cupom/cadastro");

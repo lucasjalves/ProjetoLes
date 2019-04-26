@@ -20,12 +20,6 @@ import com.github.lucasjalves.projetoles.rns.Resultado;
 @Controller
 public class ClienteController extends ControllerBase {
 
-	@Autowired
-	private Facade facade;
-	
-	@Autowired
-	ObjectMapper mapper;
-	
 	@RequestMapping("/cliente/cadastro")
 	public ModelAndView paginaCadastroCliente(ModelAndView modelView) {
 		modelView.setViewName("cliente/cadastro");

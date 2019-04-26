@@ -34,11 +34,8 @@ function gerarTabela(json){
 		var string ="<tr><th scope='row'>"+pedido.id+"</th>"
 		+ "<td scope='row'>"+pedido.dtPedido+"</td>"
 		+ "<td scope='row'>"+pedido.totalCompra+"</td>"
-		+ "<td scope='row'>"+pedido.status+"</td>";
-		if(pedido.status === "SOLICITADO");
-		{
-			string = string + "<td scope='row'><a class='btn btn-warning' onclick='irParaConfirmacao("+pedido.id+")'>Comprar</a></td>";
-		}
+		+ "<td scope='row'>"+pedido.status+"</td>"
+		+ getBotao(pedido.id)[pedido.status];
 		string = string + "</tr>";
 		$("#bodyTabela").append(string);
 	});
@@ -47,6 +44,19 @@ function gerarTabela(json){
 function irParaConfirmacao(id){
 	$("#idConfirmacao").val(id);
 	$("#formConfirmacao").submit();
+}
+
+function getBotao(id) {
+	return {
+		"PAGO" : "<td scope='row'><a class='btn btn-warning' onclick='irParaEfetivacao("+id+")'>Visualizar</a></td>",
+		"SOLICITADO" : "<td scope='row'><a class='btn btn-warning' onclick='irParaConfirmacao("+id+")'>Comprar</a></td>"
+	};
+	
+}
+
+function irParaEfetivacao(id){
+	$("#idEfetivacao").val(id);
+	$("#formEfetivacao").submit();
 }
 </script>
 <style>
@@ -58,6 +68,10 @@ opacity: 0.1;
 <body>
 <form id="formConfirmacao" target="_parent" action="http://localhost:8888/pedido/confirmacao">
 	<input type="hidden" name="id" id="idConfirmacao" />
+</form>
+
+<form id="formEfetivacao" target="_parent" action="http://localhost:8888/pedido/efetivacao">
+	<input type="hidden" name="id" id="idEfetivacao" />
 </form>
 	<table class="table table-hover">
 		<thead>

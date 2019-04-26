@@ -10,9 +10,9 @@ public final class ClienteHelper {
 		
 	}
 	
-	public static Cliente atualizarCreditoUtilizado(Pedido pedido, Cliente cliente) {
+	public static String atualizarCreditoUtilizado(Pedido pedido, Cliente cliente) {
 		if(CalculoUtil.isValorZerado(pedido.getCreditoUtilizado())) {
-			return cliente;
+			return "0,00";
 		}
 		
 		Double creditoUtilizado = CalculoUtil.StringToDouble(pedido.getCreditoUtilizado());
@@ -21,8 +21,6 @@ public final class ClienteHelper {
 		creditoCliente = creditoCliente - creditoUtilizado;
 	
 	
-		cliente.setCreditoDisponivel(String.format("%,.2f", creditoCliente));
-		
-		return cliente;
+		return String.format("%,.2f", creditoCliente);
 	}
 }

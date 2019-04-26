@@ -28,13 +28,9 @@ import com.github.lucasjalves.projetoles.util.CalculoUtil;
 @RequestMapping("/pedido")
 public class PedidoController extends ControllerBase{
 
-	private static final String PAGINA = "pedido/confirmacao";
 	private static final String EFETIVACAO = "pedido/efetivacao";
 	private static final String CONSULTA = "painel/iframes/pedidos";
 	private static final String CONSULTA_ADMIN = "painel/admin/pedidos";
-	
-	@Autowired
-	private Facade facade;
 	
 	@Autowired
 	private PedidoHelper pedidoHelper;
@@ -46,7 +42,7 @@ public class PedidoController extends ControllerBase{
 	@RequestMapping("/confirmar")
 	public Resultado confirmar(@ModelAttribute Endereco endereco) throws Exception {
 		Cliente cliente =
-				(Cliente) httpSession.getAttribute("cliente");
+				getCliente();
 		
 		Carrinho carrinho =
 				(Carrinho) httpSession.getAttribute("carrinho");
@@ -86,10 +82,7 @@ public class PedidoController extends ControllerBase{
 	public ModelAndView confirmacao(ModelAndView modelView, @RequestParam Long id) throws Exception {
 		Pedido pedido = (Pedido)httpSession.getAttribute("pedido");
 	
-		Cliente cliente =
-				(Cliente) httpSession.getAttribute("cliente");
-		
-		cliente = (Cliente) facade.consultar(cliente).getEntidades().get(0);
+		Cliente cliente = getCliente();
 		if(pedido != null) {
 			final Pedido pedidoClone = pedido;
 			
@@ -117,9 +110,10 @@ public class PedidoController extends ControllerBase{
 	@RequestMapping("/efetivar")
 	public Resultado efetivar(@RequestBody Pedido pedido) throws Exception {
 		
-		Cliente cliente =
-				(Cliente) httpSession.getAttribute("cliente");
-		
+		Cliente cliente = getCliente();
+		if(cliente.getCartoes().isEmpty()) {
+			return new Resultado("Você deve cadastrar um cartão para efetivar");
+		}
 		Resultado resultado = 
 				facade.consultar(pedido);
 		
@@ -143,19 +137,22 @@ public class PedidoController extends ControllerBase{
 		Pedido pedidoEfetivacao = 
 				EfetivacaoPedidoHelper.setarDadosParaEfetivar(pedidoAEfetivar, pedido, cliente);
 		
-		cliente = ClienteHelper.atualizarCreditoUtilizado(pedidoAEfetivar, cliente);
+		String credito = ClienteHelper.atualizarCreditoUtilizado(pedidoAEfetivar, cliente);
 		
-		if(CalculoUtil.isValorZerado(pedidoAEfetivar.getCreditoUtilizado())) {
+		if(CalculoUtil.isValorZerado(pedidoEfetivacao.getCreditoUtilizado())) {
 			return facade.alterar(pedidoEfetivacao);
 		}
 		
-		Resultado resultadoAlteracaoCredito = facade.alterar(cliente);
-		if(!resultadoAlteracaoCredito.getMensagem().isEmpty()) {
-			return resultado;
-		} 
-			
-		return facade.alterar(pedidoEfetivacao);
+		Resultado alteracaoPedido = facade.alterar(pedidoEfetivacao);
+		if(!alteracaoPedido.getMensagem().isEmpty()) {
+			return alteracaoPedido;
+		}
+		Cliente c = (Cliente) facade.consultar(cliente).getEntidades().stream().findFirst().get();
+		c.setCreditoDisponivel(credito);
 		
+		Resultado resultadoAlteracaoCliente =  facade.alterar(c);
+		httpSession.setAttribute("cliente", getCliente());
+		return resultadoAlteracaoCliente;
 	}
 	
 	@RequestMapping("/efetivacao")
@@ -179,10 +176,7 @@ public class PedidoController extends ControllerBase{
 	@RequestMapping("/consulta")
 	public ModelAndView consulta(ModelAndView modelView) throws JsonProcessingException {
 		
-		Cliente cliente =
-				(Cliente) httpSession.getAttribute("cliente");
-		
-		cliente = (Cliente) facade.consultar(cliente).getEntidades().get(0);
+		Cliente cliente = getCliente();
 		
 		modelView.setViewName(CONSULTA);
 		modelView.addObject("pedidos", mapper.writeValueAsString(cliente.getPedidos()));

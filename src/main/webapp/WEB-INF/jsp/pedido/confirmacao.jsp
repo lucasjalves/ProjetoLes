@@ -99,7 +99,11 @@
             }
             cartoes.push(json);
         });
-
+		
+        if(cartoes.length === 1){
+        	cartoes[0].valor = '${pedido.totalCompra}';
+        }
+        
 		return cartoes;
 	}
 	function efetivar(){
@@ -108,6 +112,10 @@
 			id : ${pedido.id},
 			cartoes: cartoes
 		}	
+		
+		if($("#utilizar").prop("checked")){
+			pedido.creditoUtilizado = '${cliente.creditoDisponivel}';
+		}
 		console.log(pedido);
 		$.ajax({
 			method: "POST",
@@ -137,8 +145,8 @@
 	}
 	
 	function utilizarCredito(utilizar) {
-		const creditoDisponivel = parseFloat('${cliente.creditoDisponivel}'.replace(/\D/g, ""));
-		const totalCompra = parseFloat('${pedido.totalCompra}'.replace(/\D/g, ""));
+		const creditoDisponivel = parseFloat('${cliente.creditoDisponivel}'.replace(/\./g, "").replace(/\,/g, "."));
+		const totalCompra = parseFloat('${pedido.totalCompra}'.replace(/\./g, "").replace(/\,/g, "."));
 		var totalAPagar = totalCompra;
 		if(utilizar){
 			totalAPagar = totalCompra - creditoDisponivel;
@@ -152,7 +160,7 @@
 	}
 	
 	function formatNumber(num) {
-	    let string = num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+	    let string = num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
 	    let arrayString = string.split(".");
 	    if(arrayString.length === 1){
 	        return string + ".00";
@@ -260,12 +268,12 @@
 						<p>Crédito disponível: <strong>R$ ${cliente.creditoDisponivel}</strong></p>	
 						<h6>Deseja utilizar nesta compra?</h6>
 						<div class="form-check form-check-inline">
-						  <input class="form-check-input" type="radio"  id="utilizar" value="option1">
-						  <label class="form-check-label" for="inlineRadio1" onclick="utilizarCredito(true)">Sim</label>
+						  <input class="form-check-input" type="radio"  onclick="utilizarCredito(true)" name="radio" id="utilizar" value="option1">
+						  <label class="form-check-label" for="inlineRadio1" >Sim</label>
 						</div>
 						<div class="form-check form-check-inline">
-						  <input class="form-check-input" type="radio"  id="naoUtilizar" value="option2" checked>
-						  <label class="form-check-label" for="inlineRadio2" onclick="utilizarCredito(false)">Não</label>
+						  <input class="form-check-input" type="radio" onclick="utilizarCredito(false)" name="radio" id="naoUtilizar" value="option2" checked>
+						  <label class="form-check-label" for="inlineRadio2">Não</label>
 						</div>					
 						<br>
 						<hr>

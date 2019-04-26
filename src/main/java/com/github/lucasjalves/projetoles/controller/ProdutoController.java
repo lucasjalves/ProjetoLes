@@ -20,13 +20,6 @@ import com.github.lucasjalves.projetoles.rns.Resultado;
 @Controller
 public class ProdutoController extends ControllerBase{
 	
-	@Autowired
-	private Facade facade;
-	
-	@Autowired
-	private ObjectMapper mapper;
-	
-	
 	@RequestMapping("")
 	public ModelAndView home(ModelAndView modelView) throws JsonProcessingException {
 		modelView.setViewName("home");

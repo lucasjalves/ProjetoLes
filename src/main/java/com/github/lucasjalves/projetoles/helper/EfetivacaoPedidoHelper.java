@@ -1,5 +1,6 @@
 package com.github.lucasjalves.projetoles.helper;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +18,17 @@ import com.github.lucasjalves.projetoles.util.CalculoUtil;
 public final class EfetivacaoPedidoHelper {
 
 	public static Resultado validarPedido(Pedido pedido) {
-		boolean creditoUtilizado = CalculoUtil.isValorZerado(pedido.getCreditoUtilizado());
-		if(pedido.getCartoes().isEmpty() && !creditoUtilizado) {
+		Double valorTotal = CalculoUtil.StringToDouble(pedido.getTotalCompra());
+		Double creditoUtilizado = CalculoUtil.StringToDouble(pedido.getCreditoUtilizado());
+		boolean creditoNaoUtilizado = CalculoUtil.isValorZerado(pedido.getCreditoUtilizado());
+		Optional<CartaoCreditoPagamento> cartoes = pedido.getCartoes().stream().filter(c -> c.getId() != -1).findFirst();
+		if (creditoUtilizado >= valorTotal) {
+			return new Resultado();
+		}
+		
+		
+
+		if(cartoes.isEmpty() && (creditoUtilizado < valorTotal)) {
 			return new Resultado("Você deve selecionar um cartão para pagamento");
 		}
 		if(!pedido.getCartoes().isEmpty()) {
@@ -44,15 +54,20 @@ public final class EfetivacaoPedidoHelper {
 			}
 			
 		}
+		if(!creditoNaoUtilizado) {
 		
-		Double valorTotal = CalculoUtil.StringToDouble(pedido.getTotalCompra());
-		
-		if(creditoUtilizado) {
-			valorTotal = valorTotal - CalculoUtil.StringToDouble(pedido.getCreditoUtilizado());
-			if(valorTotal < 0.00) {
-				return new Resultado();
+			if(!cartoes.isPresent()) {
+				valor = 0.00;
+			} else {
+				if(pedido.getCartoes().size() != 1) {
+					valor = CalculoUtil.StringToDouble(pedido.getCreditoUtilizado()) + valor;
+				} else {
+					valor = CalculoUtil.StringToDouble(pedido.getCreditoUtilizado()) + (valorTotal - CalculoUtil.StringToDouble(pedido.getCreditoUtilizado()));
+				}
+				
 			}
 		}
+
 		if(!valor.equals(valorTotal)) {
 			return new Resultado("O valor a pagar por cartão não está igual ao total. Verifique os valores a pagar");
 		}
@@ -67,6 +82,7 @@ public final class EfetivacaoPedidoHelper {
 		if(creditoUtilizado < totalCompra) {
 			pedidoAEfetivar.setCartoes(mapearCartoes(cliente, pedidoDadosPagamento.getCartoes()));
 		} else {
+			pedidoAEfetivar.setCartoes(new ArrayList<>());
 			pedidoAEfetivar.setCreditoUtilizado(pedidoAEfetivar.getTotalCompra());
 		}
 		
@@ -83,7 +99,7 @@ public final class EfetivacaoPedidoHelper {
 				.findFirst();
 			
 			if(!cartaoCliente.isPresent()) {
-				throw new Exception("Cartão " + cartaoCliente.get().getId() + " não encontrado");
+				throw new Exception("Cartão não encontrado");
 			}
 			
 			cartao.setBandeira(cartaoCliente.get().getBandeira());

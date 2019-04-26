@@ -23,10 +23,6 @@ import com.github.lucasjalves.projetoles.rns.Resultado;
 @RequestMapping("/carrinho")
 public class CarrinhoController extends ControllerBase{
 
-
-	@Autowired
-	private Facade facade;
-	
 	@RequestMapping("")
 	public ModelAndView carrinho() throws CloneNotSupportedException {
 		Cliente cliente = (Cliente) httpSession.getAttribute("cliente");
