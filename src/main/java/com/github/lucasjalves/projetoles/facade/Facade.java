@@ -8,7 +8,7 @@ import com.github.lucasjalves.projetoles.rns.Resultado;
 @Component
 public interface Facade {
 	Resultado salvar(Entidade entidade);
-	Resultado buscar(Entidade entidade);
+	Resultado consultar(Entidade entidade);
 	Resultado alterar(Entidade entidade);
 	Resultado excluir(Entidade entidade);
 }

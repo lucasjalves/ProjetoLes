@@ -6,13 +6,19 @@ import java.util.List;
 import com.github.lucasjalves.projetoles.entidade.Entidade;
 
 final public class Resultado {
-	private List<Mensagem> mensagem =  new ArrayList<>();
+	public Resultado(String... mensagens) {
+		for(String m: mensagens) {
+			this.mensagem.add(m);
+		}
+	}
+	
+	private List<String> mensagem =  new ArrayList<>();
 	private List<? extends Entidade> entidades = new ArrayList<>();
 	
-	public List<Mensagem> getMensagem() {
+	public List<String> getMensagem() {
 		return mensagem;
 	}
-	public void setMensagem(List<Mensagem> mensagem) {
+	public void setMensagem(List<String> mensagem) {
 		this.mensagem = mensagem;
 	}
 	public List<? extends Entidade> getEntidades() {

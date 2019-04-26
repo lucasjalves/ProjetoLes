@@ -1,75 +1,31 @@
 package com.github.lucasjalves.projetoles.entidade;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-import com.github.lucasjalves.projetoles.enums.StatusCadastro;
+import javax.persistence.Transient;
 
 @Entity
-public class Produto {
+public class Produto extends AbstractProduto{
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-	
-	private String nomePecaTi;
-	private String nomeEletrico;
-	private String nomeTelefonia;
-	private String nomeFerramenta;
-	private String qtde;
-	private String dtCadastro;
-	private String dtCompra;
-	private String dtValidade;
-	private String descricao;
-	private String preco;
-	private String fornecedor;
-	private String modeloEletronico;
-	private String modeloTelefonia;
-	private String marcaEletronico;
-	private String marcaPecaTelefonia;
-	private String peso;
-	   
+	@Transient
+	private Integer quantidadeSelecionada;
 	
 	
-	@Enumerated(EnumType.STRING)
-	private StatusCadastro statusCadastro;
-	
-	public long getId() {
-		return id;
+	public Produto withAtivo(Boolean ativo) {
+		this.setAtivo(ativo);
+		return this;
 	}
-	public void setId(long id) {
-		this.id = id;
+
+	public Produto withId(Long id) {
+		this.setId(id);
+		return this;
 	}
-	public void setQtde(String qtde) {
-		this.qtde = qtde;
+
+	public Integer getQuantidadeSelecionada() {
+		return quantidadeSelecionada;
 	}
-	public String getDtCadastro() {
-		return dtCadastro;
-	}
-	public void setDtCadastro(String dtCadastro) {
-		this.dtCadastro = dtCadastro;
-	}
-	public String getDescricao() {
-		return descricao;
-	}
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-	public String getPreco() {
-		return preco;
-	}
-	public void setPreco(String preco) {
-		this.preco = preco;
-	}
-	public StatusCadastro getStatusCadastro() {
-		return statusCadastro;
-	}
-	public void setStatusCadastro(StatusCadastro statusCadastro) {
-		this.statusCadastro = statusCadastro;
+
+	public void setQuantidadeSelecionada(Integer quantidadeSelecionada) {
+		this.quantidadeSelecionada = quantidadeSelecionada;
 	}
 	
 	

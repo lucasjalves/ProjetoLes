@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 public class App {
 
 	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException {
-		SpringApplication.run(App.class, args);		
+		SpringApplication.run(App.class, args);	
 	}
 
 }
