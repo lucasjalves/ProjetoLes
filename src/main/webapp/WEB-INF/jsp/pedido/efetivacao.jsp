@@ -69,13 +69,13 @@
 						<h5>Pagamento</h5>
 					</div>
 				</div>
-				<c:if test="${creditoZerado}">
-					<p>
-						Crédito utilizado: <strong> R$ ${pedido.creditoUtilizado}</strong>
-					</p>				
-				</c:if>
 
-				<p>Pagamento efetuado em: <strong>01/01/2019 às 00:00:00</strong></p>
+				<p>
+					Crédito utilizado: <strong> R$ ${pedido.creditoUtilizado}</strong>
+				</p>				
+
+
+				<p>Pagamento efetuado em: <strong>${pedido.dtPedido} às ${pedido.hora}</strong></p>
 				<h6>Cartões</h6>
 				<ul>
 					<c:forEach items="${pedido.cartoes}" var="cartao" >
