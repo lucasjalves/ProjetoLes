@@ -28,7 +28,7 @@ public final class EfetivacaoPedidoHelper {
 		
 		
 
-		if(cartoes.isEmpty() && (creditoUtilizado < valorTotal)) {
+		if(!cartoes.isPresent() && (creditoUtilizado < valorTotal)) {
 			return new Resultado("Você deve selecionar um cartão para pagamento");
 		}
 		if(!pedido.getCartoes().isEmpty()) {

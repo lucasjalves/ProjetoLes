@@ -17,12 +17,8 @@ function confirmarTroca(){
 			inputVal = "0";
 		}
 		const produto = {
-			id : input.attr("idItem"),
 			quantidade: inputVal,
-			produto : {
-				idProduto: input.attr("idProduto"),
-				id: input.attr("idProdutoCompra")				
-			}
+			idItem:  input.attr("idItem")
 		};
 		obj.push(produto);
 		

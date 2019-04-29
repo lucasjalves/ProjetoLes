@@ -8,18 +8,19 @@ public class ConfirmacaoTicket {
 
 	
 	private TipoTicket tipoTicket;
-	private List<ItemPedido> itensPedido;
+	private List<ItemPedidoTicket> itensPedido;
 	private Pedido pedido;
+	private Pedido pedidoEfetivar;
 	public TipoTicket getTipoTicket() {
 		return tipoTicket;
 	}
 	public void setTipoTicket(TipoTicket tipoTicket) {
 		this.tipoTicket = tipoTicket;
 	}
-	public List<ItemPedido> getItensPedido() {
+	public List<ItemPedidoTicket> getItensPedido() {
 		return itensPedido;
 	}
-	public void setItensPedido(List<ItemPedido> itensPedido) {
+	public void setItensPedido(List<ItemPedidoTicket> itensPedido) {
 		this.itensPedido = itensPedido;
 	}
 	public Pedido getPedido() {
@@ -34,7 +35,7 @@ public class ConfirmacaoTicket {
 		return this;
 	}
 
-	public ConfirmacaoTicket withItensPedido(List<ItemPedido> itensPedido) {
+	public ConfirmacaoTicket withItensPedido(List<ItemPedidoTicket> itensPedido) {
 		this.itensPedido = itensPedido;
 		return this;
 	}
@@ -43,4 +44,12 @@ public class ConfirmacaoTicket {
 		this.pedido = pedido;
 		return this;
 	}
+	public Pedido getPedidoEfetivar() {
+		return pedidoEfetivar;
+	}
+	public void setPedidoEfetivar(Pedido pedidoEfetivar) {
+		this.pedidoEfetivar = pedidoEfetivar;
+	}
+	
+	
 }

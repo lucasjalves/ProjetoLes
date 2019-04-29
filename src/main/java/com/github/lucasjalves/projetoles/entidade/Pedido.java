@@ -34,7 +34,7 @@ public class Pedido extends Entidade implements Cloneable{
 	@OneToOne(cascade=CascadeType.ALL)
 	private EnderecoPedido endereco;
 	private String creditoUtilizado = "0";
-	
+	private boolean trocado = false;
 	public Pedido withId(Long id) {
 		this.setId(id);
 		return this;
@@ -170,6 +170,12 @@ public class Pedido extends Entidade implements Cloneable{
 		} else if (!idCliente.equals(other.idCliente))
 			return false;
 		return true;
+	}
+	public boolean isTrocado() {
+		return trocado;
+	}
+	public void setTrocado(boolean trocado) {
+		this.trocado = trocado;
 	}
 	
 	

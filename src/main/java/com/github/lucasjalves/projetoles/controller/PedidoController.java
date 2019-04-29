@@ -217,7 +217,7 @@ public class PedidoController extends ControllerBase{
 		Optional<Pedido> pedidoConsulta = (Optional<Pedido>) facade.consultar(new Pedido().withId(id)).getEntidades()
 				.stream().findFirst();
 		
-		if(pedidoConsulta.isEmpty()) {
+		if(!pedidoConsulta.isPresent()) {
 			throw new Exception("Pedido com não encontrado " +id);
 		}
 		

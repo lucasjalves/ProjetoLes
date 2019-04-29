@@ -17,7 +17,7 @@ public class DadosObrigatoriosTicket implements Strategy{
 		if(t.getItens().isEmpty()) {
 			mensagens.add("Um ticket não pode ser gerado sem itens para trocar");
 		}
-		if(t.getPedido() == null) {
+		if(t.getIdPedido() == null) {
 			mensagens.add("Um ticket não pode ser gerado sem estar atrelado há um pedido");
 		}
 		if(t.getTipo() == null) {

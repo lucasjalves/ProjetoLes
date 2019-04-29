@@ -5,5 +5,5 @@ public enum StatusTicket {
 	SOLICITADO,
 	APROVADO,
 	TRANSPORTE,
-	EFETIVADO
+	ENTREGUE
 }

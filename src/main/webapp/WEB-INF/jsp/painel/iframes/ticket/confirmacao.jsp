@@ -10,7 +10,7 @@
 <script>
 
 function efetivarTicket(){
-	$("#obs").val($("#textarea").text());
+	$("#obs").val($("#textarea").val());
 	$.post("http://localhost:8888/ticket/efetivar", $("#formConfirmacao").serialize())
 	.done(data => {
 		if(data.mensagem.length === 0){
@@ -63,11 +63,14 @@ function efetivarTicket(){
 						<table class="table">
 							<tbody>
 								<c:forEach var="item" items="${pedido.itensPedido}">
-									<tr>
-										<td><strong>${item.quantidade}x ${item.produto.modelo}</strong></td>
-										<td><label>R$ ${item.produto.precoVenda} </label></td>
-									</tr>
+									<c:if test="${item.quantidade > 0}">
+										<tr>
+											<td><strong>${item.quantidade}x ${item.produto.modelo}</strong></td>
+											<td><label>R$ ${item.produto.precoVenda} </label></td>
+										</tr>
+									</c:if>
 								</c:forEach>
+
 							</tbody>
 						</table>
 					</div>
@@ -87,7 +90,7 @@ function efetivarTicket(){
 				
 		</div>
 			<div class="row"  style="margin-top: 15px;">
-					<div class="col-10 col-sm-10 col-md-10"><a href="http://localhost:8888/ticket/trocacao?id=${pedido.id}" class="btn btn-warning">Voltar</a></div>
+					<div class="col-10 col-sm-10 col-md-10"><a href="http://localhost:8888/ticket/trocacao?id=${idPedido}" class="btn btn-warning">Voltar</a></div>
 					<div class=""><button type="button" class="btn btn-success" onclick="efetivarTicket()">Confirmar</button></div>
 			</div>				
 	</div>

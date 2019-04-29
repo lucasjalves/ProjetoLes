@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import com.github.lucasjalves.projetoles.enums.StatusTicket;
 import com.github.lucasjalves.projetoles.enums.TipoTicket;
@@ -17,12 +16,11 @@ public class Ticket extends Entidade {
 	private String dtPedido;
 	private String hora;
 	@OneToMany(cascade=CascadeType.ALL)
-	private List<ItemPedido> itens = new ArrayList<>();
+	private List<ItemPedidoTicket> itens = new ArrayList<>();
 	private StatusTicket status;
 	private TipoTicket tipo;
-	
-	@OneToOne(cascade=CascadeType.ALL)
-	private Pedido pedido;
+	private Long idCliente;
+	private Long idPedido;
 	private String obs;
 	
 	public Ticket withId(Long id) {
@@ -35,10 +33,10 @@ public class Ticket extends Entidade {
 	public void setDtPedido(String dtPedido) {
 		this.dtPedido = dtPedido;
 	}
-	public List<ItemPedido> getItens() {
+	public List<ItemPedidoTicket> getItens() {
 		return itens;
 	}
-	public void setItens(List<ItemPedido> itens) {
+	public void setItens(List<ItemPedidoTicket> itens) {
 		this.itens = itens;
 	}
 	public StatusTicket getStatus() {
@@ -53,12 +51,7 @@ public class Ticket extends Entidade {
 	public void setTipo(TipoTicket tipo) {
 		this.tipo = tipo;
 	}
-	public Pedido getPedido() {
-		return pedido;
-	}
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
-	}
+
 	public String getHora() {
 		return hora;
 	}
@@ -70,6 +63,18 @@ public class Ticket extends Entidade {
 	}
 	public void setObs(String obs) {
 		this.obs = obs;
+	}
+	public Long getIdPedido() {
+		return idPedido;
+	}
+	public void setIdPedido(Long idPedido) {
+		this.idPedido = idPedido;
+	}
+	public Long getIdCliente() {
+		return idCliente;
+	}
+	public void setIdCliente(Long idCliente) {
+		this.idCliente = idCliente;
 	}
 	
 	

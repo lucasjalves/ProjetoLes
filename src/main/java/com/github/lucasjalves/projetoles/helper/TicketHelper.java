@@ -6,24 +6,26 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.github.lucasjalves.projetoles.entidade.Cliente;
 import com.github.lucasjalves.projetoles.entidade.ConfirmacaoTicket;
 import com.github.lucasjalves.projetoles.entidade.ItemPedido;
+import com.github.lucasjalves.projetoles.entidade.ItemPedidoTicket;
 import com.github.lucasjalves.projetoles.entidade.Pedido;
 import com.github.lucasjalves.projetoles.entidade.Ticket;
 import com.github.lucasjalves.projetoles.enums.StatusTicket;
 import com.github.lucasjalves.projetoles.rns.Resultado;
+import com.github.lucasjalves.projetoles.util.CalculoUtil;
 import com.github.lucasjalves.projetoles.util.FormatadorDataUtil;
 
 public final class TicketHelper {
 	private TicketHelper() {
 	}
 	
-	public static Resultado validarTicket(List<ItemPedido> itensParaTroca, String tipo, Pedido pedido) throws Exception {
-		 Optional<ItemPedido> it = itensParaTroca.stream().filter(i -> i.getQuantidade() > 0).findAny();
-		 if(it.isEmpty()) {
+	public static Resultado validarTicket(List<ItemPedidoTicket> itensParaTroca, String tipo, Pedido pedido) throws Exception {
+		 Optional<ItemPedidoTicket> it = itensParaTroca.stream().filter(i -> i.getQuantidade() > 0).findAny();
+		 if(!it.isPresent()) {
 			 return new Resultado("Selecione algum item para troca");
 		 }
 		 Map<Long, Integer> mapaProdutos =  new HashMap<>();
@@ -32,10 +34,10 @@ public final class TicketHelper {
 			 mapaProdutos.put(item.getId(), item.getQuantidade());
 		 }
 		 
-		 for(ItemPedido item: itensParaTroca) {
-			Integer quantidadeTotalPedido = mapaProdutos.get(item.getId());
+		 for(ItemPedidoTicket item: itensParaTroca) {
+			Integer quantidadeTotalPedido = mapaProdutos.get(item.getIdItem());
 			if(quantidadeTotalPedido == null) {
-				throw new Exception("Quantidade não encontrada para o item " + item.getId());
+				return new Resultado("Quantidade não encontrada para o item " + item.getId());
 			}
 			
 			if(item.getQuantidade() > quantidadeTotalPedido || item.getQuantidade() < 0) {
@@ -46,63 +48,53 @@ public final class TicketHelper {
 		 return new Resultado();
 	}
 	
-	public static Pedido montarTicketListagem(ConfirmacaoTicket confirmacao) throws CloneNotSupportedException {
-		Pedido p = (Pedido) confirmacao.getPedido().clone();
-		Map<Long, Integer> map = new HashMap<>();
-		for (ItemPedido i: confirmacao.getItensPedido()) {
-			map.put(i.getId(), i.getQuantidade());
+	public static Pedido montarListagem(List<ItemPedidoTicket> itensParaTroca, Pedido pedido) {
+		Pedido p = new Pedido();
+		p.setId(p.getId());
+		Map<Long, Integer> mapa = new HashMap<>();
+		for(ItemPedidoTicket item: itensParaTroca) {
+			mapa.put(item.getIdItem(), item.getQuantidade());
 		}
-		Set<Long> ids = map.keySet();
-		Iterator<Long> it = ids.iterator();
-		
-		while(it.hasNext()) {
-			Long i = it.next();
-			ItemPedido item = confirmacao.getPedido().getItensPedido().stream().filter(ite -> ite.getId().equals(i))
+		Iterator<Long> ids = mapa.keySet().iterator();
+		while(ids.hasNext()) {
+			Long id = ids.next();
+			ItemPedido i = pedido.getItensPedido().stream().filter(item -> item.getId().equals(id))
 					.collect(Collectors.toList()).get(0);
 			
-			item.setQuantidade(map.get(i));
+			i.setQuantidade(mapa.get(id));
+			p.getItensPedido().add(i);
 		}
 		
 		return p;
 	}
+
 	
-	public static Pedido montarTicketListagem(Ticket ticket) throws CloneNotSupportedException {
-		Pedido p = (Pedido) ticket.getPedido().clone();
-		p.setId(null);
-		Map<Long, Integer> map = new HashMap<>();
-		for (ItemPedido i: ticket.getItens()) {
-			map.put(i.getId(), i.getQuantidade());
-		}
-		Set<Long> ids = map.keySet();
-		Iterator<Long> it = ids.iterator();
-		
-		while(it.hasNext()) {
-			Long i = it.next();
-			ItemPedido item = ticket.getPedido().getItensPedido().stream().filter(ite -> ite.getId().equals(i))
-					.collect(Collectors.toList()).get(0);
-			
-			item.setQuantidade(map.get(i));
-		}
-		
-		return p;
-	}
-	
-	public static Ticket montarTicketParaEfetivar(ConfirmacaoTicket confirmacao, String obs) throws CloneNotSupportedException {
+	public static Ticket montarTicketParaEfetivar(ConfirmacaoTicket confirmacao, String obs, Cliente cliente) throws CloneNotSupportedException {
 		Ticket ticket = new Ticket();
-		ticket.setItens(confirmacao.getItensPedido());
-		ticket.setPedido(confirmacao.getPedido());
-		ticket.getPedido().setId(null);
-		ticket.getPedido().getEndereco().setId(null);
-		ticket.getPedido().getItensPedido().stream().forEach(i -> {
-			i.getProduto().setId(null);
-			i.setId(null);
-		});
+		List<ItemPedidoTicket> itens = confirmacao.getItensPedido()
+				.stream()
+				.filter(i -> i.getQuantidade() > 0)
+				.collect(Collectors.toList());
+		ticket.setItens(itens);
+		ticket.setIdPedido(confirmacao.getPedidoEfetivar().getId());
 		ticket.setTipo(confirmacao.getTipoTicket());
 		ticket.setObs(obs);
 		String dtHora = FormatadorDataUtil.dataFormatada(LocalDateTime.now());
 		ticket.setDtPedido(dtHora.split("T")[0]);
 		ticket.setHora(dtHora.split("T")[1]);
 		ticket.setStatus(StatusTicket.SOLICITADO);
+		ticket.setIdCliente(cliente.getId());
 		return ticket;
+	}
+	
+	public static Double gerarCredito(Pedido pedido) {
+		Double vTotal = 0.00;
+		for(ItemPedido item: pedido.getItensPedido()) {
+			if(item.getQuantidade() > 0) {
+				vTotal += CalculoUtil.StringToDouble(item.getProduto().getPrecoVenda()) * item.getQuantidade();
+			}
+		}
+		
+		return vTotal;
 	}
 }

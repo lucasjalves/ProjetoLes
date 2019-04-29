@@ -15,6 +15,10 @@
 	margin-right: -15px;
 	margin-left: -15px;
 }
+
+.row {
+	margin-bottom: 15px;
+}
 </style>
 </head>
 <form id="formConfirmacao" action="http://localhost:8888/ticket/confirmacao">
@@ -30,10 +34,12 @@
 						<table class="table">
 							<tbody>
 								<c:forEach var="item" items="${pedido.itensPedido}">
-									<tr>
-										<td><strong>${item.quantidade}x ${item.produto.modelo}</strong></td>
-										<td><label>R$ ${item.produto.precoVenda} </label></td>
-									</tr>
+									<c:if test="${item.quantidade > 0}">
+										<tr>
+											<td><strong>${item.quantidade}x ${item.produto.modelo}</strong></td>
+											<td><label>R$ ${item.produto.precoVenda} </label></td>
+										</tr>
+									</c:if>
 								</c:forEach>
 							</tbody>
 						</table>
@@ -41,15 +47,15 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-2">Status</div>
-					<div class="col-sm-2"><strong>${ticket.status}</strong></div>
+					<div class="col-sm-10"><strong>${ticket.status}</strong></div>
 				</div>
 				<div class="row">
 					<div class="col-sm-2">Tipo</div>
-					<div class="col-sm-2"><strong>${ticket.tipo}</strong></div>
+					<div class="col-sm-10"><strong>${ticket.tipo}</strong></div>
 				</div>	
 				<div class="row">
 					<div class="col-sm-2">Data e hora</div>
-					<div class="col-sm-2"><strong>${ticket.dtPedido}</strong> às <strong>${ticket.hora}</strong></div>
+					<div class="col-sm-10"><strong>${ticket.dtPedido}</strong> às <strong>${ticket.hora}</strong></div>
 				</div>	
 				<div class="row">
 					<div class="col-sm-2">Motivo</div>

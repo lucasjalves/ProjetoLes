@@ -30,7 +30,7 @@ public final class CalculoUtil {
 		return false;
 	}
 	
-	public String formatMoney(Double valor) {
+	public static String formatMoney(Double valor) {
 		try {
 			return String.format("%,.2f", valor);
 		}catch(Exception e) {
