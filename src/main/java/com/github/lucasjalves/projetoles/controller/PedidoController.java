@@ -1,5 +1,6 @@
 package com.github.lucasjalves.projetoles.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import com.github.lucasjalves.projetoles.entidade.Carrinho;
 import com.github.lucasjalves.projetoles.entidade.Cliente;
 import com.github.lucasjalves.projetoles.entidade.Endereco;
 import com.github.lucasjalves.projetoles.entidade.Pedido;
-import com.github.lucasjalves.projetoles.facade.Facade;
+import com.github.lucasjalves.projetoles.enums.StatusPedido;
 import com.github.lucasjalves.projetoles.helper.ClienteHelper;
 import com.github.lucasjalves.projetoles.helper.EfetivacaoPedidoHelper;
 import com.github.lucasjalves.projetoles.helper.EstoqueHelper;
@@ -173,6 +174,25 @@ public class PedidoController extends ControllerBase{
 		return modelView;
 	}
 	
+	@RequestMapping("/detalhe")
+	public ModelAndView detalhe(ModelAndView modelView, @RequestParam Long id) throws Exception {
+		Resultado resultado = 
+				facade.consultar(new Pedido().withId(id));
+		
+		Optional<Pedido> buscaPedido = 
+				(Optional<Pedido>) resultado.getEntidades().stream().findFirst();
+		
+		if(!buscaPedido.isPresent()) {
+			throw new Exception("Pedido " + id + " não encontrado");
+		}
+		
+		modelView.addObject("pedido", buscaPedido.get());
+		modelView.setViewName("pedido/detalhe");
+		modelView.addObject("creditoZerado", CalculoUtil.isValorZerado(buscaPedido.get().getCreditoUtilizado()));
+		return modelView;
+	}
+	
+	
 	@RequestMapping("/consulta")
 	public ModelAndView consulta(ModelAndView modelView) throws JsonProcessingException {
 		
@@ -184,9 +204,31 @@ public class PedidoController extends ControllerBase{
 	}
 	
 	@RequestMapping("/consultaAdmin")
-	public ModelAndView consultaAdmin(ModelAndView modelView) {
+	public ModelAndView consultaAdmin(ModelAndView modelView) throws JsonProcessingException {
 		modelView.setViewName(CONSULTA_ADMIN);
+		List<Pedido> pedidos = (List<Pedido>) facade.consultar(new Pedido()).getEntidades();
+		modelView.addObject("pedidos", mapper.writeValueAsString(pedidos));
 		return modelView;
 	}
 		
+	@SuppressWarnings("unchecked")
+	@RequestMapping("/alterarStatus")
+	public String alterarStatus(@RequestParam Long id, @RequestParam String statusPedido) throws Exception {
+		Optional<Pedido> pedidoConsulta = (Optional<Pedido>) facade.consultar(new Pedido().withId(id)).getEntidades()
+				.stream().findFirst();
+		
+		if(pedidoConsulta.isEmpty()) {
+			throw new Exception("Pedido com não encontrado " +id);
+		}
+		
+		Pedido p = pedidoConsulta.get();
+		p.setStatus(StatusPedido.valueOf(statusPedido));
+		Resultado resultado = facade.alterar(p);
+		if(!resultado.getMensagem().isEmpty()) {
+			throw new Exception(resultado.getMensagem().get(0));
+		}
+		
+		return "forward:/pedido/consultaAdmin";
+	}
+	
 }

@@ -104,6 +104,7 @@ public class PedidoHelper {
 		p.setPeso(produto.getPeso());
 		p.setPrecoCompra(produto.getPrecoCompra());
 		p.setPrecoVenda(produto.getPrecoVenda());
+		p.setIdProduto(produto.getId());
 		return p;
 	}
 	

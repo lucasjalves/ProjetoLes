@@ -2,8 +2,8 @@ package com.github.lucasjalves.projetoles.enums;
 
 public enum StatusTicket {
 
-	ANALISE,
-	REPROVADO,
+	SOLICITADO,
 	APROVADO,
-	ACEITO
+	TRANSPORTE,
+	EFETIVADO
 }

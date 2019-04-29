@@ -17,6 +17,7 @@ import com.github.lucasjalves.projetoles.dao.impl.CupomDAO;
 import com.github.lucasjalves.projetoles.dao.impl.EnderecoDAO;
 import com.github.lucasjalves.projetoles.dao.impl.PedidoDAO;
 import com.github.lucasjalves.projetoles.dao.impl.ProdutoDAO;
+import com.github.lucasjalves.projetoles.dao.impl.TicketDAO;
 import com.github.lucasjalves.projetoles.entidade.CartaoCredito;
 import com.github.lucasjalves.projetoles.entidade.Cliente;
 import com.github.lucasjalves.projetoles.entidade.Cupom;
@@ -24,6 +25,7 @@ import com.github.lucasjalves.projetoles.entidade.Endereco;
 import com.github.lucasjalves.projetoles.entidade.Entidade;
 import com.github.lucasjalves.projetoles.entidade.Pedido;
 import com.github.lucasjalves.projetoles.entidade.Produto;
+import com.github.lucasjalves.projetoles.entidade.Ticket;
 import com.github.lucasjalves.projetoles.facade.Facade;
 import com.github.lucasjalves.projetoles.rns.Resultado;
 import com.github.lucasjalves.projetoles.rns.strategy.Strategy;
@@ -34,6 +36,7 @@ import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosCupo
 import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosEndereco;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosPedido;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosProduto;
+import com.github.lucasjalves.projetoles.rns.strategy.impl.DadosObrigatoriosTicket;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.EntidadeDadoObrigatorio;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.QuantidadeEstoqueProduto;
 import com.github.lucasjalves.projetoles.rns.strategy.impl.QuantidadeEstoqueProdutoCarrinho;
@@ -69,6 +72,8 @@ final public class FacadeImpl implements Facade {
 	@Autowired
 	private CartaoDAO cartaoDAO;
 	
+	@Autowired
+	private TicketDAO ticketDAO;
 	@PostConstruct
 	public void setUpRns() {
 		
@@ -133,15 +138,30 @@ final public class FacadeImpl implements Facade {
 		
 		Map<String, List<Strategy>> mapaStrategyPedido = new HashMap<>();
 		List<Strategy> rnsPedido = new ArrayList<>();
+		List<Strategy> rnsPedidoAlterar = new ArrayList<>();
 		rnsPedido.add(new DadosObrigatoriosPedido());
+		rnsPedidoAlterar.add(new EntidadeDadoObrigatorio());
 		mapaStrategyPedido.put("SALVAR", rnsPedido);
+		mapaStrategyEndereco.put("ALTERAR", rnsPedidoAlterar);
 		rns.put(Pedido.class.getName(), mapaStrategyPedido);
 		
 		Map<String, List<Strategy>> mapaStrategyCartao= new HashMap<>();
 		List<Strategy> rnsCartao = new ArrayList<>();
+		List<Strategy> rnsCartaoAlterar = new ArrayList<>();
 		rnsCartao.add(new DadosObrigatoriosCartao());
+		rnsCartaoAlterar.add(new EntidadeDadoObrigatorio());
 		mapaStrategyCartao.put("SALVAR", rnsCartao);
+		mapaStrategyCartao.put("ALTERAR", rnsCartaoAlterar);
 		rns.put(CartaoCredito.class.getName(), mapaStrategyCartao);
+		
+		Map<String, List<Strategy>> mapaStrategyTicket= new HashMap<>();
+		List<Strategy> rnsTicket = new ArrayList<>();
+		List<Strategy> rnsTicketAlterar = new ArrayList<>();
+		rnsTicket.add(new DadosObrigatoriosTicket());
+		rnsTicketAlterar.add(new EntidadeDadoObrigatorio());
+		mapaStrategyTicket.put("SALVAR", rnsTicket);
+		mapaStrategyTicket.put("ALTERAR", rnsTicketAlterar);
+		rns.put(Ticket.class.getName(), mapaStrategyTicket);
 		
 		daos.put(Cliente.class.getName(), clienteDAO);
 		daos.put(Produto.class.getName(), produtoDAO);
@@ -149,6 +169,7 @@ final public class FacadeImpl implements Facade {
 		daos.put(Endereco.class.getName(), enderecoDAO);
 		daos.put(Pedido.class.getName(), pedidoDAO);
 		daos.put(CartaoCredito.class.getName(), cartaoDAO);
+		daos.put(Ticket.class.getName(), ticketDAO);
 	}
 	@Override
 	public Resultado salvar(Entidade entidade) {

@@ -5,9 +5,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<jsp:include page="../header.jsp"></jsp:include>
+<jsp:include page="../statics.jsp"></jsp:include>
 <meta charset="ISO-8859-1">
-<title>Efetivação do pedido</title>
+<title>Confirmação de pedido</title>
 <style>
 @media (min-width: 200px)
 .card-deck{
@@ -87,7 +87,5 @@
 			</div>
 		</div>
 	</div>
-	<jsp:include page="../componentes/modal.jsp"></jsp:include>
-	<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

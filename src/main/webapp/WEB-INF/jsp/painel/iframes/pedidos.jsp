@@ -1,23 +1,6 @@
 <html>
 <head>
-
-
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-	crossorigin="anonymous">
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/esm/popper.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
-<link href="http://localhost:8888/css/styles.css" rel="stylesheet">
+<jsp:include page="../../statics.jsp"></jsp:include>
 <script>
 function devolverOuTrocar(){
 	$("#abrirModal").click();
@@ -26,12 +9,15 @@ function devolverOuTrocar(){
 $(document).ready(function(){
 	var json = ${pedidos};
 	gerarTabela(json);
+	$('#tabela').DataTable({
+		"searching" : false
+	});
 });
 
 function gerarTabela(json){
 	$("#bodyTabela").html("");
 	$.each(json, function(index, pedido){
-		var string ="<tr><th scope='row'>"+pedido.id+"</th>"
+		var string ="<tr><th scope='row'><a href='http://localhost:8888/pedido/detalhe?id="+pedido.id+"' >"+pedido.id+"</a></th>"
 		+ "<td scope='row'>"+pedido.dtPedido+"</td>"
 		+ "<td scope='row'>"+pedido.totalCompra+"</td>"
 		+ "<td scope='row'>"+pedido.status+"</td>"
@@ -46,10 +32,16 @@ function irParaConfirmacao(id){
 	$("#formConfirmacao").submit();
 }
 
+function solicitarTroca(id) {
+	$("#idTroca").val(id);
+	$("#solicitarTroca").submit();
+}
+
 function getBotao(id) {
 	return {
-		"PAGO" : "<td scope='row'><a class='btn btn-warning' onclick='irParaEfetivacao("+id+")'>Visualizar</a></td>",
-		"SOLICITADO" : "<td scope='row'><a class='btn btn-warning' onclick='irParaConfirmacao("+id+")'>Comprar</a></td>"
+		"PAGO" : `<td scope='row'><a class='btn btn-success' onclick="irParaEfetivacao(`+id+`)">Visualizar</a></td>`,
+		"SOLICITADO" : `<td scope='row'><a class='btn btn-success' onclick="irParaConfirmacao(`+id+`)">Comprar</a></td>`,
+		"ENTREGUE" : `<td scope='row'><a class='btn btn-warning' onclick="solicitarTroca(`+id+`)">Trocar</a></td>`,
 	};
 	
 }
@@ -73,7 +65,11 @@ opacity: 0.1;
 <form id="formEfetivacao" target="_parent" action="http://localhost:8888/pedido/efetivacao">
 	<input type="hidden" name="id" id="idEfetivacao" />
 </form>
-	<table class="table table-hover">
+
+<form id="solicitarTroca" action="http://localhost:8888/ticket/trocacao">
+	<input type="hidden" name="id" id="idTroca" />
+</form>
+	<table class="table table-hover" id="tabela">
 		<thead>
 			<tr>
 				<th scope="col">Nº Pedido</th>

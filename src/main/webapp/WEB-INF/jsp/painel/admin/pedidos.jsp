@@ -1,36 +1,60 @@
 <html>
 <head>
+<jsp:include page="../../statics.jsp"></jsp:include>
 <script>
 function devolverOuTrocar(){
 	$("#abrirModal").click();
 }
 
+$(document).ready(function(){
+	var pedidos = ${pedidos};
+	gerarTabela(pedidos);
+	$('#tabela').DataTable({
+		"searching" : false
+	});
+});
 
+function gerarTabela(json){
+	$("#bodyTabela").html("");
+	$.each(json, function(index, pedido){
+		var string ="<tr><th scope='row'><a href='http://localhost:8888/pedido/detalhe?id="+pedido.id+"' >"+pedido.id+"</a></th>"
+		+ "<td scope='row'>"+pedido.idCliente+"</td>"
+		+ "<td scope='row'>"+pedido.dtPedido+"</td>"
+		+ "<td scope='row'>"+pedido.totalCompra+"</td>"
+		+ "<td scope='row'>"+pedido.status+"</td>"
+		+ getBotao(pedido.id)[pedido.status];
+		string = string + "</tr>";
+		$("#bodyTabela").append(string);
+	});
+}
+
+function getBotao(id) {
+	return {
+		"PAGO" : `<td scope='row'><a class='btn btn-warning' onclick='atualizarPedido(`+id+`, "TRANSPORTE")'>ENVIAR</a></td>`,
+		"TRANSPORTE" :`<td scope='row'><a class='btn btn-warning' onclick='atualizarPedido(`+id+`, "ENTREGUE")'>ENTREGUE</a></td>`
+	};
+	
+}
+
+function atualizarPedido(id, status){
+	$("#formPedido").find("#id").val(id);
+	$("#formPedido").find("#status").val(status);
+	$("#formPedido").submit();
+}
 </script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-	crossorigin="anonymous">
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/esm/popper.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
-<link href="http://localhost:8888/css/styles.css" rel="stylesheet">
+
 <style>
 .modal-backdrop, .modal-backdrop.fade.in{
 opacity: 0.1;
 }
 </style>
 </head>
+<form id="formPedido" method="POST" action="http://localhost:8888/pedido/alterarStatus">
+	<input type="hidden" name="id" id="id" />
+	<input type="hidden" name="statusPedido" id="status" />
+</form>
 <body>
-	<table class="table table-hover">
+	<table class="table table-hover" id="tabela">
 		<thead>
 			<tr>
 				<th scope="col">Nº Pedido</th>
@@ -41,52 +65,8 @@ opacity: 0.1;
 				<th scope="col">Ações</th>
 			</tr>
 		</thead>
-		<tbody>
-			<tr>
-				<th scope="row"><button class="btn btn-link" onclick="$('#abrirModal').click();">1</button></th>
-				<td><a href="http://localhost:8888/cliente/detalhe" class="btn btn-link">111.222.333-44</a></td>
-				<td>20/02/2019</td>
-				<td>1.000,00</td>
-				<td style="color: #FFB300;">NÃO PAGO</td>
-				<td></td>
-			</tr>
-			<tr>
-				<th scope="row"><a class="btn btn-link" href="http://localhost:8888/pedido/efetivacao" target="_blank">2</a></th>
-				<td><a href="http://localhost:8888/cliente/detalhe" class="btn btn-link">222.222.333-44</a></td>
-				<td>21/02/2019</td>
-				<td>1.500,00</td>
-				<td style="color: green;">ENTREGUE</td>
-				<td></td>
-			</tr>
-			<tr>
-				<th scope="row"><button  class="btn btn-link" onclick="$('#abrirModal').click();">3</button></th>
-				<td><a href="http://localhost:8888/cliente/detalhe" class="btn btn-link">444.222.111-33</a></td>
-				<td>22/02/2019</td>
-				<td>500,00</td>
-				<td style="color: red;">CANCELADO</td>
-				<td></td>
-			</tr>
-			<tr>
-				<th scope="row"><a class="btn btn-link" href="http://localhost:8888/pedido/efetivacao" target="_blank">4</a></th>
-				<td><a href="http://localhost:8888/cliente/detalhe" class="btn btn-link">444.222.111-33</a></td>
-				<td>23/02/2019</td>
-				<td>1.500,00</td>
-				<td style="color: green;">APROVADO</td>
-				<td>
-					<button class="btn btn-danger">Cancelar</button>			
-					<button class="btn btn-success">Enviar</button>			
-				</td>
-			</tr>	
-			<tr>
-				<th scope="row"><a class="btn btn-link" href="http://localhost:8888/pedido/efetivacao" target="_blank">5</a></th>
-				<td><a href="http://localhost:8888/cliente/detalhe" class="btn btn-link">444.222.111-33</a></td>
-				<td>23/02/2019</td>
-				<td>1.500,00</td>
-				<td style="color: green;">EM TRANSPORTE</td>
-				<td>		
-					<button class="btn btn-success">Entregue</button>			
-				</td>
-			</tr>					
+		<tbody id="bodyTabela">
+				
 		</tbody>
 	</table>
 
