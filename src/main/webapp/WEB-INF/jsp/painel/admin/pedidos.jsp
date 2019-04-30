@@ -17,12 +17,16 @@ $(document).ready(function(){
 function gerarTabela(json){
 	$("#bodyTabela").html("");
 	$.each(json, function(index, pedido){
+		let tipo = getBotao(pedido.id)[pedido.status];
+		if(tipo === undefined){
+			tipo = "<td scope='row'> </td>";
+		}
 		var string ="<tr><th scope='row'><a href='http://localhost:8888/pedido/detalhe?id="+pedido.id+"' >"+pedido.id+"</a></th>"
 		+ "<td scope='row'>"+pedido.idCliente+"</td>"
 		+ "<td scope='row'>"+pedido.dtPedido+"</td>"
 		+ "<td scope='row'>"+pedido.totalCompra+"</td>"
 		+ "<td scope='row'>"+pedido.status+"</td>"
-		+ getBotao(pedido.id)[pedido.status];
+		+ tipo;
 		string = string + "</tr>";
 		$("#bodyTabela").append(string);
 	});

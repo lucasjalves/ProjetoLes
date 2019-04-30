@@ -148,6 +148,9 @@ public class TicketController extends ControllerBase {
 	public String alterarStatus(@RequestParam String statusTicket, @RequestParam Long id) throws Exception {
 		
 		Ticket t = getTicket(id);
+		if(t.getTipo().equals(TipoTicket.TROCA)) {
+			return alterarStatusTroca(statusTicket, id);
+		}
 		Cliente cliente = (Cliente) facade.consultar(new Cliente().withId(t.getIdCliente())).getEntidades().get(0);
 		StatusTicket status = StatusTicket.valueOf(statusTicket);
 		if(t.getTipo().equals(TipoTicket.DEVOLUCAO) && status.equals(StatusTicket.APROVADO)) {
@@ -171,6 +174,15 @@ public class TicketController extends ControllerBase {
 		return "forward:/ticket/consultaAdmin";
 	}
 	
+	public String alterarStatusTroca(String statusTicket, Long id) throws Exception {
+		Ticket t = getTicket(id);
+		t.setStatus(StatusTicket.valueOf(statusTicket));
+		Resultado res = facade.alterar(t);
+		if(!res.getMensagem().isEmpty()) {
+			throw new Exception(res.getMensagem().get(0));
+		}
+		return "forward:/ticket/consultaAdmin";
+	}
 	@SuppressWarnings("unchecked")
 	private Ticket getTicket(Long id) throws Exception {
 		Optional<Ticket> ticket = 

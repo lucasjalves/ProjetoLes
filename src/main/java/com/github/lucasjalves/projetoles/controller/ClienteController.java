@@ -1,8 +1,8 @@
 package com.github.lucasjalves.projetoles.controller;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.lucasjalves.projetoles.entidade.Cliente;
 import com.github.lucasjalves.projetoles.enums.TipoUsuario;
-import com.github.lucasjalves.projetoles.facade.Facade;
 import com.github.lucasjalves.projetoles.rns.Resultado;
 @SuppressWarnings("unchecked")
 @Controller
@@ -62,13 +60,28 @@ public class ClienteController extends ControllerBase {
 	
 	@RequestMapping("/cliente/alterar")
 	@ResponseBody
-	public Resultado alterarCliente(@ModelAttribute Cliente cliente) {
+	public Resultado alterarCliente(@ModelAttribute Cliente cliente) throws Exception {
+		Optional<Cliente> optional = 
+				(Optional<Cliente>) facade.consultar(new Cliente().withId(cliente.getId())).getEntidades().stream().findFirst();
+		
+		if(!optional.isPresent()) {
+			throw new Exception("Cliente não encontrado para alteração " + cliente.getId());
+		}
+		
+		Cliente c = optional.get();
+		cliente.setCreditoDisponivel(c.getCreditoDisponivel());
+		cliente.setCartoes(c.getCartoes());
+		cliente.setEnderecos(c.getEnderecos());
+		cliente.setPedidos(c.getPedidos());
+		cliente.setTickets(c.getTickets());
 		return facade.alterar(cliente);
 	}	
 	
 	@RequestMapping("/cliente/dados")
 	public ModelAndView dados(ModelAndView modelView) {
+		Cliente cliente = getCliente();
 		modelView.setViewName("painel/iframes/dados");
+		modelView.addObject("cliente", cliente);
 		return modelView;
 	}
 	

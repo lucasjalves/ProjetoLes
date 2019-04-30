@@ -13,11 +13,15 @@ $(document).ready(function(){
 function gerarTabela(json){
 	$("#bodyTabela").html("");
 	$.each(json, function(index, ticket){
+		let tipo = gerarBotao(ticket.tipo, ticket.status, ticket.id);
+		if(tipo === undefined){
+			tipo = "<td scope='row'> </td>";
+		}
 		var string ="<tr><th scope='row'><a href='http://localhost:8888/ticket/detalhe?id="+ticket.id+"' >"+ticket.id+"</a></th>"
 		+ "<td scope='row'>"+ticket.dtPedido+"</td>"
 		+ "<td scope='row'>"+ticket.status+"</td>"
 		+ "<td scope='row'>"+ticket.tipo+"</td>"
-		+ gerarBotao(ticket.tipo, ticket.status, ticket.id);
+		+ tipo;
 		string = string + "</tr>";
 		$("#bodyTabela").append(string);
 	});
@@ -31,7 +35,9 @@ function gerarBotao(tipo, status, id){
 		return tipos[status];
 	} else {
 		const tipos = {
-			
+			"SOLICITADO" : `<td scope='row'><a class='btn btn-warning' onclick='atualizarTicket(`+id+`, "APROVADO")'>Aceitar</a></td>`,
+			"APROVADO" : `<td scope='row'><a class='btn btn-warning' onclick='atualizarTicket(`+id+`, "TRANSPORTE")'>Aceitar</a></td>`,
+			"TRANSPORTE" : `<td scope='row'><a class='btn btn-warning' onclick='atualizarTicket(`+id+`, "ENTREGUE")'>Aceitar</a></td>`
 		};
 		return tipos[status];
 	}

@@ -1,59 +1,82 @@
 <html>
 <head>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-	crossorigin="anonymous">
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/esm/popper.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
-<link href="http://localhost:8888/css/styles.css" rel="stylesheet">
+<jsp:include page="../../statics.jsp"></jsp:include>
+<script>
+	function alterar(){
+		$.ajax({
+			method: "POST",
+			data: $("#form").serialize(),
+			url: "http://localhost:8888/cliente/alterar",
+			success: function(data){
+				if(data.mensagem.length === 0){
+					tratarResponse({
+						callback: function(){
+							$("#confirmacaoDados").submit();
+						}
+					});				
+				}else{
+					tratarResponse({
+						resultado: data
+					});					
+				}
+			},
+			error: function(data){
+				tratarResponse({
+					resultado: data,
+					mensagemFalha: "Falha falha ao altera os dados do cliente"
+				});			
+			}
+		});		
+	}
+	
+	$(document).ready(function(){
+		$("#genero").val('${cliente.genero}');
+		$("#dtNascimento").mask("00/00/0000");
+	});
+</script>
 </head>
 <body>
+<form id="confirmacaoDados" method="POST" action="http://localhost:8888/cliente/dados"></form>
 	<form id="form">
-		<input type="hidden" name="id" value="" />
+	
+		<input type="hidden" name="id" value="${cliente.id}" />
+		<input type="hidden" name="cpfCnpj" value="${cliente.cpfCnpj}" />
+		<input type="hidden" name="ativo" value="${cliente.ativo}" />
+		<input type="hidden" name="tipoUsuario" value="${cliente.tipoUsuario}" />
 		<div class="form-group">
 			<label>Nome Completo</label> <input type="text" class="form-control"
-				name="nome" placeholder="Nome" value="Nome teste" required>
+				name="nome" placeholder="Nome" value="${cliente.nome}" required>
 		</div>
 		<div class="form-group">
 			<label>CPF/CNPJ</label> <input type="text" class="form-control"
-				name="cpfCnpj" placeholder="CPF/CNPJ" value="111.222.333-44"
+				placeholder="CPF/CNPJ" value="${cliente.cpfCnpj}"
 				disabled>
 		</div>
 		<div class="form-group">
 			<label>Data nascimento</label> <input type="text"
-				class="form-control" name="dtNascimento" placeholder="DD/MM/YYYY"
-				value="23/07/1997" required>
+				class="form-control" id="dtNascimento" name="dtNascimento" placeholder="DD/MM/YYYY"
+				value="${cliente.dtNascimento}" required>
 		</div>
 		<div class="form-group">
-			<label>E-mail</label> <input type="text" class="form-control"
-				placeholder="E-mail" value="teste@teste.com.br" required>
+			<label>E-mail</label> 
+			<input type="text" class="form-control" name="email" placeholder="Nome" id="email" value="${cliente.email}" required>
 		</div>
 		<div class="form-group">
-			<label>Gênero</label> <select class="form-control">
+			<label>Gênero</label> <select class="form-control" name="genero" id="genero">
 				<option selected>M</option>
 				<option>F</option>
 			</select>
 		</div>
 		<div class="form-group">
 			<label>Username</label> <input type="text" class="form-control"
-				name="username" placeholder="Username" value="usertest" required>
+				name="username" placeholder="Username" value="${cliente.username}" required>
 		</div>
 		<div class="form-group">
 			<label>Senha</label> <input type="password" class="form-control"
-				name="senha" placeholder="Senha" value="senhatest" required>
+				name="senha" placeholder="Senha" required>
 		</div>
 	</form>
-	<button class="btn btn-primary" id="btnCadastrar">Alterar</button>
-
+	<button class="btn btn-primary" id="btnCadastrar" onclick="alterar()">Alterar</button>
+	<jsp:include page="../../componentes/modal.jsp"></jsp:include>
 </body>
 </html>
