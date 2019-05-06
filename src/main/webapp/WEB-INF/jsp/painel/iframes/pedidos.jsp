@@ -2,9 +2,6 @@
 <head>
 <jsp:include page="../../statics.jsp"></jsp:include>
 <script>
-function devolverOuTrocar(){
-	$("#abrirModal").click();
-}
 
 $(document).ready(function(){
 	var json = ${pedidos};
@@ -87,61 +84,5 @@ opacity: 0.1;
 
 		</tbody>
 	</table>
-
-	<!-- Button trigger modal -->
-	<button type="button" class="btn btn-primary" data-backdrop="false" style="display: none;"
-		data-toggle="modal" id="abrirModal" data-target="#exampleModalCenter">Launch
-		demo modal</button>
-
-	<!-- Modal -->
-	<div class="modal fade" id="exampleModalCenter" tabindex="-1"
-		role="dialog" aria-labelledby="exampleModalCenterTitle"
-		aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLongTitle">Devolução/troca</h5>
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<h6>Você deseja</h6>
-					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio"
-							name="inlineRadioOptions" id="inlineRadio1" value="option1">
-						<label class="form-check-label" for="inlineRadio1">Devolver</label>
-					</div>
-					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio"
-							name="inlineRadioOptions" id="inlineRadio2" value="option2"
-							checked> <label class="form-check-label"
-							for="inlineRadio2">Trocar</label>
-					</div>
-					<table class="table" style="margin-top: 50px; margin-bottom: 30px;">
-						<thead>
-							<tr>
-								<th scope="col">Produtos</th>
-								<th scope="col" style="width: 100px;">Quantidade</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td><strong>Playstation 4</strong></td>
-								<td><input type="number" class="form-control" value="1" /></td>
-							</tr>
-						</tbody>
-					</table>
-
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">Confirmar</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
 </body>
 </html>

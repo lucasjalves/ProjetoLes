@@ -29,7 +29,7 @@ class ControllerBase {
 			return null;
 		}
 		
-		return (Cliente) facade.consultar(c).getEntidades().stream().findFirst().get();
+		return (Cliente) facade.consultar(new Cliente().withId(c.getId())).getEntidades().stream().findFirst().get();
 	}
 	
 	protected Cliente alterarClienteSessao(Cliente cliente) {

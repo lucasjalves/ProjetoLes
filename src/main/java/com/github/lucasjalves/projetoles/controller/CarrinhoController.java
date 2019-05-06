@@ -25,7 +25,7 @@ public class CarrinhoController extends ControllerBase{
 
 	@RequestMapping("")
 	public ModelAndView carrinho() throws CloneNotSupportedException {
-		Cliente cliente = (Cliente) httpSession.getAttribute("cliente");
+		Cliente cliente = getCliente();
 		Carrinho carrinho = (Carrinho) httpSession.getAttribute("carrinho");
 		if(carrinho != null) {
 			List<Produto> produtos = (List<Produto>) facade.consultar(new Produto()).getEntidades();
@@ -35,7 +35,7 @@ public class CarrinhoController extends ControllerBase{
 			httpSession.setAttribute("carrinho", CarrinhoHelper.atualizarValores(c));
 		}
 		if(cliente != null) {
-			cliente = (Cliente) facade.consultar(cliente).getEntidades().get(0);
+			cliente = (Cliente) facade.consultar(new Cliente().withId(cliente.getId())).getEntidades().get(0);
 		}
 		ModelAndView modelView = new ModelAndView();
 		modelView.setViewName("carrinho/carrinho");
