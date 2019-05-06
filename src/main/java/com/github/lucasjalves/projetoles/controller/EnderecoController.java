@@ -52,6 +52,19 @@ public class EnderecoController extends ControllerBase {
 		return modelView;
 	}
 	
+	@ResponseBody
+	@RequestMapping("/adicionarEndereco")
+	public Resultado adicionarEndereco(@ModelAttribute Endereco endereco) {
+		Resultado r = facade.salvar(endereco);
+		if(!r.getMensagem().isEmpty()) {
+			return r;
+		}
+		
+		Cliente c = getCliente();
+		c.getEnderecos().add(endereco);
+		return facade.alterar(c);
+	}
+	
 	@RequestMapping("/detalhe")
 	public ModelAndView detalhe(ModelAndView modelView, @RequestParam Long id) throws Exception {
 		modelView.setViewName("painel/iframes/endereco/detalhe");
@@ -68,5 +81,11 @@ public class EnderecoController extends ControllerBase {
 	@RequestMapping("/alterar")
 	public Resultado alterar(@ModelAttribute Endereco endereco) {
 		return facade.alterar(endereco);
+	}
+	
+	@RequestMapping("/paginaCadastro")
+	public ModelAndView paginaCadastro(ModelAndView modelView) {
+		modelView.setViewName("painel/iframes/endereco/cadastrar");
+		return modelView;
 	}
 }
