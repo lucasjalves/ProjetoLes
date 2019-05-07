@@ -80,6 +80,10 @@ public class EnderecoController extends ControllerBase {
 	@ResponseBody
 	@RequestMapping("/alterar")
 	public Resultado alterar(@ModelAttribute Endereco endereco) {
+		Resultado r = facade.salvar(endereco);
+		if(!r.getMensagem().isEmpty()) {
+			return r;
+		}
 		return facade.alterar(endereco);
 	}
 	

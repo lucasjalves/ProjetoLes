@@ -44,6 +44,10 @@
 		<input type="hidden" name="ativo" value="${cliente.ativo}" />
 		<input type="hidden" name="tipoUsuario" value="${cliente.tipoUsuario}" />
 		<div class="form-group">
+			<label><strong>Crédito disponível: ${cliente.creditoDisponivel} R$</strong> </label> 
+		</div>
+		
+		<div class="form-group">
 			<label>Nome Completo</label> <input type="text" class="form-control"
 				name="nome" placeholder="Nome" value="${cliente.nome}" required>
 		</div>

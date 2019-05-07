@@ -1,7 +1,11 @@
 package com.github.lucasjalves.projetoles.controller;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,7 +29,7 @@ public class CartaoController extends ControllerBase{
 	
 	@ResponseBody
 	@RequestMapping("/cadastrar")
-	public Resultado cadastrar(CartaoCredito cartao) {
+	public Resultado cadastrar(@ModelAttribute CartaoCredito cartao) {
 		Cliente cliente = getCliente();
 		
 		if(cliente == null) {
@@ -38,5 +42,38 @@ public class CartaoController extends ControllerBase{
 			res = facade.alterar(cliente);
 		}
 		return res;		
+	}
+	
+	@RequestMapping("/paginaCadastro")
+	public ModelAndView paginaCadastro(ModelAndView modelView) {
+		modelView.setViewName("painel/iframes/cartao/cadastrar");
+		return modelView;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/alterar")
+	public Resultado alterar(@ModelAttribute CartaoCredito cartao) {
+		Resultado r = facade.salvar(cartao);
+		if(!r.getMensagem().isEmpty()) {
+			return r;
+		}
+		return facade.alterar(cartao);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping("/detalhe")
+	public ModelAndView detalhe(@RequestParam Long id, ModelAndView modelView) throws Exception {
+		Optional<CartaoCredito> c = 
+				(Optional<CartaoCredito>) facade.consultar(new CartaoCredito().withId(id))
+				.getEntidades()
+					.stream()
+					.findFirst();
+		
+		if(!c.isPresent()) {
+			throw new Exception("Cartão não encontrado "+ id);
+		}
+		modelView.addObject("cartao", c.get());
+		modelView.setViewName("painel/iframes/cartao/detalhe");
+		return modelView;
 	}
 }

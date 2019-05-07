@@ -23,12 +23,11 @@ function gerarTabela(json){
 	});
 }
 
-func
 </script>
 </head>
 <body >
 	<div class="card">
-		<div class="card-header">Cartões<span class="btn btn-link" style="margin-left: 50px;" onclick="cadastrar()">+ cadastrar novo</span></div>
+		<div class="card-header">Cartões<a class="btn btn-link"  href="http://localhost:8888/cartao/paginaCadastro" style="margin-left: 50px;" onclick="cadastrar()">+ cadastrar novo</a></div>
 		  <div class="card-body">
 			<table class="table table-hover" id="tabela">
 			<thead>

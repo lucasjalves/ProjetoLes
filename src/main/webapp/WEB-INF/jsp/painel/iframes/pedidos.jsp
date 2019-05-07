@@ -70,6 +70,9 @@ opacity: 0.1;
 <form id="solicitarTroca" action="http://localhost:8888/ticket/trocacao">
 	<input type="hidden" name="id" id="idTroca" />
 </form>
+	<div class="card">
+		<div class="card-header">Pedidos</div>
+		  <div class="card-body">
 	<table class="table table-hover" id="tabela">
 		<thead>
 			<tr>
@@ -84,5 +87,7 @@ opacity: 0.1;
 
 		</tbody>
 	</table>
+	</div>
+</div>
 </body>
 </html>

@@ -58,6 +58,9 @@ opacity: 0.1;
 	<input type="hidden" name="statusPedido" id="status" />
 </form>
 <body>
+<div class="card">
+	<div class="card-header">Pedido</div>
+	  <div class="card-body">
 	<table class="table table-hover" id="tabela">
 		<thead>
 			<tr>
@@ -73,49 +76,8 @@ opacity: 0.1;
 				
 		</tbody>
 	</table>
-
-	<!-- Button trigger modal -->
-	<button type="button" class="btn btn-primary" data-backdrop="false" style="display: none;"
-		data-toggle="modal" id="abrirModal" data-target="#exampleModalCenter">Launch
-		demo modal</button>
-
-	<!-- Modal -->
-	<div class="modal fade" id="exampleModalCenter" tabindex="-1"
-		role="dialog" aria-labelledby="exampleModalCenterTitle"
-		aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLongTitle">Devolução/troca</h5>
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<table class="table" style="margin-top: 15px;">
-						<thead>
-							<tr>
-								<th scope="col">Produtos</th>
-								<th scope="col" style="width: 100px;">Quantidade</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td><strong>Playstation 4</strong></td>
-								<td><strong>1</strong></td>
-							</tr>
-						</tbody>
-					</table>
-
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">Confirmar</button>
-				</div>
-			</div>
-		</div>
 	</div>
+</div>
 
 </body>
 </html>
