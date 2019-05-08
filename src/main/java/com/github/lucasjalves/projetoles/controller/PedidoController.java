@@ -22,11 +22,13 @@ import com.github.lucasjalves.projetoles.helper.ClienteHelper;
 import com.github.lucasjalves.projetoles.helper.EfetivacaoPedidoHelper;
 import com.github.lucasjalves.projetoles.helper.EstoqueHelper;
 import com.github.lucasjalves.projetoles.helper.PedidoHelper;
+import com.github.lucasjalves.projetoles.helper.TicketHelper;
 import com.github.lucasjalves.projetoles.rns.Resultado;
 import com.github.lucasjalves.projetoles.util.CalculoUtil;
 
 @Controller
 @RequestMapping("/pedido")
+@SuppressWarnings("unchecked")
 public class PedidoController extends ControllerBase{
 
 	private static final String EFETIVACAO = "pedido/efetivacao";
@@ -129,7 +131,7 @@ public class PedidoController extends ControllerBase{
 		pedidoAEfetivar.setCartoes(pedido.getCartoes());
 		pedido.setTotalCompra(pedidoConsulta.get().getTotalCompra());
 		Resultado resultadoValidacao = 
-				EfetivacaoPedidoHelper.validarPedido(pedido);
+				EfetivacaoPedidoHelper.validarPedido(pedido, cliente);
 		
 		if(!resultadoValidacao.getMensagem().isEmpty()) {
 			return resultadoValidacao;
@@ -231,4 +233,49 @@ public class PedidoController extends ControllerBase{
 		return "forward:/pedido/consultaAdmin";
 	}
 	
+	
+	@RequestMapping("/cancelar")
+	public String cancelar(@RequestParam Long id, @RequestParam(required=false) Long idCliente) throws Exception  {
+		if(idCliente == null) {
+			atualizarDados(id, getCliente());
+			return "forward:/pedido/consulta";
+		}else {
+			Optional<Cliente> c = (Optional<Cliente>) facade.consultar(new Cliente().withId(idCliente))
+					.getEntidades()
+					.stream().findFirst();
+			
+			if(!c.isPresent()) {
+				throw new Exception("Cliente não encontrado! " +idCliente);
+			}
+			atualizarDados(id, c.get());
+			return "forward:/pedido/consultaAdmin";
+		}
+		
+	}
+	
+	private void atualizarDados(Long id, Cliente cliente) throws Exception {
+		Optional<Pedido> pedidoConsulta = 
+				(Optional<Pedido>) facade.consultar(new Pedido().withId(id)).getEntidades()
+				.stream()
+				.findFirst();
+		
+		if(!pedidoConsulta.isPresent()) {
+			throw new Exception("Pedido com não encontrado " +id);
+		}
+		Pedido pedido = pedidoConsulta.get();
+		if(pedido.getStatus().equals(StatusPedido.PAGO)) {
+			Double valor = TicketHelper.gerarCredito(pedido, cliente);
+			cliente.setCreditoDisponivel(CalculoUtil.formatMoney(valor));
+			Resultado r = facade.alterar(cliente);
+			if(!r.getMensagem().isEmpty()) {
+				throw new Exception("Erro devido a RNS " + r.getMensagem().get(0));
+			}
+		}
+		estoqueHelper.atualizarQuantidadeEstoque(pedido.getItensPedido());
+		pedido.setStatus(StatusPedido.CANCELADO);
+		Resultado r = facade.alterar(pedido);
+		if(!r.getMensagem().isEmpty()) {
+			throw new Exception("Erro devido a RNS " + r.getMensagem().get(0));
+		}		
+	}
 }

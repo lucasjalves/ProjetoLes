@@ -28,6 +28,11 @@ function gerarTabela(json){
 	});
 }
 
+
+function cancelar(id){
+	$("#idPedidoCancelamento").val(id)
+	$("#cancelamento").submit();
+}
 function irParaConfirmacao(id){
 	$("#idConfirmacao").val(id);
 	$("#formConfirmacao").submit();
@@ -40,8 +45,8 @@ function solicitarTroca(id) {
 
 function getBotao(id) {
 	return {
-		"PAGO" : `<td scope='row'><a class='btn btn-success' onclick="irParaEfetivacao(`+id+`)">Visualizar</a></td>`,
-		"SOLICITADO" : `<td scope='row'><a class='btn btn-success' onclick="irParaConfirmacao(`+id+`)">Comprar</a></td>`,
+		"PAGO" : `<td scope='row'><a class='btn btn-success' onclick="irParaEfetivacao(`+id+`)">Visualizar</a><a class='btn btn-danger' style="margin-left: 10px;" onclick="cancelar(`+id+`)">Cancelar</a></td>`,
+		"SOLICITADO" : `<td scope='row'><a class='btn btn-success' onclick="irParaConfirmacao(`+id+`)">Comprar</a><a class='btn btn-danger'  style="margin-left: 10px;" onclick="cancelar(`+id+`)">Cancelar</a></td>` ,
 		"ENTREGUE" : `<td scope='row'><a class='btn btn-warning' onclick="solicitarTroca(`+id+`)">Trocar</a></td>`,
 	};
 	
@@ -67,6 +72,9 @@ opacity: 0.1;
 	<input type="hidden" name="id" id="idEfetivacao" />
 </form>
 
+<form id="cancelamento" action="http://localhost:8888/pedido/cancelar">
+	<input type="hidden" name="id" id="idPedidoCancelamento" />
+</form>
 <form id="solicitarTroca" action="http://localhost:8888/ticket/trocacao">
 	<input type="hidden" name="id" id="idTroca" />
 </form>

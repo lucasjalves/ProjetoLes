@@ -92,10 +92,12 @@
         var cartoes = [];
         $("#rowCartoes .form-group").each(function(){
             var cartao = $(this).find("select").val();
-            var valor = $(this).find("input").val();
+            var valor = $(this).find(".vlr").val();
+            var cvv = $(this).find(".cvv").val();
             var json = {
                 valor : valor,
-                id: parseInt(cartao)
+                id: parseInt(cartao),
+                cvv: cvv
             }
             cartoes.push(json);
         });
@@ -291,7 +293,7 @@
 						<div id="cartoes">
 							<div id="rowCartoes">
 								<div class="form-group row" id="cartaoPrincipal">
-									<div class="col-sm-4 fodase">
+									<div class="col-sm-4">
 										<select class="form-control" >
 											<option value="-1">Selecione...</option>
 											<c:forEach items="${cliente.cartoes}" var="cartao" >
@@ -301,9 +303,14 @@
 											</c:forEach>
 										</select>
 									</div>	
+									
 									<div class="col-sm-2" style="display: none;">
-										<input type="text" class="form-control" placeholder="Valor R$" />
-									</div>																					
+										<input type="text" class="form-control vlr" placeholder="Valor R$" />
+									</div>		
+									
+									<div class="col-sm-2">
+										<input type="text" class="form-control cvv" placeholder="CVV" />
+									</div>																															
 								</div>	
 							</div>
 							<div class="row">

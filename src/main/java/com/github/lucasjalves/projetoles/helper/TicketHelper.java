@@ -97,4 +97,11 @@ public final class TicketHelper {
 		
 		return vTotal;
 	}
+	
+	public static Double gerarCredito(Pedido pedido, Cliente cliente) {
+		Double valor = gerarCredito(pedido);
+		valor = valor + CalculoUtil.StringToDouble(cliente.getCreditoDisponivel());
+		return valor;
+	}
+
 }

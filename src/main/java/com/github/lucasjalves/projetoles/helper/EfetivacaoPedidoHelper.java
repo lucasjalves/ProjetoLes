@@ -17,7 +17,7 @@ import com.github.lucasjalves.projetoles.util.CalculoUtil;
 
 public final class EfetivacaoPedidoHelper {
 
-	public static Resultado validarPedido(Pedido pedido) {
+	public static Resultado validarPedido(Pedido pedido, Cliente cliente) {
 		Double valorTotal = CalculoUtil.StringToDouble(pedido.getTotalCompra());
 		Double creditoUtilizado = CalculoUtil.StringToDouble(pedido.getCreditoUtilizado());
 		boolean creditoNaoUtilizado = CalculoUtil.isValorZerado(pedido.getCreditoUtilizado());
@@ -26,7 +26,10 @@ public final class EfetivacaoPedidoHelper {
 			return new Resultado();
 		}
 		
-		
+		Resultado r = validarCvvCartoes(cliente, pedido);
+		if(!r.getMensagem().isEmpty()) {
+			return r;
+		}
 
 		if(!cartoes.isPresent() && (creditoUtilizado < valorTotal)) {
 			return new Resultado("Você deve selecionar um cartão para pagamento");
@@ -75,6 +78,23 @@ public final class EfetivacaoPedidoHelper {
 		return new Resultado();
 	}
 
+	private static Resultado validarCvvCartoes(Cliente cliente, Pedido pedidoParaEfetivar) {
+		List<CartaoCredito> listaCartoesCliente = cliente.getCartoes();
+		List<CartaoCreditoPagamento> listaCartoesPagamento = pedidoParaEfetivar.getCartoes();
+		
+		for(CartaoCreditoPagamento cartao: listaCartoesPagamento) {
+			Long idCartao = cartao.getIdCartao();
+			CartaoCredito cartaoCliente = listaCartoesCliente.stream()
+					.filter(cartaoLista -> cartaoLista.getId().equals(idCartao))
+					.collect(Collectors.toList())
+					.get(0);
+			String finalCartao = cartaoCliente.getNumero().substring(cartaoCliente.getNumero().length() - 4);
+			if(!cartaoCliente.getCvv().equals(cartao.getCvv())) {
+				return new Resultado("Verifique o CVV do cartão com final " + finalCartao);
+			}
+		}
+		return new Resultado();
+	}
 	public static Pedido setarDadosParaEfetivar(Pedido pedidoAEfetivar, Pedido pedidoDadosPagamento, Cliente cliente) throws Exception {
 		pedidoAEfetivar.setCreditoUtilizado(pedidoDadosPagamento.getCreditoUtilizado());
 		Double creditoUtilizado = CalculoUtil.StringToDouble(pedidoDadosPagamento.getCreditoUtilizado());

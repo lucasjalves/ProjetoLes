@@ -32,9 +32,6 @@ public class PedidoDAO implements DAO{
 		if(p.getId() != null) {
 			filtro.add(pedido -> pedido.equals(p));
 		}
-		if(p.getStatus() != null) {
-			filtro.add(pedido -> pedido.getStatus().equals(p.getStatus()));
-		}
 		Predicate<Pedido> compositePredicate = filtro.stream().reduce(c -> true, Predicate::and);
 		
 		return repository.findAll().stream().filter(compositePredicate).collect(Collectors.toList());

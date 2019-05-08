@@ -17,7 +17,7 @@ $(document).ready(function(){
 function gerarTabela(json){
 	$("#bodyTabela").html("");
 	$.each(json, function(index, pedido){
-		let tipo = getBotao(pedido.id)[pedido.status];
+		let tipo = getBotao(pedido.id, pedido.idCliente)[pedido.status];
 		if(tipo === undefined){
 			tipo = "<td scope='row'> </td>";
 		}
@@ -32,8 +32,9 @@ function gerarTabela(json){
 	});
 }
 
-function getBotao(id) {
+function getBotao(id, idCliente) {
 	return {
+		"SOLICITADO" : : `<td scope='row'><a class='btn btn-danger' onclick='cancelar(`+id+`, `+idCliente+`)'>CANCELAR</a></td>`,
 		"PAGO" : `<td scope='row'><a class='btn btn-warning' onclick='atualizarPedido(`+id+`, "TRANSPORTE")'>ENVIAR</a></td>`,
 		"TRANSPORTE" :`<td scope='row'><a class='btn btn-warning' onclick='atualizarPedido(`+id+`, "ENTREGUE")'>ENTREGUE</a></td>`
 	};
@@ -45,6 +46,12 @@ function atualizarPedido(id, status){
 	$("#formPedido").find("#status").val(status);
 	$("#formPedido").submit();
 }
+
+function cancelar(id, idCliente){
+	$("#idPedidoCancelamento").val(id);
+	$("#idClienteCancelamento").val(idCliente);
+	$("#cancelamento").submit();
+}
 </script>
 
 <style>
@@ -53,9 +60,15 @@ opacity: 0.1;
 }
 </style>
 </head>
+
 <form id="formPedido" method="POST" action="http://localhost:8888/pedido/alterarStatus">
 	<input type="hidden" name="id" id="id" />
 	<input type="hidden" name="statusPedido" id="status" />
+</form>
+
+<form id="cancelamento" action="http://localhost:8888/pedido/cancelar">
+	<input type="hidden" name="id" id="idPedidoCancelamento" />
+	<input type="hidden" name="idCliente" id="idClienteCancelamento" />
 </form>
 <body>
 <div class="card">
