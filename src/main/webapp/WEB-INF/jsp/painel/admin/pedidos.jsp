@@ -34,7 +34,7 @@ function gerarTabela(json){
 
 function getBotao(id, idCliente) {
 	return {
-		"SOLICITADO" : : `<td scope='row'><a class='btn btn-danger' onclick='cancelar(`+id+`, `+idCliente+`)'>CANCELAR</a></td>`,
+		"SOLICITADO" : `<td scope='row'><a class='btn btn-danger' onclick='cancelar(`+id+`, `+idCliente+`)'>CANCELAR</a></td>`,
 		"PAGO" : `<td scope='row'><a class='btn btn-warning' onclick='atualizarPedido(`+id+`, "TRANSPORTE")'>ENVIAR</a></td>`,
 		"TRANSPORTE" :`<td scope='row'><a class='btn btn-warning' onclick='atualizarPedido(`+id+`, "ENTREGUE")'>ENTREGUE</a></td>`
 	};

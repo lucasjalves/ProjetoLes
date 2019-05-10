@@ -80,10 +80,12 @@ public final class EfetivacaoPedidoHelper {
 
 	private static Resultado validarCvvCartoes(Cliente cliente, Pedido pedidoParaEfetivar) {
 		List<CartaoCredito> listaCartoesCliente = cliente.getCartoes();
-		List<CartaoCreditoPagamento> listaCartoesPagamento = pedidoParaEfetivar.getCartoes();
+		List<CartaoCreditoPagamento> listaCartoesPagamento = pedidoParaEfetivar.getCartoes()
+				.stream().filter(c -> c.getId() != -1)
+				.collect(Collectors.toList());
 		
 		for(CartaoCreditoPagamento cartao: listaCartoesPagamento) {
-			Long idCartao = cartao.getIdCartao();
+			Long idCartao = cartao.getId();
 			CartaoCredito cartaoCliente = listaCartoesCliente.stream()
 					.filter(cartaoLista -> cartaoLista.getId().equals(idCartao))
 					.collect(Collectors.toList())

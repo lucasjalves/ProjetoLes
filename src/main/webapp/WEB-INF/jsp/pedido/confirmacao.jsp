@@ -19,7 +19,7 @@
 		$("#data").mask("00/00/0000");
 	});
     function mostrar(){
-   	 $("#cartoes input:first")
+   	 $("#cartoes .vlr:first")
    	 	.parent()
    	 	.show()
    	 	.maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:',', affixesStay: false});
@@ -27,7 +27,7 @@
        let cartoesSelecionados = [];
        let clone = $("#cartaoPrincipal").clone();
        
-       clone.find("input").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:',', affixesStay: false});
+       clone.find(".vlr").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:',', affixesStay: false});
        
        $("#cartoes select").each(function(){
            cartoesSelecionados.push($(this).val());
@@ -40,7 +40,7 @@
       
     
        $("#rowCartoes .form-group").each(function(){
-           $(this).find("input").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:',', affixesStay: false})
+           $(this).find(".vlr").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:',', affixesStay: false})
        });
        
        if($("#rowCartoes .form-group").length == qtdeCartoes){
