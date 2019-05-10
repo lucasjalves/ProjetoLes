@@ -30,7 +30,7 @@ public class PedidoDAO implements DAO{
 		List<Predicate<Pedido>> filtro = new ArrayList<>();
 		
 		if(p.getId() != null) {
-			filtro.add(pedido -> pedido.equals(p));
+			filtro.add(pedido -> pedido.getId().equals(p.getId()));
 		}
 		Predicate<Pedido> compositePredicate = filtro.stream().reduce(c -> true, Predicate::and);
 		

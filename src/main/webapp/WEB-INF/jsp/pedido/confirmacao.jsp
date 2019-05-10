@@ -305,7 +305,7 @@
 									</div>	
 									
 									<div class="col-sm-2" style="display: none;">
-										<input type="text" class="form-control vlr" placeholder="Valor R$" />
+										<input type="text" class="vlr form-control " placeholder="Valor R$" />
 									</div>		
 									
 									<div class="col-sm-2">
