@@ -1,0 +1,244 @@
+{
+  "id": "4db19c39-23f5-466a-8ed4-3c086f5aee4e",
+  "version": "2.0",
+  "name": "Condução",
+  "url": "http://localhost:8888/",
+  "tests": [{
+    "id": "30169541-0bfc-4876-b73b-b859e2717cff",
+    "name": "Venda",
+    "commands": [{
+      "id": "d545492e-b481-4970-bc7c-db3cdc8e1e05",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8888/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7e313545-e8e6-4de1-820d-7e18820d6d61",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "2576x1056",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "17ec0cd2-99ee-436b-9fc3-0922b211301d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.card:nth-child(3) .btn",
+      "targets": [
+        ["css=.card:nth-child(3) .btn", "css:finder"],
+        ["xpath=//button[@onclick=\"irParaCarrinho('145')\"]", "xpath:attributes"],
+        ["xpath=//div[@id='main']/div[3]/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "35b99d2a-1f6d-41d6-9462-27720daca9d5",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-success",
+      "targets": [
+        ["css=.btn-success", "css:finder"],
+        ["xpath=//button[@onclick='adicionarItemCarrinho()']", "xpath:attributes"],
+        ["xpath=//div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Adicionar ao carrinho')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f852ac00-92d6-412f-b415-08d6538828f6",
+      "comment": "",
+      "command": "click",
+      "target": "id=comboEndereco",
+      "targets": [
+        ["id=comboEndereco", "id"],
+        ["css=#comboEndereco", "css:finder"],
+        ["xpath=//select[@id='comboEndereco']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "486c256d-6f51-46c5-a650-5b18f7d5fa6e",
+      "comment": "",
+      "command": "select",
+      "target": "id=comboEndereco",
+      "targets": [],
+      "value": "label=Teste"
+    }, {
+      "id": "c01733cc-e4f1-4ffa-b638-5097f60ad82b",
+      "comment": "",
+      "command": "click",
+      "target": "id=comboEndereco",
+      "targets": [
+        ["id=comboEndereco", "id"],
+        ["css=#comboEndereco", "css:finder"],
+        ["xpath=//select[@id='comboEndereco']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "29e174ab-36d3-43f2-92ac-9a23bc962bdb",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Finalizar compra",
+      "targets": [
+        ["linkText=Finalizar compra", "linkText"],
+        ["css=.btn-warning", "css:finder"],
+        ["xpath=//a[contains(text(),'Finalizar compra')]", "xpath:link"],
+        ["xpath=//a[@onclick='efetuarPedido();']", "xpath:attributes"],
+        ["xpath=(//a[contains(@href, '#')])[8]", "xpath:href"],
+        ["xpath=//body/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Finalizar compra')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a45456e8-11f8-4588-971c-41cfe21d7d82",
+      "comment": "",
+      "command": "click",
+      "target": "css=#headingThree .btn",
+      "targets": [
+        ["css=#headingThree .btn", "css:finder"],
+        ["xpath=//div[@id='headingThree']/h5/button", "xpath:idRelative"],
+        ["xpath=//div[3]/div/h5/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Pagamento')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "70cfbfed-af2a-457b-a6d2-fe43fb2b228e",
+      "comment": "",
+      "command": "click",
+      "target": "id=mostrarCartao",
+      "targets": [
+        ["id=mostrarCartao", "id"],
+        ["css=#mostrarCartao", "css:finder"],
+        ["xpath=//button[@id='mostrarCartao']", "xpath:attributes"],
+        ["xpath=//div[@id='cartoes']/div[2]/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'+ Adicionar cartão')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "1e6edf66-8a96-4c2e-b2e1-95465f2137f0",
+      "comment": "",
+      "command": "select",
+      "target": "css=#cartaoPrincipal > .col-sm-4 > .form-control",
+      "targets": [],
+      "value": "label=CasterMard -- Final 3012"
+    }, {
+      "id": "87a8bc25-f0d4-4432-8edf-1e0b24cd138e",
+      "comment": "",
+      "command": "select",
+      "target": "css=#cartaoPrincipal > .col-sm-4 > .form-control",
+      "targets": [],
+      "value": "label=JumasCard -- Final 1293"
+    }, {
+      "id": "1c50d150-3ea9-4926-b6ae-9b91e2e04eeb",
+      "comment": "",
+      "command": "select",
+      "target": "css=#cartaoPrincipal > .col-sm-4 > .form-control",
+      "targets": [],
+      "value": "label=CasterMard -- Final 3012"
+    }, {
+      "id": "e76b8948-3647-4312-b77e-1ddcbce373a0",
+      "comment": "",
+      "command": "type",
+      "target": "css=#cartaoPrincipal .cvv",
+      "targets": [
+        ["css=#cartaoPrincipal .cvv", "css:finder"],
+        ["xpath=(//input[@type='text'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='cartaoPrincipal']/div[3]/input", "xpath:idRelative"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": "100"
+    }, {
+      "id": "c1c106a2-7af7-40db-b4ab-27b52c3e764a",
+      "comment": "",
+      "command": "select",
+      "target": "css=.form-group:nth-child(2) > .col-sm-4 > .form-control",
+      "targets": [],
+      "value": "label=CasterMard -- Final 3012"
+    }, {
+      "id": "9e7dd1b4-7542-4648-9b5a-912d108f6810",
+      "comment": "",
+      "command": "select",
+      "target": "css=.form-group:nth-child(2) > .col-sm-4 > .form-control",
+      "targets": [],
+      "value": "label=JumasCard -- Final 1293"
+    }, {
+      "id": "af5acaa4-a1e8-4887-9467-bc4286cd9ea0",
+      "comment": "",
+      "command": "type",
+      "target": "css=.form-group:nth-child(2) .cvv",
+      "targets": [
+        ["css=.form-group:nth-child(2) .cvv", "css:finder"],
+        ["xpath=(//input[@type='text'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='rowCartoes']/div[2]/div[3]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[3]/input", "xpath:position"]
+      ],
+      "value": "110"
+    }, {
+      "id": "be7e0b26-9569-4b15-953c-36bc5ec7fa3f",
+      "comment": "",
+      "command": "type",
+      "target": "css=#cartaoPrincipal .vlr",
+      "targets": [
+        ["css=#cartaoPrincipal .vlr", "css:finder"],
+        ["xpath=//input[@type='text']", "xpath:attributes"],
+        ["xpath=//div[@id='cartaoPrincipal']/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div/div/div[2]/input", "xpath:position"]
+      ],
+      "value": "400000"
+    }, {
+      "id": "f7ccad10-3511-4693-9905-ecdf4f8c833a",
+      "comment": "",
+      "command": "type",
+      "target": "css=.form-group:nth-child(2) .vlr",
+      "targets": [
+        ["css=.form-group:nth-child(2) .vlr", "css:finder"],
+        ["xpath=(//input[@type='text'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='rowCartoes']/div[2]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/input", "xpath:position"]
+      ],
+      "value": "40539"
+    }, {
+      "id": "3074e61c-0a48-4dce-baed-d23dc411c370",
+      "comment": "",
+      "command": "click",
+      "target": "css=#cartaoPrincipal .vlr",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "18b3fefc-4b18-4ce9-a02f-ec06f9523e53",
+      "comment": "",
+      "command": "click",
+      "target": "css=.form-group:nth-child(2) .vlr",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b01cb3cc-a1b1-4f3c-b87b-2701dc918956",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Efetivar",
+      "targets": [
+        ["linkText=Efetivar", "linkText"],
+        ["css=.btn-warning", "css:finder"],
+        ["xpath=//a[contains(text(),'Efetivar')]", "xpath:link"],
+        ["xpath=//a[@onclick='efetivar()']", "xpath:attributes"],
+        ["xpath=//div[@id='cartoes']/div[2]/div[3]/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '#')])[10]", "xpath:href"],
+        ["xpath=//div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Efetivar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "0b36cb24-9f22-4322-8c07-57fa361f0e89",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["30169541-0bfc-4876-b73b-b859e2717cff"]
+  }],
+  "urls": ["http://localhost:8888/"],
+  "plugins": []
+}
