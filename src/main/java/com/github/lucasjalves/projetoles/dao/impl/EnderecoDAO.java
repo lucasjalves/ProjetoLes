@@ -30,7 +30,7 @@ public class EnderecoDAO implements DAO{
 		List<Predicate<Endereco>> filtro = new ArrayList<>();
 		
 		if(e.getId() != null) {
-			filtro.add(ticket -> ticket.equals(e));
+			filtro.add(endereco -> endereco.getId().equals(e.getId()));
 		}
 
 		Predicate<Endereco> compositePredicate = filtro.stream().reduce(c -> true, Predicate::and);

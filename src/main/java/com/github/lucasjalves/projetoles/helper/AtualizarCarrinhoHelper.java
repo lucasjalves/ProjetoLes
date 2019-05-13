@@ -37,7 +37,7 @@ public final class AtualizarCarrinhoHelper {
 		while(it.hasNext()) {
 			ItemCarrinho item = it.next();
 			Produto produto = produtosBanco.stream()
-					.filter(p -> item.getProduto().equals(p))
+					.filter(p -> item.getProduto().getId().equals(p.getId()))
 					.collect(Collectors.toList())
 					.get(0);
 			

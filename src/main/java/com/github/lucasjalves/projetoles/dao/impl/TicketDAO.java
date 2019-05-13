@@ -29,7 +29,7 @@ public class TicketDAO implements DAO{
 		List<Predicate<Ticket>> filtro = new ArrayList<>();
 		
 		if(t.getId() != null) {
-			filtro.add(ticket -> ticket.equals(t));
+			filtro.add(ticket -> ticket.getId().equals(t.getId()));
 		}
 		if(t.getStatus() != null) {
 			filtro.add(ticket -> ticket.getStatus().equals(t.getStatus()));

@@ -54,7 +54,7 @@ public class PedidoHelper {
 
 		while(it.hasNext()) {
 			ItemCarrinho i = it.next();
-			Produto produto = produtos.stream().filter(p -> p.equals(i.getProduto()))
+			Produto produto = produtos.stream().filter(p -> p.getId().equals(i.getProduto().getId()))
 					.collect(Collectors.toList()).get(0);
 			
 			total = total + (CalculoUtil.StringToDouble(produto.getPrecoVenda())) * i.getQuantidade();

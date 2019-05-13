@@ -97,7 +97,7 @@ function adicionarItemCarrinho(){
 <body>
 <form id="form">
 	<input type="hidden" name="quantidadeSelecionada" id="qtde">
-	<input type="hidden" name="id" id="qtde" value="${produto.id}">
+	<input type="hidden" name="id" value="${produto.id}">
 </form>
 <a href="http://localhost:8888/carrinho" style="display:none;" id="carrinho"></a>
 	<div class="container spacer" style="padding-top: 110px;">

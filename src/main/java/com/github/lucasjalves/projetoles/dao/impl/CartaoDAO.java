@@ -30,7 +30,7 @@ public class CartaoDAO implements DAO{
 		List<Predicate<CartaoCredito>> filtro = new ArrayList<>();
 		
 		if(e.getId() != null) {
-			filtro.add(ticket -> ticket.equals(e));
+			filtro.add(cartao -> cartao.getId().equals(e.getId()));
 		}
 
 		Predicate<CartaoCredito> compositePredicate = filtro.stream().reduce(c -> true, Predicate::and);

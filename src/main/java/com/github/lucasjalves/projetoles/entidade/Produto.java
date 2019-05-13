@@ -28,6 +28,18 @@ public class Produto extends AbstractProduto{
 		this.quantidadeSelecionada = quantidadeSelecionada;
 	}
 	
-	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Produto other = (Produto) obj;
+		if (!this.getId().equals(other.getId()))
+			return false;
+		return true;
+	}
 	
 }
