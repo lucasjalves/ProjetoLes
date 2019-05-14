@@ -6,7 +6,8 @@ $(document).ready(function(){
 	var json = ${tickets};
 	gerarTabela(json);
 	$('#tabela').DataTable({
-		"searching" : false
+		"searching" : false,
+		"iDisplayLength": 100
 	});
 });
 

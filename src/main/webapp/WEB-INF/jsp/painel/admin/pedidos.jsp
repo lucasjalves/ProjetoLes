@@ -10,7 +10,8 @@ $(document).ready(function(){
 	var pedidos = ${pedidos};
 	gerarTabela(pedidos);
 	$('#tabela').DataTable({
-		"searching" : false
+		"searching" : false,
+		"iDisplayLength": 1000
 	});
 });
 

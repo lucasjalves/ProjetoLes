@@ -7,7 +7,8 @@ $(document).ready(function(){
 	var json = ${pedidos};
 	gerarTabela(json);
 	$('#tabela').DataTable({
-		"searching" : false
+		"searching" : false,
+		"iDisplayLength": 1000
 	});
 });
 
@@ -16,7 +17,7 @@ function gerarTabela(json){
 	$.each(json, function(index, pedido){
 		let tipo = getBotao(pedido.id)[pedido.status];
 		if(tipo === undefined){
-			tipo = "<td scope='row'> <td>";
+			tipo = "<td scope='row'> </td>";
 		}
 		var string ="<tr><th scope='row'><a href='http://localhost:8888/pedido/detalhe?id="+pedido.id+"' >"+pedido.id+"</a></th>"
 		+ "<td scope='row'>"+pedido.dtPedido+"</td>"
