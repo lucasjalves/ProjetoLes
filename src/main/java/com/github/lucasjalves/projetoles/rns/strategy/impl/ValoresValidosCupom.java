@@ -1,5 +1,6 @@
 package com.github.lucasjalves.projetoles.rns.strategy.impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,10 @@ public class ValoresValidosCupom implements Strategy {
 		List<String> mensagens = new ArrayList<>();
 		if(cupom.getDataVencimento() != null) {
 			try {
-				DataUtil.formatarData(cupom.getDataVencimento());
+				LocalDate data = DataUtil.formatarData(cupom.getDataVencimento());
+				if(data.isBefore(LocalDate.now())) {
+					mensagens.add("A data de vencimento deve ser no futuro");
+				}
 			} catch (Exception e) {
 				mensagens.add("Data inválida");
 			}

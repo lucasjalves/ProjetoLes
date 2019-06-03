@@ -10,7 +10,7 @@ import com.github.lucasjalves.projetoles.entidade.Cliente;
 import com.github.lucasjalves.projetoles.facade.Facade;
 
 @Controller
-class ControllerBase {
+public class ControllerBase {
 	
 	
 	@Autowired

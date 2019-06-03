@@ -15,7 +15,7 @@ public class QuantidadeEstoqueProduto implements Strategy{
 		List<String> mensagens = new ArrayList<>();
 		if(produto.getEstoque() != null) {
 			if(produto.getEstoque() < 0) {
-				mensagens.add("A quantidade em estoque deve ser maior que 1");
+				mensagens.add("A quantidade em estoque deve ser maior que 0");
 			}
 		}
 		return mensagens;
