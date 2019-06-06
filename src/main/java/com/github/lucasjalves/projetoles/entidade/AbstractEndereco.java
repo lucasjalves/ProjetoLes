@@ -14,6 +14,7 @@ public class AbstractEndereco extends Entidade{
 	private String rua;
 	private String numero;
 	private String complemento;
+	private Boolean ativo;
 	public String getPais() {
 		return pais;
 	}
@@ -68,4 +69,11 @@ public class AbstractEndereco extends Entidade{
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	public Boolean getAtivo() {
+		return ativo;
+	}
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+	
 }

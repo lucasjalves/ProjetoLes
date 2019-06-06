@@ -8,6 +8,8 @@ public class AbstractCartao extends Entidade {
 	private String cvv;
 	private String numero;
 	private String dtVencimento;
+	private Boolean ativo;
+	
 	public String getBandeira() {
 		return bandeira;
 	}
@@ -33,5 +35,12 @@ public class AbstractCartao extends Entidade {
 	public void setDtVencimento(String dtVencimento) {
 		this.dtVencimento = dtVencimento;
 	}
+	public Boolean getAtivo() {
+		return ativo;
+	}
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+	
 	
 }

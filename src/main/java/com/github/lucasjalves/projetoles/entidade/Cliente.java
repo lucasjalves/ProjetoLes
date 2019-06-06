@@ -136,4 +136,9 @@ public class Cliente extends Entidade {
 		this.creditoDisponivel = creditoDisponivel;
 	}
 	
+	public Cliente withCpf(String cpf) {
+		this.cpfCnpj = cpf;
+		return this;
+	}
+	
 }
