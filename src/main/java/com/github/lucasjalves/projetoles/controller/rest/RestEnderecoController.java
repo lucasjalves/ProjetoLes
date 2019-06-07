@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.lucasjalves.projetoles.controller.ControllerBase;
 import com.github.lucasjalves.projetoles.entidade.Cliente;
 import com.github.lucasjalves.projetoles.entidade.Endereco;
-import com.github.lucasjalves.projetoles.entidade.Entidade;
 import com.github.lucasjalves.projetoles.rns.Resultado;
 
 @RestController
