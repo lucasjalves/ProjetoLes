@@ -1,9 +1,14 @@
 <html>
 <head>
 <jsp:include page="../../statics.jsp"></jsp:include>
+<style>
+.hide {
+	display: none;
+}
+</style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
 <script>
-var colors = {
+window.colors = {
 		  "darkseagreen": "#8b008b",
 		  "darkorange": "#e9967a",
 		  "aqua": "#00ffff",
@@ -32,8 +37,8 @@ var colors = {
 		  "darkgreen": "#006400",
 		  "red": "#a9a9a9",
 		}
-var estados = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'];
-var mapaMeses = {
+window.estados = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'];
+window.mapaMeses = {
 	1 : "Janeiro",
 	2 : "Fevereiro",
 	3 : "Março",
@@ -47,9 +52,10 @@ var mapaMeses = {
 	11 : "Novembro",
 	12 : "Dezembro"
 };
-var mesesGlobal = new Array("Janeiro","Fevereiro","Marco","Abril","Maio","Junho","Julho","Agosto","Septembro","Outubro","Novembro","Dezembro");
-var mapaEstadosPorMes = [];
-var pedidos = ${pedidos};
+
+window.mesesGlobal = new Array("Janeiro","Fevereiro","Marco","Abril","Maio","Junho","Julho","Agosto","Septembro","Outubro","Novembro","Dezembro");
+window.mapaEstadosPorMes = [];
+window.pedidos = ${pedidos};
 
 function gerarDados(pedidos, mesComeco, mesLimite){
 	var meses = gerarMapaMeses();
@@ -68,11 +74,11 @@ function gerarDados(pedidos, mesComeco, mesLimite){
 		meses[indice].estados[indiceEstado].qtde = meses[indice].estados[indiceEstado].qtde + 1;
 	});
 	var datasets = [];
-	for(var i = 0; i < estados.length; i++){
+	for(var i = 0; i < window.estados.length; i++){
 		  dados = {
-				  label: estados[i],
+				  label: window.estados[i],
 		          fill: false,
-		          borderColor: Object.keys(colors)[i],
+		          borderColor: Object.keys(window.colors)[i],
 		          data: []
 		  }
 		  for(var j = mesComeco - 1; j <= mesLimite -1; j++){
@@ -90,7 +96,7 @@ function gerarMapaMeses(){
 		var mes = {};
 		mes.numero = i;
 		mes.estados = [];
-		for(var j = 0; j< estados.length; j++){
+		for(var j = 0; j< window.estados.length; j++){
 			mes.estados.push({
 				estado: estados[j],
 				qtde : 0
@@ -100,13 +106,13 @@ function gerarMapaMeses(){
 	}
 	return dados;
 }
-function createChart(){
+function createChart(meses, ds){
 	var ctx = document.getElementById('myChart').getContext('2d');
-	var myChart = new Chart(ctx, {
+	window.myChart = new Chart(ctx, {
 	    type: 'line',
 	    data: {
-	        labels: mesesGlobal,
-	        datasets: gerarDados(pedidos,1,12)
+	        labels: meses,
+	        datasets: ds
 	    },
 	    options: {
 	    	responsive: true,
@@ -120,12 +126,114 @@ function createChart(){
 	    }
 	});
 }
+
+function filtrarTabela(){
+	var inicio = $("#inputDe").val().replace(/\D/g, "");
+	var fim = $("#inputAte").val().replace(/\D/g, "");
+	var ano = $("#inputAno").val().replace(/\D/g, "");
+	
+	if(fim.length === 0){
+		fim = 12;
+	}
+	
+	if(inicio.length === 0){
+		inicio = 1;
+	}
+	
+	if(ano.length === 0){
+		ano = new Date().getFullYear();
+	}
+	inicio = parseInt(inicio);
+	fim = parseInt(fim);
+	ano = parseInt(ano);
+	var pedidos = $.grep(window.pedidos, (pedido, index) => {
+		var mes = pedido.dtPedido.split("/")[1];
+		var mes = parseInt(mes);
+		var anoPedido = pedido.dtPedido.split("/")[2];
+		if(mes >= inicio && mes <= fim && anoPedido == ano){
+			return true;
+		}
+	});
+	
+	var meses =  window.mesesGlobal.filter((mes, index) => {
+		var i = index + 1;
+		return (i >= inicio && i<= fim);
+	});
+	
+	var dados = gerarDados(pedidos, inicio, fim);
+	window.myChart.clear();
+	window.myChart.destroy();
+	createChart(meses, dados);
+}
 $(document).ready(function(){
-	createChart();
+	createChart(window.mesesGlobal, gerarDados(window.pedidos, 1, 12));
+	var chavesMeses = Object.keys(window.mapaMeses);
+	chavesMeses.forEach((chave, index) => {
+		$("#inputDe").append("<option value="+chave+">"+mapaMeses[chave]+"</option>");
+		$("#inputAte").append("<option value="+chave+">"+mapaMeses[chave]+"</option>");
+	});
+	
+	for(var i = new Date().getFullYear(); i>= 1900; i--){
+		$("#inputAno").append("<option value="+i+">"+i+"</option>");
+	}
+
 });
+
+
 </script>
 </head>
-<body>
+<body class="container">
+
+<div id="clone" class="hide">
+  	<div class="col-2 form-check">
+	    <input type="checkbox" class="form-check-input" value="AM" id="exampleCheck1">
+	    <label class="form-check-label" for="exampleCheck1">AM</label>		  		
+  	</div>
+</div>
+<div id="accordion" style="margin-bottom: 20px;">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Filtros
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
+      
+		<form>
+		  <div class="form-row" >
+		  	<div class="col-4">
+		      <label for="inputState">De</label>
+		      <select id="inputDe" class="form-control">
+		        <option selected>Selecione...</option>
+		      </select>
+		  	</div>
+		  	<div class="col-4" style="margin-bottom: 20px;">
+		      <label for="inputState">Até</label>
+		      <select id="inputAte" class="form-control">
+		        <option selected>Selecione...</option>
+		      </select>			  	
+		  	</div>
+		  	<div class="col-4">
+		      <label for="inputState">Ano</label>
+		      <select id="inputAno" class="form-control">
+		        <option selected>Selecione...</option>
+		      </select>		  		
+		  	</div>
+		  </div>
+		  	<div class="form-row">
+		  		<div class="col-12">
+		  			<button type="button" class="btn btn-success" style="float:right;" onclick="filtrarTabela()">Filtrar</button>
+		  		</div>
+		  	</div>
+		</form>      
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="chart-container" style="height: 700px;">
 	<canvas id="myChart" width="400" height="400"></canvas>
