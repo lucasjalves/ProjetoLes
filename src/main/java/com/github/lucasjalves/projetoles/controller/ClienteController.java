@@ -84,6 +84,12 @@ public class ClienteController extends ControllerBase {
 		modelView.addObject("cliente", cliente);
 		return modelView;
 	}
+
+	@RequestMapping("/cliente/logout")
+	public String logout() {
+		httpSession.removeAttribute("cliente");
+		return "forward:/";
+	}
 	
 	@RequestMapping("/cliente/detalhe")
 	public ModelAndView detalhe(ModelAndView modelView) {
@@ -106,6 +112,7 @@ public class ClienteController extends ControllerBase {
 		if(clientes.isEmpty()) {
 			return new Resultado("Usuário não encontrado");
 		}
+		httpSession.removeAttribute("cliente");
 		Cliente cli = clientes.get(0);
 		httpSession.setAttribute("cliente", cli);
 		

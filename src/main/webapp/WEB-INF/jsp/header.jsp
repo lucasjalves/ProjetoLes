@@ -106,7 +106,10 @@ function setCookie(cname, cvalue, exdays) {
 		</li>
 		<li class="nav-item"><a class="nav-link"
 			href="http://localhost:8888/cliente/login">Login <span class="sr-only">(current)</span></a>
-		</li>				
+		</li>	
+		<li class="nav-item admin"><a class="nav-link"
+			href="http://localhost:8888/cliente/logout">Logout <span class="sr-only">(current)</span></a>
+		</li>			
 		</ul>
   </div>
 </nav>

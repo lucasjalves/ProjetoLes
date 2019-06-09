@@ -57,8 +57,8 @@ window.mesesGlobal = new Array("Janeiro","Fevereiro","Marco","Abril","Maio","Jun
 window.mapaEstadosPorMes = [];
 window.pedidos = ${pedidos};
 
-function gerarDados(pedidos, mesComeco, mesLimite){
-	var meses = gerarMapaMeses();
+function gerarDados(pedidos, mesComeco, mesLimite, estados){
+	var meses = gerarMapaMeses(estados);
 	pedidos.forEach(function(pedido, index){
 		var mes = pedido.dtPedido.split("/")[1];
 		var mes = parseInt(mes);
@@ -71,12 +71,14 @@ function gerarDados(pedidos, mesComeco, mesLimite){
 			return el.estado === estado;
 		});
 		
-		meses[indice].estados[indiceEstado].qtde = meses[indice].estados[indiceEstado].qtde + 1;
+		if(indiceEstado != -1) {
+			meses[indice].estados[indiceEstado].qtde = meses[indice].estados[indiceEstado].qtde + 1;
+		}
 	});
 	var datasets = [];
-	for(var i = 0; i < window.estados.length; i++){
+	for(var i = 0; i < estados.length; i++){
 		  dados = {
-				  label: window.estados[i],
+				  label: estados[i],
 		          fill: false,
 		          borderColor: Object.keys(window.colors)[i],
 		          data: []
@@ -90,13 +92,13 @@ function gerarDados(pedidos, mesComeco, mesLimite){
 	return datasets;
 }
 
-function gerarMapaMeses(){
+function gerarMapaMeses(estados){
 	var dados = [];
 	for(var i = 1; i<=12; i++){
 		var mes = {};
 		mes.numero = i;
 		mes.estados = [];
-		for(var j = 0; j< window.estados.length; j++){
+		for(var j = 0; j< estados.length; j++){
 			mes.estados.push({
 				estado: estados[j],
 				qtde : 0
@@ -107,6 +109,8 @@ function gerarMapaMeses(){
 	return dados;
 }
 function createChart(meses, ds){
+	$('#myChart').remove();
+	$('.chart-container').append('<canvas id="myChart" width="400" height="400"></canvas>');
 	var ctx = document.getElementById('myChart').getContext('2d');
 	window.myChart = new Chart(ctx, {
 	    type: 'line',
@@ -160,13 +164,23 @@ function filtrarTabela(){
 		return (i >= inicio && i<= fim);
 	});
 	
-	var dados = gerarDados(pedidos, inicio, fim);
+	var dados = null;
+	if($("#row-estados-check input:checked").length === 0) {
+		dados = gerarDados(pedidos, inicio, fim, window.estados);
+	} else {
+		var array = [];
+		$("#row-estados-check input:checked").each(function() {
+			array.push($(this).attr("estado"));
+		});
+		dados = gerarDados(pedidos, inicio, fim, array);
+		
+	}
 	window.myChart.clear();
 	window.myChart.destroy();
 	createChart(meses, dados);
 }
 $(document).ready(function(){
-	createChart(window.mesesGlobal, gerarDados(window.pedidos, 1, 12));
+	createChart(window.mesesGlobal, gerarDados(window.pedidos, 1, 12,window.estados));
 	var chavesMeses = Object.keys(window.mapaMeses);
 	chavesMeses.forEach((chave, index) => {
 		$("#inputDe").append("<option value="+chave+">"+mapaMeses[chave]+"</option>");
@@ -175,6 +189,14 @@ $(document).ready(function(){
 	
 	for(var i = new Date().getFullYear(); i>= 1900; i--){
 		$("#inputAno").append("<option value="+i+">"+i+"</option>");
+	}
+	
+	for(var i = 0; i< estados.length; i++) {
+		var div = "<div class='form-group col-2'><div class='form-check form-check-inline'><label class='form-check-label'  style='margin-right: 25px;'>"+estados[i]+"</label>" +
+		"<input type='checkbox' class='form-check-input' estado='"+estados[i]+"'/>" +
+		"</div></div>";
+		
+		$("#row-estados-check").append(div);
 	}
 
 });
@@ -229,6 +251,7 @@ $(document).ready(function(){
 		  			<button type="button" class="btn btn-success" style="float:right;" onclick="filtrarTabela()">Filtrar</button>
 		  		</div>
 		  	</div>
+		  	<div class="form-row" id="row-estados-check" style="margin-top: 30px;"></div>
 		</form>      
       </div>
     </div>

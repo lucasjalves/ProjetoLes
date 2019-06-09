@@ -37,8 +37,8 @@ function gerarBotao(tipo, status, id){
 	} else {
 		const tipos = {
 			"SOLICITADO" : `<td scope='row'><a class='btn btn-warning' onclick='atualizarTicket(`+id+`, "APROVADO")'>Aceitar</a></td>`,
-			"APROVADO" : `<td scope='row'><a class='btn btn-warning' onclick='atualizarTicket(`+id+`, "TRANSPORTE")'>Aceitar</a></td>`,
-			"TRANSPORTE" : `<td scope='row'><a class='btn btn-warning' onclick='atualizarTicket(`+id+`, "ENTREGUE")'>Aceitar</a></td>`
+			"APROVADO" : `<td scope='row'><a class='btn btn-warning' onclick='atualizarTicket(`+id+`, "TRANSPORTE")'>Enviar</a></td>`,
+			"TRANSPORTE" : `<td scope='row'><a class='btn btn-warning' onclick='atualizarTicket(`+id+`, "ENTREGUE")'>Entregar</a></td>`
 		};
 		return tipos[status];
 	}
