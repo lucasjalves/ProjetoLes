@@ -21,6 +21,8 @@
 		
 		$("#ativo").val('${produto.ativo}');
 		$("#categoria").val('${produto.categoria}');
+		$("#precoCompra").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:',', affixesStay: false});
+		$("#precoVenda").maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:',', affixesStay: false});
 	});
 
 

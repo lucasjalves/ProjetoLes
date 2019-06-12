@@ -33,6 +33,7 @@ function setCookie(cname, cvalue, exdays) {
 			method: 'POST',
 			url: 'http://localhost:8888/cliente/logado',
 			success: function(data){
+				debugger;
 				if(data == false){
 					$(".admin").each(function(){
 						$(this).remove();

@@ -24,7 +24,7 @@ public class Cliente extends Entidade {
 	private String genero;
 	private Boolean ativo;
 	private String creditoDisponivel = "0";
-	private TipoUsuario tipoUsuario;
+	private TipoUsuario tipoUsuario = TipoUsuario.ADMIN;
 	
 	@OneToMany(cascade=CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)

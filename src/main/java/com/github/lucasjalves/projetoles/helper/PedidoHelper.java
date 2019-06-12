@@ -3,6 +3,7 @@ package com.github.lucasjalves.projetoles.helper;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,8 @@ public class PedidoHelper {
 	@Autowired
 	private Facade facade;
 	
+	private String[] estados = {"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"};
+	
 	@SuppressWarnings("unchecked")
 	public Pedido gerarPedido(Endereco endereco, Carrinho carrinho, Cliente cliente) throws CloneNotSupportedException {
 		Pedido pedido = new Pedido();
@@ -43,9 +46,12 @@ public class PedidoHelper {
 				.filter(e -> e.equals(endereco))
 				.collect(Collectors.toList());
 		
+		Random rand = new Random();
 		if(!enderecos.isEmpty()) {
 			pedido.setEndereco(to(enderecos.get(0)));
 			pedido.getEndereco().setId(null);
+			//pedido.getEndereco().setUf(estados[rand.nextInt(26)]);
+			
 		}
 		
 		Iterator<ItemCarrinho> it = carrinho.getItensCarrinho().iterator();
@@ -74,13 +80,14 @@ public class PedidoHelper {
 			pedido.setCupomPedido(to(carrinho.getCupom()));
 			pedido.getCupomPedido().setId(null);
 		}
+
 		pedido.setTotal(String.format("%,.2f", total));
 		pedido.setFrete(String.format("%,.2f", frete));
 		pedido.setDesconto(String.format("%,.2f", desconto));
 		pedido.setTotalCompra(String.format("%,.2f", (total - desconto) + frete));
 		pedido.setDesconto(String.format("%,.2f", desconto));
 		pedido.setStatus(StatusPedido.SOLICITADO);
-		String dtHora = FormatadorDataUtil.dataFormatada(LocalDateTime.now().minusMonths(4));
+		String dtHora = FormatadorDataUtil.dataFormatada(LocalDateTime.now().minusMonths(0));
 		pedido.setDtPedido(dtHora.split("T")[0]);
 		pedido.setHora(dtHora.split("T")[1]);
 		return pedido;

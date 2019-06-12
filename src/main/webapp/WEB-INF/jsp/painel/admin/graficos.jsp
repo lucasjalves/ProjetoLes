@@ -199,6 +199,7 @@ $(document).ready(function(){
 		$("#row-estados-check").append(div);
 	}
 
+	$("#btnAplicarFiltro").click();
 });
 
 
@@ -248,7 +249,7 @@ $(document).ready(function(){
 		  </div>
 		  	<div class="form-row">
 		  		<div class="col-12">
-		  			<button type="button" class="btn btn-success" style="float:right;" onclick="filtrarTabela()">Filtrar</button>
+		  			<button type="button" class="btn btn-success" style="float:right;" id="btnAplicarFiltro" onclick="filtrarTabela()">Filtrar</button>
 		  		</div>
 		  	</div>
 		  	<div class="form-row" id="row-estados-check" style="margin-top: 30px;"></div>
