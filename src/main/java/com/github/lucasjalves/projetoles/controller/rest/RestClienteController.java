@@ -23,8 +23,8 @@ public class RestClienteController extends ControllerBase{
 
 	@PostMapping("/cadastrar")
 	public Resultado cadastrar(@RequestBody Cliente cliente) {
-		cliente.setTipoUsuario(TipoUsuario.COMUM);
-		return new Resultado("Nome vazio!");
+		cliente.setTipoUsuario(TipoUsuario.ADMIN);
+		return facade.salvar(cliente);
 	}
 	
 	@PostMapping("/login")
