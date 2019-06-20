@@ -78,7 +78,7 @@ function gerarDados(pedidos, mesComeco, mesLimite){
 		  dados = {
 				  label: window.estados[i],
 		          fill: false,
-		          borderColor: Object.keys(window.colors)[i],
+		          borderColor: Object.keys(window.colors)[window.estados.indexOf(estados[i])],
 		          data: []
 		  }
 		  for(var j = mesComeco - 1; j <= mesLimite -1; j++){
