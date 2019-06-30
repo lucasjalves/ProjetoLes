@@ -43,6 +43,11 @@ public class RestClienteController extends ControllerBase{
 		return facade.consultar(new Cliente().withCpf(cpf));
 	}
 	
+	@GetMapping("/getById/{id}")
+	public Resultado getById(@PathVariable Long id) {
+		return facade.consultar(new Cliente().withId(id));
+	}
+	
 	@PutMapping("/alterar")
 	public Resultado alterar(@RequestBody Cliente cliente) throws Exception {
 		Optional<Cliente> optional = 
@@ -60,4 +65,6 @@ public class RestClienteController extends ControllerBase{
 		cliente.setTickets(c.getTickets());
 		return facade.alterar(cliente);
 	}
+	
+	
 }

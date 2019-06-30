@@ -65,4 +65,9 @@ public class RestPedidoController extends ControllerBase{
 //		}
 //		return resultadoPedido;
 	}
+	
+	@GetMapping("get/{id}")
+	public Resultado getById(@PathVariable Long id) {
+		return facade.consultar(new Pedido().withId(id));
+	}
 }
