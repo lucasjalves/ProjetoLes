@@ -25,7 +25,7 @@ public class Entidade {
 		if (getClass() != obj.getClass())
 			return false;
 		Entidade other = (Entidade) obj;
-		if (id != other.id)
+		if (!id.equals(other.id))
 			return false;
 		return true;
 	}

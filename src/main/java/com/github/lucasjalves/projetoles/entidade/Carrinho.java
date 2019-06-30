@@ -11,6 +11,7 @@ public class Carrinho implements Cloneable {
 	private String desconto;
 	private String totalCompra;
 	private Cupom cupom;
+	private Endereco endereco;
 	private boolean statusCupom = true;
 	
 	public boolean isStatusCupom() {
@@ -73,6 +74,15 @@ public class Carrinho implements Cloneable {
 		this.cupom = cupom;
 	}
 	
+	
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
 	@Override
     public Object clone()throws CloneNotSupportedException{  
         return (Carrinho)super.clone();  
