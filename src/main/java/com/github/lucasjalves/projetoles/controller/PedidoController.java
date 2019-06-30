@@ -71,7 +71,7 @@ public class PedidoController extends ControllerBase{
 			Pedido p = (Pedido) resultado.getEntidades().get(0);
 			cliente.getPedidos().add(pedido);
 			resultado = facade.alterar(cliente);
-			cliente.getPedidos().remove(pedido);
+			//cliente.getPedidos().remove(pedido);
 			
 			httpSession.setAttribute("pedido", p);
 			httpSession.removeAttribute("carrinho");

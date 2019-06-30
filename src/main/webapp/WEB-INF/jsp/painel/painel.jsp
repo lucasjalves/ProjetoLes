@@ -34,7 +34,7 @@
 					<a href="#" class="list-group-item list-group-item-action rota" rota="http://localhost:8888/ticket/consulta">Meus tickets</a>
 					<p class="list-group-item list-group-item-dark">Admin</p>
 					<a href="#" class="list-group-item list-group-item-action rota" rota="http://localhost:8888/ticket/consultaAdmin">Tickets</a>
-					<a href="#" class="list-group-item list-group-item-action rota" rota="http://localhost:8888/pedido/consultaAdmin">Pedidos</a>
+					<a href="#" class="list-group-item list-group-item-action rota" rota="http://localhost:8888/pedido/consultaAdmin">Pedidos</a>				
 					<a href="#" class="list-group-item list-group-item-action rota" rota="http://localhost:8888/grafico">Gráfico</a>				
 				</div>
 			</div>

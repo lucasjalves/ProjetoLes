@@ -12,8 +12,13 @@
 		$("#btnCadastrar").on("click", function(){
 			
 			$.post("http://localhost:8888/cliente/efetuarLogin", $("#form").serialize())
-			.done(function(data){
-				window.location.href = "http://localhost:8888";
+			.done(function(resultado){
+				if(resultado.mensagem.length > 0) {
+					abrirModalSucessoOuFalha(resultado, "Falha", resultado.mensagem[0], 1);
+				} else {
+					window.location.href = "http://localhost:8888";	
+				}
+				
 			})
 			.fail(function(data){
 				abrirModalSucessoOuFalha(data, "Falha", "Usuário não encontrado", 1);

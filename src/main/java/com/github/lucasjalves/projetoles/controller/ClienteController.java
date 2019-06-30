@@ -84,6 +84,12 @@ public class ClienteController extends ControllerBase {
 		modelView.addObject("cliente", cliente);
 		return modelView;
 	}
+
+	@RequestMapping("/cliente/logout")
+	public String logout() {
+		httpSession.removeAttribute("cliente");
+		return "forward:/";
+	}
 	
 	@RequestMapping("/cliente/detalhe")
 	public ModelAndView detalhe(ModelAndView modelView) {
@@ -128,7 +134,14 @@ public class ClienteController extends ControllerBase {
 			return null;
 		}
 		
-		return TipoUsuario.ADMIN.equals(cliente.getTipoUsuario());
+		return true;
 	}
 	
+	@RequestMapping("/cliente/todos")
+	public ModelAndView todosUsuarios(ModelAndView modelView) throws JsonProcessingException {
+		List<Cliente> clientes = (List<Cliente>) facade.consultar(new Cliente()).getEntidades();
+		modelView.setViewName("painel/admin/usuarios");
+		modelView.addObject("usuarios", mapper.writeValueAsString(clientes));
+		return modelView;
+	}
 }

@@ -11,7 +11,8 @@ $(document).ready(function(){
 	gerarTabela(pedidos);
 	$('#tabela').DataTable({
 		"searching" : false,
-		"iDisplayLength": 1000
+		"iDisplayLength": 1000,
+		"order": [[ 5, "desc" ]]
 	});
 });
 
