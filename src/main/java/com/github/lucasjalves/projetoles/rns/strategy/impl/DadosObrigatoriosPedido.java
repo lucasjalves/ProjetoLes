@@ -21,16 +21,19 @@ public class DadosObrigatoriosPedido implements Strategy {
 				mensagens.add("O pedido não pode ser efetivado sem um endereço");
 			}
 			if(p.getCupomPedido() != null) {
-				LocalDate dtVencimento = 
-						FormatadorDataUtil.toLocalDate(p.getCupomPedido().getDataVencimento());
-				
-				if(!p.getCupomPedido().getStatus()) {
-					mensagens.add("O cupom não está mais ativo");
+				if(p.getCupomPedido().getCodigo() != null) {
+					LocalDate dtVencimento = 
+							FormatadorDataUtil.toLocalDate(p.getCupomPedido().getDataVencimento());
+					
+					if(!p.getCupomPedido().getStatus()) {
+						mensagens.add("O cupom não está mais ativo");
+					}
+					
+					if(!dtVencimento.isAfter(LocalDate.now())) {
+						mensagens.add("O cupom está vencido");
+					}					
 				}
-				
-				if(!dtVencimento.isAfter(LocalDate.now())) {
-					mensagens.add("O cupom está vencido");
-				}
+
 			}
 			if(p.getItensPedido().isEmpty()) {
 				mensagens.add("O pedido não pode ser efetivado sem produtos!");

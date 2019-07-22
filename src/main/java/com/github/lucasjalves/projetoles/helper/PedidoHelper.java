@@ -1,15 +1,23 @@
 package com.github.lucasjalves.projetoles.helper;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.lucasjalves.projetoles.entidade.Carrinho;
+import com.github.lucasjalves.projetoles.entidade.CartaoCredito;
+import com.github.lucasjalves.projetoles.entidade.CartaoCreditoPagamento;
 import com.github.lucasjalves.projetoles.entidade.Cliente;
 import com.github.lucasjalves.projetoles.entidade.Cupom;
 import com.github.lucasjalves.projetoles.entidade.CupomPedido;
@@ -87,7 +95,7 @@ public class PedidoHelper {
 		pedido.setTotalCompra(String.format("%,.2f", (total - desconto) + frete));
 		pedido.setDesconto(String.format("%,.2f", desconto));
 		pedido.setStatus(StatusPedido.SOLICITADO);
-		String dtHora = FormatadorDataUtil.dataFormatada(LocalDateTime.now().minusMonths(0));
+		String dtHora = FormatadorDataUtil.dataFormatada(LocalDateTime.now());
 		pedido.setDtPedido(dtHora.split("T")[0]);
 		pedido.setHora(dtHora.split("T")[1]);
 		return pedido;
@@ -137,4 +145,42 @@ public class PedidoHelper {
 		cp.setValorDesconto(cupom.getValorDesconto());
 		return cp;
 	}
+	
+	
+	public static Pedido atualizarPedidoComCartoes(Pedido pedido, List<CartaoCreditoPagamento> cartoes, List<CartaoCredito> listaTodosCartoes) {
+		
+		pedido.setStatus(StatusPedido.PAGO);
+		Set<Long> ids = new HashSet<>();
+		ObjectMapper mapper = new ObjectMapper();
+		cartoes.forEach(c -> {
+			ids.add(c.getIdCartao());
+		});
+		
+		List<CartaoCreditoPagamento> cartoesPagamento = new ArrayList<>();
+		
+		listaTodosCartoes.forEach(c -> {
+			if(ids.contains(c.getId())) {
+				try {
+					String cartaoString = mapper.writeValueAsString(c);
+					CartaoCreditoPagamento cartaoCredito =
+							mapper.readValue(cartaoString, CartaoCreditoPagamento.class);
+					
+					cartaoCredito.setIdCartao(c.getId());
+					
+					cartaoCredito.setValor(cartoes.stream().filter(cr -> cr.getIdCartao().equals(c.getId()))
+						.collect(Collectors.toList()).get(0).getValor());
+					
+					cartoesPagamento.add(cartaoCredito);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		pedido.setCartoes(cartoesPagamento);
+		
+		return pedido;
+	}
+	
+	
 }
