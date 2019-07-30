@@ -66,5 +66,18 @@ public class RestClienteController extends ControllerBase{
 		return facade.alterar(cliente);
 	}
 	
+	@GetMapping("/isAdmin/{cpf}")
+	public boolean isAdmin(@PathVariable String cpf) {
+		Resultado resultado = facade.consultar(new Cliente().withCpf(cpf));
+		Cliente cliente = (Cliente) resultado.getEntidades().get(0);
+		return cliente.getTipoUsuario().equals(TipoUsuario.ADMIN);
+	}
 	
+	@GetMapping("/isActive/{cpf}")
+	public boolean isActive(@PathVariable String cpf) {
+		Resultado resultado = facade.consultar(new Cliente().withCpf(cpf));
+		Cliente cliente = (Cliente) resultado.getEntidades().get(0);
+		System.out.println(cliente.getAtivo());
+		return cliente.getAtivo();		
+	}
 }

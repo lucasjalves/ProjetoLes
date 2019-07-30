@@ -1,6 +1,6 @@
 package com.github.lucasjalves.projetoles.controller.rest;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,6 +46,18 @@ public class RestPedidoController extends ControllerBase{
 		
 		r.setEntidades(cli.getPedidos());
 		return r;
+	}
+	
+	@GetMapping("/todos")
+	public Resultado consultarTodos() {
+		Resultado resultado = this.facade.consultar(new Pedido());
+		List<Pedido> lista = (List<Pedido>) resultado.getEntidades();
+		lista = lista.stream()
+				.sorted(Comparator.comparing(Pedido::getId))
+				.collect(Collectors.toList());
+		Resultado resultadoRetorno = new Resultado();
+		resultadoRetorno.setEntidades(lista);
+		return resultadoRetorno;
 	}
 	
 	@PostMapping("/cadastrar/{cpf}")
