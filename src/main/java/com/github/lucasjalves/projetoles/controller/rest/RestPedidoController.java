@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,7 +54,7 @@ public class RestPedidoController extends ControllerBase{
 		Resultado resultado = this.facade.consultar(new Pedido());
 		List<Pedido> lista = (List<Pedido>) resultado.getEntidades();
 		lista = lista.stream()
-				.sorted(Comparator.comparing(Pedido::getId))
+				.sorted(Comparator.comparing(Pedido::getId).reversed())
 				.collect(Collectors.toList());
 		Resultado resultadoRetorno = new Resultado();
 		resultadoRetorno.setEntidades(lista);
@@ -110,6 +111,13 @@ public class RestPedidoController extends ControllerBase{
 		} catch(Exception e) {
 			return new Resultado(e.getMessage());
 		}
+	}
+	
+	@PatchMapping("update/status/{id}")
+	public Resultado atualizarStatusPara(@RequestParam String status, @PathVariable Long id) {
+		Pedido pedido = (Pedido) facade.consultar(new Pedido().withId(id)).getEntidades().get(0);
+		pedido.setStatus(StatusPedido.valueOf(status));
+		return facade.alterar(pedido);
 	}
 	private void atualizarDados(Long id, Cliente cliente) throws Exception {
 		@SuppressWarnings("unchecked")
