@@ -37,7 +37,10 @@ public class RestTicketController extends ControllerBase{
 		return resultadoConsultaTickets;
 	}
 	
-
+	@GetMapping("/todos")
+	public Resultado getTodos() {
+		return this.facade.consultar(new Ticket());
+	}
 	@PostMapping("/efetivar")
 	public Resultado confirmar(@RequestBody Ticket ticketRequest) throws Exception {
 		Resultado resultado = facade.consultar(new Pedido().withId(ticketRequest.getIdPedido()));
