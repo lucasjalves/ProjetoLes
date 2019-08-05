@@ -77,7 +77,6 @@ public class RestClienteController extends ControllerBase{
 	public boolean isActive(@PathVariable String cpf) {
 		Resultado resultado = facade.consultar(new Cliente().withCpf(cpf));
 		Cliente cliente = (Cliente) resultado.getEntidades().get(0);
-		System.out.println(cliente.getAtivo());
 		return cliente.getAtivo();		
 	}
 }
